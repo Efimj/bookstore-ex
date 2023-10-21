@@ -45,3 +45,4 @@ dist-ssr
 *.sw?
 
 /bin
+**/vendor/
