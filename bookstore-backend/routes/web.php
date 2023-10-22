@@ -27,6 +27,8 @@ Route::get('/books', [BookController::class, 'all_books']);
 //Route::get('/book', [BookController::class, 'bookByName']);
 Route::get('/book', [BookController::class, 'book']);
 
+Route::get('/book_authors', [BookController::class, 'bookAuthors']);
+
 Route::get('/check-database-connection', function () {
     try {
         DB::connection()->getPdo();

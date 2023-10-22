@@ -41,4 +41,22 @@ class BookController extends BaseController
 
         return $books;
     }
+
+    public function bookAuthors(Request $request)
+    {
+        $book_id = $request->query('id');
+        $book = Book::find($book_id);
+        $book_authors = $book->bookAuthors;
+
+        $authors = [];
+        foreach ($book_authors as $author) {
+            $authors[] = $author->author;
+        }
+
+        if (!$authors) {
+            return "книги нет, или авторов нет";
+        }
+
+        return $authors;
+    }
 }
