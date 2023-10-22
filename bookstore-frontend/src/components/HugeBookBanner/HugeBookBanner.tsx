@@ -10,9 +10,10 @@ import { FC } from "react";
 
 export interface IHugeBookBanner {
   book: IBook;
+  onClick: () => void;
 }
 
-const HugeBookBanner: FC<IHugeBookBanner> = ({ book }) => {
+const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
   var myBooksImage = [
     "451 degrees Fahrenheit.jpeg",
     "1984.webp",
@@ -22,7 +23,7 @@ const HugeBookBanner: FC<IHugeBookBanner> = ({ book }) => {
   return (
     <Card sx={{ borderRadius: 3 }} elevation={0}>
       <CardActionArea
-        onClick={() => {}}
+        onClick={onClick}
         sx={{ display: "flex", height: 250, alignItems: "flex-start" }}
       >
         <CardMedia

@@ -17,7 +17,7 @@ class BookController extends BaseController
     public function book(Request $request)
     {
         $book_id = $request->query('id');
-        $book = Book::find($book_id)->ageRestriction;
+        $book = Book::find($book_id);
 
         if (!$book) {
             return "книги нет";

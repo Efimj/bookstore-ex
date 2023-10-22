@@ -11,9 +11,10 @@ import { FC } from "react";
 
 export interface IBookBanner {
   book: IBook;
+  onClick: () => void;
 }
 
-const BookBanner: FC<IBookBanner> = ({ book }) => {
+const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
   var myBooksImage = [
     "451 degrees Fahrenheit.jpeg",
     "1984.webp",
@@ -23,7 +24,7 @@ const BookBanner: FC<IBookBanner> = ({ book }) => {
   return (
     <Card sx={{ borderRadius: 3 }} elevation={0}>
       <CardActionArea
-        onClick={() => {}}
+        onClick={onClick}
         sx={{
           display: "flex",
           flexDirection: "column",

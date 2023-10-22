@@ -3,6 +3,7 @@ import ScreenLayout from "./components/ScreenLayout";
 import BookCatalog from "./pages/BookCatalog/BookCatalog";
 import Library from "./pages/Library/Library";
 import Settings from "./pages/Settings/Settings";
+import BookPage from "./pages/Book/BookPage";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,8 @@ const router = createBrowserRouter([
         element: <Settings />,
       },
       {
-        path: "/acc",
-        element: <Settings />,
+        path: "/book/:bookId",
+        element: <BookPage />,
       },
     ],
   },

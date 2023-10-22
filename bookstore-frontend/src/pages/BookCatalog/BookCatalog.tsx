@@ -5,11 +5,13 @@ import HugeBookBanner from "../../components/HugeBookBanner/HugeBookBanner";
 import { Box, Typography } from "@mui/material";
 import CustomCarousel from "../../components/CustomCarousel/CustomCarousel";
 import BookBanner from "../../components/BookBanner/BookBanner";
+import { useNavigate } from "react-router-dom";
 
 export interface IBookCatalog {}
 
 export default function BookCatalog(props: IBookCatalog) {
   const [books, setBooks] = useState<Array<IBook>>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function get() {
@@ -25,6 +27,10 @@ export default function BookCatalog(props: IBookCatalog) {
     }
     return chunkedArr;
   }
+
+  const handleBookClick = (bookId: number) => {
+    navigate(`/book/${bookId}`);
+  };
 
   return (
     <>
@@ -60,7 +66,10 @@ export default function BookCatalog(props: IBookCatalog) {
             }}
             key={book.book_id}
           >
-            <HugeBookBanner book={book} />
+            <HugeBookBanner
+              book={book}
+              onClick={() => handleBookClick(book.book_id)}
+            />
           </Box>
         ))}
       </CustomCarousel>
@@ -87,7 +96,10 @@ export default function BookCatalog(props: IBookCatalog) {
                   }}
                   key={book.book_id}
                 >
-                  <BookBanner book={book} />
+                  <BookBanner
+                    book={book}
+                    onClick={() => handleBookClick(book.book_id)}
+                  />
                 </Box>
               ))}
             </CustomCarousel>
