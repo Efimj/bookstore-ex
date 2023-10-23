@@ -20,7 +20,7 @@ class BookController extends BaseController
         $book = Book::find($book_id);
 
         if (!$book) {
-            return "книги нет";
+            return null;
         }
 
         return $book;
@@ -36,7 +36,7 @@ class BookController extends BaseController
 //        });
 
         if ($books->isEmpty()) {
-            return "Книги с названием, содержащим текст '$title', не найдено";
+            return null;
         }
 
         return $books;
@@ -54,9 +54,36 @@ class BookController extends BaseController
         }
 
         if (!$authors) {
-            return "книги нет, или авторов нет";
+            return null;
         }
 
         return $authors;
+    }
+
+    public function bookOffer(Request $request)
+    {
+        $book_id = $request->query('id');
+        $book = Book::find($book_id);
+        $book_offer = $book->offer;
+
+        if (!$book_offer) {
+            return null;
+        }
+
+        return $book_offer;
+    }
+
+    public function bookDiscount(Request $request)
+    {
+        $book_id = $request->query('id');
+        $book = Book::find($book_id);
+        $book_offer = $book->offer;
+        $book_discount = $book_offer->discount;
+
+        if (!$book_discount) {
+            return null;
+        }
+
+        return $book_discount;
     }
 }

@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import api from "./const";
 import IBook from "../interfaces/IBook";
 import IUser from "../interfaces/IAuthor";
+import IBookOffer from "../interfaces/IBookOffer";
+import IBookDiscount from "../interfaces/IBookDiscount";
 
 export async function getBooks(): Promise<IBook[]> {
   const response: AxiosResponse<Array<IBook>> = await axios.get(`${api.books}`);
@@ -15,9 +17,23 @@ export async function getBook(bookId: string): Promise<IBook> {
   return response.data;
 }
 
-export async function getAuthors(bookId: string): Promise<IUser[]> {
+export async function getBookAuthors(bookId: string): Promise<IUser[]> {
   const response: AxiosResponse<Array<IUser>> = await axios.get(
-    `${api.authors}?id=${bookId}`
+    `${api.book_authors}?id=${bookId}`
+  );
+  return response.data;
+}
+
+export async function getBookOffer(bookId: string): Promise<IBookOffer> {
+  const response: AxiosResponse<IBookOffer> = await axios.get(
+    `${api.book_offer}?id=${bookId}`
+  );
+  return response.data;
+}
+
+export async function getBookDiscount(bookId: string): Promise<IBookDiscount> {
+  const response: AxiosResponse<IBookDiscount> = await axios.get(
+    `${api.book_discount}?id=${bookId}`
   );
   return response.data;
 }
