@@ -13,6 +13,7 @@ import IBookPageItem from "./IBookPageItem";
 import BookStackItem from "./BookStackItem";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
+import { enqueueSnackbar } from "notistack";
 
 const BookInformation: FC<IBookPageItem> = ({
   book,
@@ -176,9 +177,21 @@ const BookInformation: FC<IBookPageItem> = ({
           <Button
             sx={{ textTransform: "none", borderRadius: "10px" }}
             variant="outlined"
-            onClick={() => {}}
+            onClick={() => {
+              enqueueSnackbar("Added to wishlist", { variant: "success" });
+            }}
           >
             <Typography variant="body1">Add to wishlist</Typography>
+          </Button>
+          <Button
+            sx={{ textTransform: "none", borderRadius: "10px" }}
+            variant="text"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              enqueueSnackbar("Link copied", { variant: "success" });
+            }}
+          >
+            <Typography variant="body1">Share</Typography>
           </Button>
         </Box>
       </Box>

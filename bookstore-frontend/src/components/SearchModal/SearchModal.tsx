@@ -51,7 +51,7 @@ export default function SearchModal() {
         }}
         PaperProps={{
           sx: {
-            borderRadius: "10px",
+            borderRadius: "1rem",
             backgroundColor: theme.palette.background.default,
           },
         }}

@@ -1,5 +1,5 @@
 import { PaletteMode } from "@mui/material";
-import { grey, lightGreen } from "@mui/material/colors";
+import { green, grey, lightGreen } from "@mui/material/colors";
 
 export const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -10,12 +10,12 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             default: "#fff",
           },
           primary: {
-            main: lightGreen[700],
-            dark: lightGreen[800],
+            main: green[700],
+            dark: green[800],
           },
           secondary: {
-            main: lightGreen[700],
-            dark: lightGreen[800],
+            main: green[700],
+            dark: green[800],
           },
           text: {
             primary: "#000",
@@ -27,12 +27,12 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             default: "#121212",
           },
           primary: {
-            main: lightGreen[500],
-            dark: lightGreen[800],
+            main: green[500],
+            dark: green[800],
           },
           secondary: {
-            main: lightGreen[500],
-            dark: lightGreen[800],
+            main: green[500],
+            dark: green[800],
           },
           text: {
             primary: "#fff",

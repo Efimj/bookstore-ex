@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   styled,
+  useTheme,
 } from "@mui/material";
 import { FC, useState } from "react";
 import IBookPageItem from "./IBookPageItem";
@@ -14,10 +15,8 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const BookPageContent: FC<IBookPageItem> = ({
   book,
-  authors,
-  bookOffer,
-  bookDiscount,
 }) => {
+  const theme = useTheme();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
 
   const handleClickOpen = () => {
@@ -52,7 +51,7 @@ const BookPageContent: FC<IBookPageItem> = ({
               textTransform: "none",
             }}
             onClick={handleClickOpen}
-            disabled={bookOffer == null}
+            disabled={book?.description == null}
           >
             <ArrowForwardRoundedIcon />
           </IconButton>
@@ -65,6 +64,12 @@ const BookPageContent: FC<IBookPageItem> = ({
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={descriptionOpened}
+        PaperProps={{
+          sx: {
+            borderRadius: "1rem",
+            backgroundColor: theme.palette.background.default,
+          },
+        }}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           Book description
@@ -93,6 +98,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiPaper-root": {
     margin: "1rem",
     borderRadius: "1rem",
+    backgroundColor: theme.palette.background.default,
   },
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
