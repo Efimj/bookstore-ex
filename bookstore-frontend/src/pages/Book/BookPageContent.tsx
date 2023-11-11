@@ -12,10 +12,9 @@ import { FC, useState } from "react";
 import IBookPageItem from "./IBookPageItem";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import CloseIcon from "@mui/icons-material/Close";
+import BookRating from "../../components/BookRating/BookRating";
 
-const BookPageContent: FC<IBookPageItem> = ({
-  book,
-}) => {
+const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
   const theme = useTheme();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
 
@@ -31,10 +30,13 @@ const BookPageContent: FC<IBookPageItem> = ({
     <>
       <Box
         sx={{
-          width: "100%",
           display: "flex",
           flexDirection: "column",
           gap: { xs: ".5rem" },
+          width: {
+            sm: "100%",
+            md: "calc(100% - 240px + 1rem)",
+          },
         }}
       >
         <Box
@@ -59,6 +61,7 @@ const BookPageContent: FC<IBookPageItem> = ({
         <Typography variant="body1" color="text.secondary">
           {book?.description}
         </Typography>
+        {bookEvaluations && <BookRating bookEvaluations={bookEvaluations} />}
       </Box>{" "}
       <BootstrapDialog
         onClose={handleClose}

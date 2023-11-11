@@ -20,6 +20,7 @@ const BookInformation: FC<IBookPageItem> = ({
   authors,
   bookOffer,
   bookDiscount,
+  bookEvaluations,
 }) => {
   const getBookBuyButtonText = (): string => {
     if (bookOffer == null) return "not for sale";
@@ -128,12 +129,12 @@ const BookInformation: FC<IBookPageItem> = ({
                 }}
               >
                 <Typography variant="body1" sx={{ paddingTop: "2px" }}>
-                  4.6
+                  {bookEvaluations?.average_rating ?? 0}
                 </Typography>
                 <StarRateRoundedIcon fontSize="inherit" />
               </Box>
             }
-            description="430 reviews"
+            description={`${bookEvaluations?.review_count ?? 0} reviews`}
           />
           <BookStackItem
             title={<BookOutlinedIcon fontSize="small" />}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -30,10 +31,6 @@ class BookController extends BaseController
     {
         $title = $request->query('title');
         $books = Book::where('title', 'like', '%' . $title . '%')->get();
-
-//        $books->each(function ($book) {
-//            $book->tempTitle = "ВЫФ";
-//        });
 
         if ($books->isEmpty()) {
             return null;
@@ -85,5 +82,41 @@ class BookController extends BaseController
         }
 
         return $book_discount;
+    }
+
+    public function bookEvaluations(Request $request): ?JsonResponse
+    {
+        $book_id = $request->query('id');
+        $book = Book::find($book_id);
+
+        if (!$book) {
+            return null;
+        }
+
+        $book_reviews = $book->reviews;
+
+        if ($book_reviews->isEmpty()) {
+            return null;
+        }
+
+        $average_rating = round($book_reviews->avg('rating'), 2);
+        $review_count = $book_reviews->count();
+        $one_star_rating = $book_reviews->where('rating', 1)->count();
+        $two_star_rating = $book_reviews->where('rating', 2)->count();
+        $three_star_rating = $book_reviews->where('rating', 3)->count();
+        $four_star_rating = $book_reviews->where('rating', 4)->count();
+        $five_star_rating = $book_reviews->where('rating', 5)->count();
+        $result = [
+            'book_id' => $book_id,
+            'review_count' => $review_count,
+            'average_rating' => $average_rating,
+            'one_star_rating' => $one_star_rating,
+            'two_star_rating' => $two_star_rating,
+            'three_star_rating' => $three_star_rating,
+            'four_star_rating' => $four_star_rating,
+            'five_star_rating' => $five_star_rating,
+        ];
+
+        return response()->json($result);
     }
 }

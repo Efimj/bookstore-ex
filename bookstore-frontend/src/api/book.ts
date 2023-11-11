@@ -4,6 +4,7 @@ import IBook from "../interfaces/IBook";
 import IUser from "../interfaces/IAuthor";
 import IBookOffer from "../interfaces/IBookOffer";
 import IBookDiscount from "../interfaces/IBookDiscount";
+import IBookEvaluations from "../interfaces/IBookEvaluations";
 
 export async function getBooks(): Promise<IBook[]> {
   const response: AxiosResponse<Array<IBook>> = await axios.get(`${api.books}`);
@@ -34,6 +35,13 @@ export async function getBookOffer(bookId: string): Promise<IBookOffer> {
 export async function getBookDiscount(bookId: string): Promise<IBookDiscount> {
   const response: AxiosResponse<IBookDiscount> = await axios.get(
     `${api.book_discount}?id=${bookId}`
+  );
+  return response.data;
+}
+
+export async function getBookEvaluations(bookId: string): Promise<IBookEvaluations> {
+  const response: AxiosResponse<IBookEvaluations> = await axios.get(
+    `${api.book_evaluations}?id=${bookId}`
   );
   return response.data;
 }
