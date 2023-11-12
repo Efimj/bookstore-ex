@@ -8,15 +8,34 @@ import {
   styled,
   useTheme,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import IBookPageItem from "./IBookPageItem";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import BookRating from "../../components/BookRating/BookRating";
+import IBookReview from "../../interfaces/IBookReview";
+import { getBookReviews } from "../../api/book";
+import BookReviewCard from "../../components/BookReview/BookReview";
 
 const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
   const theme = useTheme();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
+  const [reviews, setReviews] = useState<IBookReview[]>([]);
+  const countReviewsLoad = 3;
+
+  const getNewReviews = async () => {
+    if (!book?.book_id) return;
+    const nextReviews = await getBookReviews(
+      book.book_id.toString(),
+      reviews.length,
+      countReviewsLoad
+    );
+    setReviews([...reviews, ...nextReviews]);
+  };
+
+  useEffect(() => {
+    getNewReviews();
+  }, []);
 
   const handleClickOpen = () => {
     setDescriptionOpened(true);
@@ -61,7 +80,16 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
         <Typography variant="body1" color="text.secondary">
           {book?.description}
         </Typography>
-        {bookEvaluations && <BookRating bookEvaluations={bookEvaluations} />}
+        <Box sx={{ paddingY: "1rem" }}>
+          {bookEvaluations && <BookRating bookEvaluations={bookEvaluations} />}
+        </Box>
+        {reviews.map((element: IBookReview, index: number) => {
+          return (
+            <Box sx={{ paddingTop: "0.5rem" }} key={index}>
+              <BookReviewCard review={element} onUserClick={() => {}} />
+            </Box>
+          );
+        })}
       </Box>{" "}
       <BootstrapDialog
         onClose={handleClose}

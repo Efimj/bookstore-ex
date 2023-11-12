@@ -5,7 +5,7 @@ import IBookEvaluations from "../../interfaces/IBookEvaluations";
 import IBookOffer from "../../interfaces/IBookOffer";
 
 export default interface IBookPageItem {
-  book: IBook | null;
+  book: IBook;
   authors: IUser[];
   bookOffer: IBookOffer | null;
   bookDiscount: IBookDiscount | null;

@@ -54,20 +54,24 @@ const BookPage: FC<IBookPage> = () => {
         gap: { xs: ".75rem", sm: "1.25rem" },
       }}
     >
-      <BookInformation
-        book={book}
-        authors={authors}
-        bookOffer={bookOffer}
-        bookDiscount={bookDiscount}
-        bookEvaluations={evaluations}
-      />
-      <BookPageContent
-        book={book}
-        authors={authors}
-        bookOffer={bookOffer}
-        bookDiscount={bookDiscount}
-        bookEvaluations={evaluations}
-      />
+      {book && (
+        <BookInformation
+          book={book}
+          authors={authors}
+          bookOffer={bookOffer}
+          bookDiscount={bookDiscount}
+          bookEvaluations={evaluations}
+        />
+      )}
+      {book && (
+        <BookPageContent
+          book={book}
+          authors={authors}
+          bookOffer={bookOffer}
+          bookDiscount={bookDiscount}
+          bookEvaluations={evaluations}
+        />
+      )}
     </Box>
   );
 };

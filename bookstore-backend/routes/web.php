@@ -30,6 +30,7 @@ Route::get('/book_authors', [BookController::class, 'bookAuthors']);
 Route::get('/book_offer', [BookController::class, 'bookOffer']);
 Route::get('/book_discount', [BookController::class, 'bookDiscount']);
 Route::get('/book_evaluations', [BookController::class, 'bookEvaluations']);
+Route::get('/book_reviews', [BookController::class, 'bookReviews']);
 
 Route::get('/check-database-connection', function () {
     try {

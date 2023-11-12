@@ -119,4 +119,24 @@ class BookController extends BaseController
 
         return response()->json($result);
     }
+
+    public function bookReviews(Request $request)
+    {
+        $book_id = $request->query('id');
+        $startFrom = $request->query('start_from', 1);
+        $limit = $request->query('limit', 10);
+        $book = Book::find($book_id);
+        $reviews = $book->reviews()->skip($startFrom)->take($limit)->get();
+
+        if (!$reviews) {
+            return null;
+        }
+
+        return $reviews->map(function ($review) {
+            $user = $review->user;
+            $review['user'] = $user;
+
+            return $review;
+        });
+    }
 }
