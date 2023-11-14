@@ -1,9 +1,10 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ScreenLayout from "./components/ScreenLayout";
 import BookCatalog from "./pages/BookCatalog/BookCatalog";
-import Library from "./pages/Library/Library";
-import Settings from "./pages/Settings/Settings";
-import BookPage from "./pages/Book/BookPage";
+import LibraryPage from "./pages/LibraryPage/LibraryPage";
+import SettingsPage from "./pages/SettingsPage/SettingsPage";
+import BookPage from "./pages/BookPage/BookPage";
+import UserPage from "./pages/UserPage/UserPage";
 
 const router = createBrowserRouter([
   {
@@ -20,15 +21,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/library",
-        element: <Library />,
+        element: <LibraryPage />,
       },
       {
         path: "/settings",
-        element: <Settings />,
+        element: <SettingsPage />,
       },
       {
         path: "/book/:bookId",
         element: <BookPage />,
+      },
+      {
+        path: "/user/:userId",
+        element: <UserPage />,
       },
     ],
   },

@@ -17,13 +17,19 @@ import IBookReview from "../../interfaces/IBookReview";
 import { getBookReviews } from "../../api/book";
 import BookReviewCard from "../../components/BookReview/BookReview";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useNavigate } from "react-router-dom";
 
 const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
   const [reviews, setReviews] = useState<IBookReview[]>([]);
   const [hasMoreReviews, setHasMoreReviews] = useState<boolean>(true);
   const countReviewsLoad = 5;
+
+  const handleNavigation = (position: string) => {
+    navigate(position);
+  };
 
   const getNewReviews = async () => {
     if (!book?.book_id) return;
@@ -90,11 +96,17 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
           dataLength={reviews.length}
           next={getNewReviews}
           hasMore={hasMoreReviews}
+          loader={""}
         >
           {reviews.map((element: IBookReview, index: number) => {
             return (
               <Box sx={{ paddingTop: "0.5rem" }} key={index}>
-                <BookReviewCard review={element} onUserClick={() => {}} />
+                <BookReviewCard
+                  review={element}
+                  onUserClick={() =>
+                    handleNavigation(`/user/${element.user.user_id}`)
+                  }
+                />
               </Box>
             );
           })}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('/getBook:{book_id}', function () {
-//    //return
-//});
-
+/**
+ * Book
+ */
 Route::get('/books', [BookController::class, 'all_books']);
-//Route::get('/book', [BookController::class, 'bookByName']);
 Route::get('/book', [BookController::class, 'book']);
 Route::get('/book_authors', [BookController::class, 'bookAuthors']);
 Route::get('/book_offer', [BookController::class, 'bookOffer']);
@@ -32,6 +31,14 @@ Route::get('/book_discount', [BookController::class, 'bookDiscount']);
 Route::get('/book_evaluations', [BookController::class, 'bookEvaluations']);
 Route::get('/book_reviews', [BookController::class, 'bookReviews']);
 
+/**
+ * User
+ */
+Route::get('/user', [UserController::class, 'user']);
+
+/**
+ * DB
+ */
 Route::get('/check-database-connection', function () {
     try {
         DB::connection()->getPdo();
