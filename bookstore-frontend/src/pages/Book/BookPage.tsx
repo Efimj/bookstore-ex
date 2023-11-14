@@ -30,6 +30,8 @@ const BookPage: FC<IBookPage> = () => {
     async function get() {
       if (!bookId) return;
       const book = await getBook(bookId);
+      const evaluations = await getBookEvaluations(bookId);
+      if (evaluations?.book_id) setEvaluations(evaluations);
       if (book?.book_id) setBook(book);
       const authorsResponse = await getBookAuthors(bookId);
       if (Array.isArray(authorsResponse)) setAuthors(authorsResponse);
@@ -37,8 +39,6 @@ const BookPage: FC<IBookPage> = () => {
       if (offer?.offer_id) setBookOffer(offer);
       const discount = await getBookDiscount(bookId);
       if (discount?.discount_id) setBookDiscount(discount);
-      const evaluations = await getBookEvaluations(bookId);
-      if (evaluations?.book_id) setEvaluations(evaluations);
     }
     get();
   }, []);

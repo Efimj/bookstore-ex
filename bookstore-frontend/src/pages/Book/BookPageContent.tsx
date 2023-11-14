@@ -16,12 +16,14 @@ import BookRating from "../../components/BookRating/BookRating";
 import IBookReview from "../../interfaces/IBookReview";
 import { getBookReviews } from "../../api/book";
 import BookReviewCard from "../../components/BookReview/BookReview";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
   const theme = useTheme();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
   const [reviews, setReviews] = useState<IBookReview[]>([]);
-  const countReviewsLoad = 3;
+  const [hasMoreReviews, setHasMoreReviews] = useState<boolean>(true);
+  const countReviewsLoad = 5;
 
   const getNewReviews = async () => {
     if (!book?.book_id) return;
@@ -30,6 +32,7 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
       reviews.length,
       countReviewsLoad
     );
+    if (nextReviews.length === 0) setHasMoreReviews(false);
     setReviews([...reviews, ...nextReviews]);
   };
 
@@ -83,13 +86,19 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
         <Box sx={{ paddingY: "1rem" }}>
           {bookEvaluations && <BookRating bookEvaluations={bookEvaluations} />}
         </Box>
-        {reviews.map((element: IBookReview, index: number) => {
-          return (
-            <Box sx={{ paddingTop: "0.5rem" }} key={index}>
-              <BookReviewCard review={element} onUserClick={() => {}} />
-            </Box>
-          );
-        })}
+        <InfiniteScroll
+          dataLength={reviews.length}
+          next={getNewReviews}
+          hasMore={hasMoreReviews}
+        >
+          {reviews.map((element: IBookReview, index: number) => {
+            return (
+              <Box sx={{ paddingTop: "0.5rem" }} key={index}>
+                <BookReviewCard review={element} onUserClick={() => {}} />
+              </Box>
+            );
+          })}
+        </InfiniteScroll>
       </Box>{" "}
       <BootstrapDialog
         onClose={handleClose}
