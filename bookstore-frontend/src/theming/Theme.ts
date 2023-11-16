@@ -2,6 +2,11 @@ import { PaletteMode } from "@mui/material";
 import { green, grey, lightGreen } from "@mui/material/colors";
 
 export const getDesignTokens = (mode: PaletteMode) => ({
+  typography: {
+    button: {
+      textTransform: 'none'
+    }
+  },
   transitions: {
     duration: {
       shortest: 150,

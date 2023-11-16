@@ -14,6 +14,9 @@ const api = {
 
   // User
   user: server + "user",
+  user_wishes: server + "wishes",
+  user_library: server + "library",
+  user_publish: server + "publish",
 };
 
 export default api;

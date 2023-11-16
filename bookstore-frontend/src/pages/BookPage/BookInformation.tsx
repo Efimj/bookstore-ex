@@ -14,6 +14,7 @@ import BookStackItem from "./BookStackItem";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const BookInformation: FC<IBookPageItem> = ({
   book,
@@ -22,10 +23,15 @@ const BookInformation: FC<IBookPageItem> = ({
   bookDiscount,
   bookEvaluations,
 }) => {
+  const navigate = useNavigate();
   const getBookBuyButtonText = (): string => {
     if (bookOffer == null) return "not for sale";
     if (bookDiscount != null) return `Buy for ${bookDiscount.price} usd.`;
     return `Buy for ${bookOffer.price} usd.`;
+  };
+
+  const handleAuthorNavigation = (position: string) => {
+    navigate(`/user/${position}`);
   };
 
   var myBooksImage = [
@@ -101,9 +107,16 @@ const BookInformation: FC<IBookPageItem> = ({
             >
               {authors.map((user: IUser, index: number) => {
                 return (
-                  <Typography key={index} variant="body1" color="secondary">
-                    {user.first_name}
-                  </Typography>
+                  <span
+                    key={index}
+                    onClick={() =>
+                      handleAuthorNavigation(user.user_id.toString())
+                    }
+                  >
+                    <Typography variant="body1" color="secondary">
+                      {user.first_name}
+                    </Typography>
+                  </span>
                 );
               })}
             </Stack>

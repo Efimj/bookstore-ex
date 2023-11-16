@@ -35,6 +35,9 @@ Route::get('/book_reviews', [BookController::class, 'bookReviews']);
  * User
  */
 Route::get('/user', [UserController::class, 'user']);
+Route::get('/wishes', [UserController::class, 'userWishes']);
+Route::get('/library', [UserController::class, 'userLibrary']);
+Route::get('/publish', [UserController::class, 'userPublish']);
 
 /**
  * DB

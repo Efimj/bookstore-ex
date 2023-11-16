@@ -9,18 +9,14 @@ import {
 import IBook from "../../interfaces/IBook";
 import { FC } from "react";
 
+var myBooksImage = ["../public/451 degrees Fahrenheit.jpeg", "../public/1984.webp", "../public/barnyard.png"];
+
 export interface IBookBanner {
   book: IBook;
   onClick: () => void;
 }
 
 const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
-  var myBooksImage = [
-    "451 degrees Fahrenheit.jpeg",
-    "1984.webp",
-    "barnyard.png",
-  ];
-
   return (
     <Card sx={{ borderRadius: 3 }} elevation={0}>
       <CardActionArea

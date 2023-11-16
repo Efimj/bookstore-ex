@@ -1,6 +1,7 @@
 import { Avatar, Box, CardActionArea, Typography } from "@mui/material";
 import { FC } from "react";
 import IUser from "../../interfaces/IAuthor";
+import { stringAvatar } from "../../utils/utils";
 
 export interface IUserCard {
   user: IUser;
@@ -31,7 +32,10 @@ const UserCard: FC<IUserCard> = ({ user, onClick }) => {
           },
         }}
       >
-        <Avatar alt={user.first_name} src={user.image} />
+        <Avatar
+          {...(user.image && { alt: user.first_name, src: user.image })}
+          {...(!user.image && stringAvatar(user.first_name, user.last_name))}
+        />
         <Typography variant="body1">{user.first_name}</Typography>
         <Box
           sx={{

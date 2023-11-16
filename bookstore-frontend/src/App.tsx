@@ -2,7 +2,7 @@ import { ThemeProvider } from "@emotion/react";
 import { useThemeContext } from "./theming/ThemeContextProvider";
 import { CssBaseline, responsiveFontSizes, styled } from "@mui/material";
 import { RouterProvider } from "react-router-dom";
-import router from "./router";
+import router from "./pages/router";
 import { MaterialDesignContent, SnackbarProvider } from "notistack";
 
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({

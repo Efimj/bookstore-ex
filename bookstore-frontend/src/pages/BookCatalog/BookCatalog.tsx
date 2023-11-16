@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material";
 import CustomCarousel from "../../components/CustomCarousel/CustomCarousel";
 import BookBanner from "../../components/BookBanner/BookBanner";
 import { useNavigate } from "react-router-dom";
+import PageWrapper from "../../components/PageWrapper/PageWrapper";
 
 export interface IBookCatalog {}
 
@@ -33,13 +34,10 @@ export default function BookCatalog(props: IBookCatalog) {
   };
 
   return (
-    <>
+    <PageWrapper>
       <Typography
         variant="h5"
-        sx={{
-          paddingBottom: ".5rem",
-          paddingLeft: "1rem",
-        }}
+        sx={{ marginLeft: ".5rem" }}
         color="text.secondary"
       >
         Best choice
@@ -76,9 +74,8 @@ export default function BookCatalog(props: IBookCatalog) {
       <Typography
         variant="h5"
         sx={{
-          paddingBottom: "0.5rem",
+          marginLeft: ".5rem",
           paddingTop: "1rem",
-          paddingLeft: "1rem",
         }}
         color="text.secondary"
       >
@@ -106,6 +103,6 @@ export default function BookCatalog(props: IBookCatalog) {
           </Box>
         );
       })}
-    </>
+    </PageWrapper>
   );
 }

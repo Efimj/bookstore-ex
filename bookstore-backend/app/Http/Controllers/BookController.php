@@ -134,6 +134,7 @@ class BookController extends BaseController
 
         return $reviews->map(function ($review) {
             $user = $review->user;
+            $user['user_type_name'] = $user->userType->name;
             $review['user'] = $user;
 
             return $review;

@@ -1,10 +1,10 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import ScreenLayout from "./components/ScreenLayout";
-import BookCatalog from "./pages/BookCatalog/BookCatalog";
-import LibraryPage from "./pages/LibraryPage/LibraryPage";
-import SettingsPage from "./pages/SettingsPage/SettingsPage";
-import BookPage from "./pages/BookPage/BookPage";
-import UserPage from "./pages/UserPage/UserPage";
+import ScreenLayout from "../components/ScreenLayout";
+import BookCatalog from "./BookCatalog/BookCatalog";
+import LibraryPage from "./LibraryPage/LibraryPage";
+import SettingsPage from "./SettingsPage/SettingsPage";
+import BookPage from "./BookPage/BookPage";
+import UserPage from "./UserPage/UserPage";
 
 const router = createBrowserRouter([
   {

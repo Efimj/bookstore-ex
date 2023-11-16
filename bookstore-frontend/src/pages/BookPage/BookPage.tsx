@@ -15,6 +15,7 @@ import IBookDiscount from "../../interfaces/IBookDiscount";
 import BookInformation from "./BookInformation";
 import BookPageContent from "./BookPageContent";
 import IBookEvaluations from "../../interfaces/IBookEvaluations";
+import PageWrapper from "../../components/PageWrapper/PageWrapper";
 
 export interface IBookPage {}
 
@@ -44,16 +45,7 @@ const BookPage: FC<IBookPage> = () => {
   }, []);
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        paddingTop: { xs: ".5rem", sm: "1rem", md: "2rem" },
-        paddingX: { xs: ".75rem", sm: "1.25rem", md: "2rem" },
-        gap: { xs: ".75rem", sm: "1.25rem" },
-      }}
-    >
+    <PageWrapper>
       {book && (
         <BookInformation
           book={book}
@@ -72,7 +64,7 @@ const BookPage: FC<IBookPage> = () => {
           bookEvaluations={evaluations}
         />
       )}
-    </Box>
+    </PageWrapper>
   );
 };
 

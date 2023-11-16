@@ -6,6 +6,6 @@ export default interface IBook {
   page_count: number;
   image: string;
   publication_date: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }

@@ -3,6 +3,6 @@ export default interface IBookDiscount {
   offer_id: number;
   price: number;
   expiration_date: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
