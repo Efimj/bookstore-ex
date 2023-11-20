@@ -4,8 +4,8 @@ import { green, grey, lightGreen } from "@mui/material/colors";
 export const getDesignTokens = (mode: PaletteMode) => ({
   typography: {
     button: {
-      textTransform: 'none'
-    }
+      textTransform: "none",
+    },
   },
   transitions: {
     duration: {
@@ -58,7 +58,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             default: "#121212",
           },
           primary: {
-            main: green[500],
+            main: green[600],
             dark: green[800],
           },
           secondary: {

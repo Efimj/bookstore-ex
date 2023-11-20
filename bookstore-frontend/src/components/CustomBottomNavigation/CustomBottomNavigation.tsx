@@ -20,7 +20,7 @@ function getRouteNumber(pathname: string): number {
     return 0;
   } else if (cleanPathname === "library") {
     return 1;
-  } else if (cleanPathname === "settings") {
+  } else if (cleanPathname === "account") {
     return 2;
   }
 
@@ -67,8 +67,8 @@ const CustomBottomNavigation: FC<IBottomNavigation> = ({}) => {
         <BottomNavigationAction
           label="Account"
           icon={<AccountCircleOutlinedIcon />}
-          key={"settings"}
-          onClick={() => handleNavigation("settings")}
+          key={"account"}
+          onClick={() => handleNavigation("account")}
         />
       </BottomNavigation>
     </Paper>

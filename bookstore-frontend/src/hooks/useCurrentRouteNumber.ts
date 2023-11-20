@@ -9,7 +9,7 @@ export const useCurrentRouteNumber = () => {
       return 0;
     } else if (cleanPathname === "library") {
       return 1;
-    } else if (cleanPathname === "settings") {
+    } else if (cleanPathname === "account") {
       return 2;
     }
 

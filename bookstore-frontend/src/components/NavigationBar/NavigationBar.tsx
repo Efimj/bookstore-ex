@@ -41,7 +41,7 @@ const NavigationBar: FC<INavigationBar> = ({}) => {
           icon={<AccountCircleOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("settings")}
+          onClick={() => handleNavigation("account")}
         />
       </Tabs>
     </Box>
