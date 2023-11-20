@@ -14,7 +14,7 @@ const PageWrapper: FC<IPageWrapper> = ({ children }) => {
         flexDirection: "column",
         paddingTop: { xs: ".5rem", sm: "1rem", md: "2rem" },
         paddingX: { xs: ".75rem", sm: "1.25rem", md: "2rem" },
-        gap: { xs: ".75rem", sm: "1.25rem" },
+        gap: { xs: ".75rem", sm: "1rem" },
       }}
     >
       {children}

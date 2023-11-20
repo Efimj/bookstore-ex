@@ -86,7 +86,17 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
             <ArrowForwardRoundedIcon />
           </IconButton>
         </Box>
-        <Typography variant="body1" color="text.secondary">
+        <Typography
+          variant="body1"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "3",
+            WebkitBoxOrient: "vertical",
+          }}
+          color="text.secondary"
+        >
           {book?.description}
         </Typography>
         <Box sx={{ paddingY: "1rem" }}>

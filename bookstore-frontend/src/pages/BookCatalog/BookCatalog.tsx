@@ -83,7 +83,7 @@ export default function BookCatalog(props: IBookCatalog) {
       </Typography>
       {chunkArray(books.slice(3), 9).map((group, index) => {
         return (
-          <Box sx={{ paddingBottom: "1.5rem" }} key={index}>
+          <Box sx={{ paddingBottom: ".5rem" }} key={index}>
             <CustomCarousel>
               {group.map((book: IBook, i: number) => (
                 <Box
