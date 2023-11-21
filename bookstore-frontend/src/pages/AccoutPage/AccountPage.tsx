@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
-import RegistrationForm from "../../components/RegistrationForm/RegistrationForm";
+import AuthorizationForm from "../../components/AuthorizationForm/AuthorizationForm";
 
 export interface IAccountPage {}
 
@@ -15,10 +15,10 @@ const AccountPage: FC<IAccountPage> = () => {
 
   return (
     <PageWrapper>
-      <RegistrationForm
+      <AuthorizationForm
         isOpened={openLogInForm}
         onDismiss={() => {
-          history.back()
+          history.back();
         }}
         onSignIn={() => {
           setOpenLogInForm(false);
@@ -26,7 +26,7 @@ const AccountPage: FC<IAccountPage> = () => {
         onSignUp={() => {
           setOpenLogInForm(false);
         }}
-      ></RegistrationForm>
+      ></AuthorizationForm>
     </PageWrapper>
   );
 };
