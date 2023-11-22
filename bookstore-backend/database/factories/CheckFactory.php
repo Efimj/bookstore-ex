@@ -21,6 +21,7 @@ class CheckFactory extends Factory
             'user_id' => DB::table('users')->inRandomOrder()->first()->user_id,
             'book_id' => DB::table('books')->inRandomOrder()->first()->book_id,
             'price' => round(0.99 + (1100 - 99) * rand() / getrandmax(), 2),
+            'date' => fake()->dateTimeBetween('-20 years', '-1 month')->format('Y-m-d'),
         ];
     }
 }

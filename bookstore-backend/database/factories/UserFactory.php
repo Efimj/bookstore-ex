@@ -20,7 +20,7 @@ class UserFactory extends Factory
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'age' => fake()->numberBetween(8, 30),
+            'birthday' => fake()->dateTimeBetween('-30 years', '-15 years')->format('Y-m-d'),
             'password' => bcrypt('password123'),
             'email' => fake()->unique()->safeEmail(),
             'user_type_id' => DB::table('user_types')->inRandomOrder()->first()->user_type_id,

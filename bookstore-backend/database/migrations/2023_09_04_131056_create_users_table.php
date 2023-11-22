@@ -17,7 +17,7 @@ return new class extends Migration {
             );
             $table->tinyText('first_name');
             $table->tinyText('last_name');
-            $table->tinyInteger('age');
+            $table->dateTime('birthday');
             $table->string('password');
             $table->tinyText('email');
             $table->string('image')->nullable();
