@@ -22,7 +22,7 @@ import dayjs from "dayjs";
 interface RegistrationFormValues {
   firstName: string;
   lastName: string;
-  birthday: Date;
+  birthday: dayjs.Dayjs;
   isPublisher: boolean;
   password: string;
   repeatPassword: string;
@@ -32,7 +32,7 @@ interface RegistrationFormValues {
 const defaultFormValues: RegistrationFormValues = {
   firstName: "",
   lastName: "",
-  birthday: new Date(new Date().setFullYear(-14)),
+  birthday: dayjs(Date.now()).subtract(14, "year"),
   isPublisher: false,
   password: "",
   repeatPassword: "",
@@ -82,6 +82,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
 
   const handleSignUp = (values: RegistrationFormValues) => {
     onSignUp();
+    console.log(values);
   };
 
   const formik = useFormik({
@@ -89,18 +90,17 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
     initialValues: defaultFormValues,
     validationSchema: SignupSchema,
     onSubmit: (values, actions) => {
+      actions.setSubmitting(false);
       handleSignUp(values);
     },
   });
 
-  const maxDate = () => {
-    const maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() - 20);
-    return dayjs(maxDate);
-  };
-
   return (
-    <form style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    <form
+      style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+      onSubmit={formik.handleSubmit}
+      action=""
+    >
       <Box sx={{ display: "flex", gap: "1.5rem" }}>
         <FormControl defaultValue="" fullWidth required>
           <TextField
@@ -211,11 +211,11 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Birthday"
-          maxDate={maxDate()}
+          maxDate={dayjs(Date.now()).subtract(14, "year")}
           sx={{ mt: "1rem", ".MuiIconButton-root": { opacity: ".5" } }}
           disableFuture
-          defaultValue={maxDate()}
-          value={formik.values.birthday.toUTCString()}
+          defaultValue={dayjs(Date.now()).subtract(14, "year")}
+          value={formik.values.birthday}
           onChange={(value: any) => {
             formik.setFieldValue("birthday", new Date(value?.["$d"]), true);
           }}
@@ -229,7 +229,13 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
       </LocalizationProvider>
       <FormControlLabel
         sx={{ ".MuiFormControlLabel-label": { opacity: ".5" } }}
-        control={<Checkbox name="isPublisher" />}
+        control={
+          <Checkbox
+            name="isPublisher"
+            value={formik.values.isPublisher}
+            onChange={formik.handleChange}
+          />
+        }
         label="Publisher account"
       />
       <Box

@@ -12,6 +12,7 @@ import { FC, useState } from "react";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import LoginIcon from "@mui/icons-material/Login";
 import RegistrationFormContent from "./RegistrationFormContent";
+import AuthorizationFormContent from "./AuthorizationFormContent";
 
 export interface IAuthorizationForm {
   isOpened: boolean;
@@ -27,8 +28,7 @@ const AuthorizationForm: FC<IAuthorizationForm> = ({
   onSignUp = () => {},
 }) => {
   const theme = useTheme();
-  const [selectedBtn, setSelectedBtn] = useState("registration");
-  const [showPassword, setShowPassword] = useState(false);
+  const [selectedBtn, setSelectedBtn] = useState("authorization");
 
   const handleClose = () => {
     onDismiss();
@@ -94,7 +94,12 @@ const AuthorizationForm: FC<IAuthorizationForm> = ({
         </DialogTitle>
         <Divider />
         <DialogContent>
-          <RegistrationFormContent onSignUp={() => {}} />
+          {selectedBtn === "authorization" && (
+            <AuthorizationFormContent onSignIn={handleSignIn} />
+          )}
+          {selectedBtn === "registration" && (
+            <RegistrationFormContent onSignUp={handleSignUp} />
+          )}
         </DialogContent>
       </Paper>
     </Dialog>

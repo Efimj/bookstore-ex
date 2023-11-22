@@ -22,7 +22,6 @@ const UserPage: FC<IUserPage> = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
   const [selectedBtn, setSelectedBtn] = useState("wishlist");
-  console.log(user)
 
   useEffect(() => {
     async function get() {
