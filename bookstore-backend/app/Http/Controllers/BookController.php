@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Database\Factories\ImageHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,10 @@ class BookController extends BaseController
 {
     public function all_books(): array
     {
-        return DB::table('books')->get()->toArray();
+        return DB::table('books')->get()->map(function ($book) {
+            $book->image = (new ImageHandler())->getImageFromStore($book->image);
+            return $book;
+        })->toArray();
     }
 
     public function book(Request $request)
@@ -24,6 +28,7 @@ class BookController extends BaseController
             return null;
         }
 
+        $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
         return $book;
     }
 
@@ -36,7 +41,10 @@ class BookController extends BaseController
             return null;
         }
 
-        return $books;
+        return $books->map(function ($book) {
+            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
+            return $book;
+        });
     }
 
     public function bookAuthors(Request $request)
@@ -47,7 +55,9 @@ class BookController extends BaseController
 
         $authors = [];
         foreach ($book_authors as $author) {
-            $authors[] = $author->author;
+            $user = $author->author;
+            $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+            $authors[] = $user;
         }
 
         if (!$authors) {
@@ -135,6 +145,7 @@ class BookController extends BaseController
         return $reviews->map(function ($review) {
             $user = $review->user;
             $user['user_type_name'] = $user->userType->name;
+            $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
             $review['user'] = $user;
 
             return $review;

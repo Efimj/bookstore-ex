@@ -17,11 +17,14 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        $filename = (new ImageHandler())->getRandomImage('literature',500, 750);
+
         return [
             'age_restriction_id' => DB::table('age_restrictions')->inRandomOrder()->first()->age_restriction_id,
             'title' => $this->faker->sentence(rand(1, 7)),
             'publication_date' => $this->faker->date,
             'page_count' => rand(7, 1080),
+            'image' => $filename,
             'description' => $this->faker->paragraph,
         ];
     }

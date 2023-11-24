@@ -34,12 +34,6 @@ const BookInformation: FC<IBookPageItem> = ({
     navigate(`/user/${position}`);
   };
 
-  var myBooksImage = [
-    "451 degrees Fahrenheit.jpeg",
-    "1984.webp",
-    "barnyard.png",
-  ];
-
   return (
     <Box
       sx={{
@@ -81,10 +75,7 @@ const BookInformation: FC<IBookPageItem> = ({
                 width: "100%",
                 height: "100%",
               }}
-              image={
-                "/" +
-                myBooksImage[Math.floor(Math.random() * myBooksImage.length)]
-              }
+              image={book?.image}
             />
           </Paper>
           <div>
@@ -226,9 +217,7 @@ const BookInformation: FC<IBookPageItem> = ({
             width: "100%",
             height: "100%",
           }}
-          image={
-            "/" + myBooksImage[Math.floor(Math.random() * myBooksImage.length)]
-          }
+          image={book?.image}
         />
       </Paper>
     </Box>

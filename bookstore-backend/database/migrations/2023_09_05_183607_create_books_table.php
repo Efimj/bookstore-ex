@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 return new class extends Migration {
     /**
@@ -29,6 +31,14 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        $usersWithImages = DB::table('books')->whereNotNull('image')->get();
+
+        foreach ($usersWithImages as $user) {
+            if ($user->image) {
+                Storage::delete($user->image);
+            }
+        }
+
         Schema::dropIfExists('books');
     }
 };

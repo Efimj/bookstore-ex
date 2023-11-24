@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +41,26 @@ Route::get('/wishes', [UserController::class, 'userWishes']);
 Route::get('/library', [UserController::class, 'userLibrary']);
 Route::get('/publish', [UserController::class, 'userPublish']);
 
+Route::group([
+    'middleware' => 'jwt.auth',
+], function ($router) {
+    Route::get('/account', [UserController::class, 'account']);
+});
+
+
+/**
+ * Authentication
+ */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+});
+
 /**
  * DB
  */
@@ -49,6 +71,6 @@ Route::get('/check-database-connection', function () {
     } catch (\Exception $e) {
         return 'Ошибка подключения к базе данных: ' . $e->getMessage();
     } finally {
-       return "dwd";
+        return "dwd";
     }
 });

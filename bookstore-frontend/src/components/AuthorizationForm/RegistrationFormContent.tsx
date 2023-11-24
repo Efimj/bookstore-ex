@@ -81,6 +81,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignUp = (values: RegistrationFormValues) => {
+    
     onSignUp();
     console.log(values);
   };

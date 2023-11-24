@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import api from "./const";
 import IUser from "../interfaces/IAuthor";
 import IBook from "../interfaces/IBook";
+import $api from "./axios";
 
 export async function getUser(userId: string): Promise<IUser> {
   const response: AxiosResponse<IUser> = await axios.get(
@@ -40,5 +41,10 @@ export async function getUserPublish(
   const response: AxiosResponse<IBook[]> = await axios.get(
     `${api.user_publish}?id=${userId}&start_from=${startFrom}&limit=${limit}`
   );
+  return response.data;
+}
+
+export async function getAccount(): Promise<IUser> {
+  const response: AxiosResponse<IUser> = await $api.get(api.account);
   return response.data;
 }

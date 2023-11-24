@@ -2,10 +2,32 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import ScreenLayout from "../components/ScreenLayout";
 import BookCatalog from "./BookCatalog/BookCatalog";
 import LibraryPage from "./LibraryPage/LibraryPage";
-import SettingsPage from "./SettingsPage/SettingsPage";
 import BookPage from "./BookPage/BookPage";
 import UserPage from "./UserPage/UserPage";
 import AccountPage from "./AccoutPage/AccountPage";
+import AuthorizationForm from "../components/AuthorizationForm/AuthorizationForm";
+import { me } from "../api/auth";
+import { getAccount } from "../api/user";
+
+const AuthForm = (
+  <AuthorizationForm
+    isOpened={true}
+    onDismiss={() => {
+      history.back();
+    }}
+    onSignIn={() => {
+      window.location.reload();
+    }}
+    onSignUp={() => {
+      window.location.reload();
+    }}
+  />
+);
+
+const checkAuth = async (): Promise<boolean> => {
+  await me();
+  return true;
+};
 
 const router = createBrowserRouter([
   {
@@ -23,10 +45,14 @@ const router = createBrowserRouter([
       {
         path: "/library",
         element: <LibraryPage />,
+        loader: checkAuth,
+        errorElement: AuthForm,
       },
       {
         path: "/account",
         element: <AccountPage />,
+        loader: checkAuth,
+        errorElement: AuthForm,
       },
       {
         path: "/book/:bookId",

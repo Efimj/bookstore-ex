@@ -14,12 +14,6 @@ export interface IHugeBookBanner {
 }
 
 const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
-  var myBooksImage = [
-    "451 degrees Fahrenheit.jpeg",
-    "1984.webp",
-    "barnyard.png",
-  ];
-
   return (
     <Card sx={{ borderRadius: 3 }} elevation={0}>
       <CardActionArea
@@ -34,7 +28,7 @@ const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
             maxWidth: "45%",
             height: "100%",
           }}
-          image={myBooksImage[Math.floor(Math.random() * myBooksImage.length)]}
+          image={book?.image}
         />
         <CardContent
           sx={{

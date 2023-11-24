@@ -9,8 +9,6 @@ import {
 import IBook from "../../interfaces/IBook";
 import { FC } from "react";
 
-var myBooksImage = ["../public/451 degrees Fahrenheit.jpeg", "../public/1984.webp", "../public/barnyard.png"];
-
 export interface IBookBanner {
   book: IBook;
   onClick: () => void;
@@ -45,9 +43,7 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
               width: "100%",
               height: "100%",
             }}
-            image={
-              myBooksImage[Math.floor(Math.random() * myBooksImage.length)]
-            }
+            image={book?.image}
           />
         </Box>
         <CardContent

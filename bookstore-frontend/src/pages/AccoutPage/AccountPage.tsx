@@ -15,7 +15,7 @@ const AccountPage: FC<IAccountPage> = () => {
 
   return (
     <PageWrapper>
-      <AuthorizationForm
+      {/* <AuthorizationForm
         isOpened={openLogInForm}
         onDismiss={() => {
           history.back();
@@ -26,7 +26,7 @@ const AccountPage: FC<IAccountPage> = () => {
         onSignUp={() => {
           setOpenLogInForm(false);
         }}
-      ></AuthorizationForm>
+      ></AuthorizationForm> */}
     </PageWrapper>
   );
 };

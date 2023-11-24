@@ -17,6 +17,13 @@ const api = {
   user_wishes: server + "wishes",
   user_library: server + "library",
   user_publish: server + "publish",
+  account: server + "account",
+
+  // Auth
+  login: server + "auth/login",
+  logout: server + "auth/logout",
+  refresh: server + "auth/refresh",
+  me: server + "auth/me",
 };
 
 export default api;

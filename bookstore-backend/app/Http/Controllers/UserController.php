@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use Database\Factories\ImageHandler;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function account(Request $request): ?Authenticatable
+    {
+        $user = Auth::user();
+        if ($user == null) return null;
+        $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+        return $user;
+    }
+
     public function user(Request $request)
     {
         $user_id = $request->query('id');
@@ -18,6 +29,7 @@ class UserController extends Controller
         }
 
         $user['user_type_name'] = $user->userType->name;
+        $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
         return $user;
     }
 
@@ -34,7 +46,9 @@ class UserController extends Controller
         }
 
         return $wishes->map(function ($wish) {
-            return $wish->book;
+            $book = $wish->book;
+            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
+            return $book;
         });
     }
 
@@ -51,7 +65,9 @@ class UserController extends Controller
         }
 
         return $books->map(function ($book) {
-            return $book->book;
+            $book = $book->book;
+            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
+            return $book;
         });
     }
 
@@ -68,7 +84,10 @@ class UserController extends Controller
         }
 
         return $books->map(function ($book) {
-            return $book->book;
+            $book = $book->book;
+            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
+            return $book;
         });
     }
+
 }

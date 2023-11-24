@@ -15,6 +15,7 @@ import { FC, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { logIn } from "../../api/auth";
 
 interface AuthorizationFormValues {
   password: string;
@@ -44,9 +45,9 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignUp = (values: AuthorizationFormValues) => {
+  const handleSignIn = async (values: AuthorizationFormValues) => {
+    await logIn(values.email, values.password, values.saveStatus)
     onSignIn();
-    console.log(values);
   };
 
   const formik = useFormik({
@@ -55,7 +56,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
     validationSchema: SigninSchema,
     onSubmit: (values, actions) => {
       actions.setSubmitting(false);
-      handleSignUp(values);
+      handleSignIn(values);
     },
   });
 
