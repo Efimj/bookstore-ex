@@ -11,11 +11,28 @@ use Illuminate\Http\Request;
 
 class BookController extends BaseController
 {
-    public function all_books(): array
+    public function all_books(Request $request): array
     {
-        return DB::table('books')->get()->map(function ($book) {
+        $startFrom = $request->query('start_from', 1);
+        $limit = $request->query('limit', 10);
+
+        return Book::skip($startFrom)->take($limit)->get()->map(function ($book) {
             $book->image = (new ImageHandler())->getImageFromStore($book->image);
-            return $book;
+            $authors = $book->bookAuthors->map(function ($author){
+                $user = $author->author;
+                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+            });
+            $offer = $book->offer;
+            $discount = $offer?->discount;
+            $evaluations = $this->getEvaluations($book->reviews, $book->id);
+
+            return [
+                'book' => $book,
+                'authors' => $authors,
+                'discount' => $discount,
+                'offer' => $offer,
+                'evaluations' => $evaluations,
+            ];
         })->toArray();
     }
 
@@ -109,23 +126,7 @@ class BookController extends BaseController
             return null;
         }
 
-        $average_rating = round($book_reviews->avg('rating'), 2);
-        $review_count = $book_reviews->count();
-        $one_star_rating = $book_reviews->where('rating', 1)->count();
-        $two_star_rating = $book_reviews->where('rating', 2)->count();
-        $three_star_rating = $book_reviews->where('rating', 3)->count();
-        $four_star_rating = $book_reviews->where('rating', 4)->count();
-        $five_star_rating = $book_reviews->where('rating', 5)->count();
-        $result = [
-            'book_id' => $book_id,
-            'review_count' => $review_count,
-            'average_rating' => $average_rating,
-            'one_star_rating' => $one_star_rating,
-            'two_star_rating' => $two_star_rating,
-            'three_star_rating' => $three_star_rating,
-            'four_star_rating' => $four_star_rating,
-            'five_star_rating' => $five_star_rating,
-        ];
+        $result = $this->getEvaluations($book_reviews, $book_id);
 
         return response()->json($result);
     }
@@ -150,5 +151,35 @@ class BookController extends BaseController
 
             return $review;
         });
+    }
+
+    /**
+     * @param $book_reviews
+     * @param array|string|null $book_id
+     * @return array
+     */
+    public function getEvaluations($book_reviews, array|string|null $book_id): array
+    {
+        if ($book_reviews->isEmpty()) {
+            return [];
+        }
+
+        $average_rating = round($book_reviews->avg('rating'), 2);
+        $review_count = $book_reviews->count();
+        $one_star_rating = $book_reviews->where('rating', 1)->count();
+        $two_star_rating = $book_reviews->where('rating', 2)->count();
+        $three_star_rating = $book_reviews->where('rating', 3)->count();
+        $four_star_rating = $book_reviews->where('rating', 4)->count();
+        $five_star_rating = $book_reviews->where('rating', 5)->count();
+        return [
+            'book_id' => $book_id,
+            'review_count' => $review_count,
+            'average_rating' => $average_rating,
+            'one_star_rating' => $one_star_rating,
+            'two_star_rating' => $two_star_rating,
+            'three_star_rating' => $three_star_rating,
+            'four_star_rating' => $four_star_rating,
+            'five_star_rating' => $five_star_rating,
+        ];
     }
 }

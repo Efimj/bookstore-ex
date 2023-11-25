@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\User;
 use Database\Factories\ImageHandler;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -47,8 +48,22 @@ class UserController extends Controller
 
         return $wishes->map(function ($wish) {
             $book = $wish->book;
-            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
-            return $book;
+            $book->image = (new ImageHandler())->getImageFromStore($book->image);
+            $authors = $book->bookAuthors->map(function ($author){
+                $user = $author->author;
+                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+            });
+            $offer = $book->offer;
+            $discount = $offer?->discount;
+            $evaluations = $this->getEvaluations($book->reviews, $book->id);
+
+            return [
+                'book' => $book,
+                'authors' => $authors,
+                'discount' => $discount,
+                'offer' => $offer,
+                'evaluations' => $evaluations,
+            ];
         });
     }
 
@@ -66,8 +81,22 @@ class UserController extends Controller
 
         return $books->map(function ($book) {
             $book = $book->book;
-            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
-            return $book;
+            $book->image = (new ImageHandler())->getImageFromStore($book->image);
+            $authors = $book->bookAuthors->map(function ($author){
+                $user = $author->author;
+                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+            });
+            $offer = $book->offer;
+            $discount = $offer?->discount;
+            $evaluations = $this->getEvaluations($book->reviews, $book->id);
+
+            return [
+                'book' => $book,
+                'authors' => $authors,
+                'discount' => $discount,
+                'offer' => $offer,
+                'evaluations' => $evaluations,
+            ];
         });
     }
 
@@ -85,9 +114,48 @@ class UserController extends Controller
 
         return $books->map(function ($book) {
             $book = $book->book;
-            $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
-            return $book;
+            $book->image = (new ImageHandler())->getImageFromStore($book->image);
+            $authors = $book->bookAuthors->map(function ($author){
+                $user = $author->author;
+                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+            });
+            $offer = $book->offer;
+            $discount = $offer?->discount;
+            $evaluations = $this->getEvaluations($book->reviews, $book->id);
+
+            return [
+                'book' => $book,
+                'authors' => $authors,
+                'discount' => $discount,
+                'offer' => $offer,
+                'evaluations' => $evaluations,
+            ];
         });
+    }
+
+    public function getEvaluations($book_reviews, array|string|null $book_id): array
+    {
+        if ($book_reviews->isEmpty()) {
+            return [];
+        }
+
+        $average_rating = round($book_reviews->avg('rating'), 2);
+        $review_count = $book_reviews->count();
+        $one_star_rating = $book_reviews->where('rating', 1)->count();
+        $two_star_rating = $book_reviews->where('rating', 2)->count();
+        $three_star_rating = $book_reviews->where('rating', 3)->count();
+        $four_star_rating = $book_reviews->where('rating', 4)->count();
+        $five_star_rating = $book_reviews->where('rating', 5)->count();
+        return [
+            'book_id' => $book_id,
+            'review_count' => $review_count,
+            'average_rating' => $average_rating,
+            'one_star_rating' => $one_star_rating,
+            'two_star_rating' => $two_star_rating,
+            'three_star_rating' => $three_star_rating,
+            'four_star_rating' => $four_star_rating,
+            'five_star_rating' => $five_star_rating,
+        ];
     }
 
 }

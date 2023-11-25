@@ -6,6 +6,7 @@ import BookBanner from "../../components/BookBanner/BookBanner";
 import IBook from "../../interfaces/IBook";
 import { useNavigate } from "react-router-dom";
 import { getUserPublish } from "../../api/user";
+import { IBookInformation } from "../../api/book";
 
 export interface IUserPublish {
   user: IUser;
@@ -13,7 +14,7 @@ export interface IUserPublish {
 
 const UserPublish: FC<IUserPublish> = ({ user }) => {
   const navigate = useNavigate();
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<IBookInformation[]>([]);
   const [hasMoreBooks, setHasMoreBook] = useState<boolean>(true);
   const countBookLoad = 5;
 
@@ -72,7 +73,7 @@ const UserPublish: FC<IUserPublish> = ({ user }) => {
             >
               <BookBanner
                 book={book}
-                onClick={() => handleBookClick(book.book_id)}
+                onClick={() => handleBookClick(book.book.book_id)}
               />
             </Box>
           );

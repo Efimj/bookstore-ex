@@ -3,9 +3,9 @@ import IUser from "../../interfaces/IAuthor";
 import { Typography, Box } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import BookBanner from "../../components/BookBanner/BookBanner";
-import IBook from "../../interfaces/IBook";
 import { useNavigate } from "react-router-dom";
 import { getUserLibrary } from "../../api/user";
+import { IBookInformation } from "../../api/book";
 
 export interface IUserLibrary {
   user: IUser;
@@ -13,7 +13,7 @@ export interface IUserLibrary {
 
 const UserLibrary: FC<IUserLibrary> = ({ user }) => {
   const navigate = useNavigate();
-  const [wishlist, setWishlist] = useState<IBook[]>([]);
+  const [wishlist, setWishlist] = useState<IBookInformation[]>([]);
   const [hasMoreLibrary, setHasMoreLibrary] = useState<boolean>(true);
   const countLibraryLoad = 5;
 
@@ -72,7 +72,7 @@ const UserLibrary: FC<IUserLibrary> = ({ user }) => {
             >
               <BookBanner
                 book={book}
-                onClick={() => handleBookClick(book.book_id)}
+                onClick={() => handleBookClick(book.book.book_id)}
               />
             </Box>
           );

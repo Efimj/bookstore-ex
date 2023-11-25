@@ -6,6 +6,7 @@ import BookBanner from "../../components/BookBanner/BookBanner";
 import IBook from "../../interfaces/IBook";
 import { useNavigate } from "react-router-dom";
 import { getUserWishlist } from "../../api/user";
+import { IBookInformation } from "../../api/book";
 
 export interface IUserWishlist {
   user: IUser;
@@ -13,7 +14,7 @@ export interface IUserWishlist {
 
 const UserWishlist: FC<IUserWishlist> = ({ user }) => {
   const navigate = useNavigate();
-  const [wishlist, setWishlist] = useState<IBook[]>([]);
+  const [wishlist, setWishlist] = useState<IBookInformation[]>([]);
   const [hasMoreWishes, setHasMoreWishes] = useState<boolean>(true);
   const countWishesLoad = 5;
 
@@ -72,7 +73,7 @@ const UserWishlist: FC<IUserWishlist> = ({ user }) => {
             >
               <BookBanner
                 book={book}
-                onClick={() => handleBookClick(book.book_id)}
+                onClick={() => handleBookClick(book.book.book_id)}
               />
             </Box>
           );

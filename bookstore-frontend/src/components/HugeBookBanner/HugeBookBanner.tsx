@@ -7,9 +7,10 @@ import {
 } from "@mui/material";
 import IBook from "../../interfaces/IBook";
 import { FC } from "react";
+import { IBookInformation } from "../../api/book";
 
 export interface IHugeBookBanner {
-  book: IBook;
+  book: IBookInformation;
   onClick: () => void;
 }
 
@@ -28,7 +29,7 @@ const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
             maxWidth: "45%",
             height: "100%",
           }}
-          image={book?.image}
+          image={book.book?.image}
         />
         <CardContent
           sx={{
@@ -45,7 +46,7 @@ const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
               WebkitLineClamp: 2,
             }}
           >
-            {book.title}
+            {book.book.title}
           </Typography>
           <Typography
             variant="body2"
@@ -57,7 +58,7 @@ const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
             }}
             color="textSecondary"
           >
-            {book.description}
+            {book.book.description}
           </Typography>
         </CardContent>
       </CardActionArea>

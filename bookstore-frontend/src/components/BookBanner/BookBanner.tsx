@@ -6,15 +6,22 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import IBook from "../../interfaces/IBook";
 import { FC } from "react";
+import { IBookInformation } from "../../api/book";
+import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 
 export interface IBookBanner {
-  book: IBook;
+  book: IBookInformation;
   onClick: () => void;
 }
 
 const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
+  const getBookPriceText = (): string => {
+    if (book?.offer == null) return "not for sale";
+    if (book?.discount != null) return `Buy for ${book?.discount.price} usd.`;
+    return `Buy for ${book?.offer.price} usd.`;
+  };
+
   return (
     <Card sx={{ borderRadius: 3 }} elevation={0}>
       <CardActionArea
@@ -43,7 +50,7 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
               width: "100%",
               height: "100%",
             }}
-            image={book?.image}
+            image={book.book?.image}
           />
         </Box>
         <CardContent
@@ -63,33 +70,53 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
               WebkitLineClamp: 2,
             }}
           >
-            {book.title}
+            {book.book.title}
           </Typography>
           <Box sx={{ display: "flex", gap: "0.5rem" }}>
             <Typography
               variant="body2"
               sx={{
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 6,
+                display: "flex",
+                alignItems: "center",
               }}
               color="textSecondary"
             >
-              4
+              {book.evaluations.average_rating}
+              <StarRateRoundedIcon
+                fontSize="inherit"
+                sx={{ paddingBottom: "1px" }}
+              />
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 6,
-              }}
-              color="textSecondary"
-            >
-              free
-            </Typography>
+            <Box sx={{ display: "flex", gap: ".5rem" }}>
+              {book?.discount && (
+                <Typography
+                  variant="body2"
+                  color={"#FFFFFF"}
+                  sx={{
+                    display: "-webkit-box",
+                    overflow: "hidden",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 6,
+                    opacity: ".7",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  {book?.offer && `${book?.offer.price} usd.`}
+                </Typography>
+              )}
+              <Typography
+                variant="body2"
+                sx={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 6,
+                }}
+                color="textSecondary"
+              >
+                {getBookPriceText()}
+              </Typography>
+            </Box>
           </Box>
         </CardContent>
       </CardActionArea>

@@ -7,8 +7,21 @@ import IBookDiscount from "../interfaces/IBookDiscount";
 import IBookEvaluations from "../interfaces/IBookEvaluations";
 import IBookReview from "../interfaces/IBookReview";
 
-export async function getBooks(): Promise<IBook[]> {
-  const response: AxiosResponse<Array<IBook>> = await axios.get(`${api.books}`);
+export interface IBookInformation {
+  book: IBook;
+  authors: IUser[];
+  discount: IBookDiscount;
+  offer: IBookOffer;
+  evaluations: IBookEvaluations;
+}
+
+export async function getBooks(
+  startFrom: number,
+  limit: number
+): Promise<IBookInformation[]> {
+  const response: AxiosResponse<Array<IBookInformation>> = await axios.get(
+    `${api.books}?start_from=${startFrom}&limit=${limit}`
+  );
   return response.data;
 }
 
