@@ -19,12 +19,14 @@ import { useNavigate } from "react-router-dom";
 const BookInformation: FC<IBookPageItem> = ({
   book,
   authors,
+  bookSate,
   bookOffer,
   bookDiscount,
   bookEvaluations,
 }) => {
   const navigate = useNavigate();
   const getBookBuyButtonText = (): string => {
+    if (bookSate?.check) return `In library`;
     if (bookOffer == null) return "not for sale";
     if (bookDiscount != null) return `Buy for ${bookDiscount.price} usd.`;
     return `Buy for ${bookOffer.price} usd.`;
@@ -159,10 +161,10 @@ const BookInformation: FC<IBookPageItem> = ({
               textTransform: "none",
               borderRadius: "10px",
             }}
+            disabled={bookOffer == null || bookSate?.check ? true : false}
             disableElevation={true}
             variant="contained"
             onClick={() => {}}
-            disabled={bookOffer == null}
           >
             <Box sx={{ display: "flex", gap: ".5rem" }}>
               {bookDiscount && (
@@ -183,10 +185,16 @@ const BookInformation: FC<IBookPageItem> = ({
             sx={{ textTransform: "none", borderRadius: "10px" }}
             variant="outlined"
             onClick={() => {
-              enqueueSnackbar("Added to wishlist", { variant: "success" });
+              bookSate?.wish
+                ? enqueueSnackbar("Removed from wishlist", {
+                    variant: "success",
+                  })
+                : enqueueSnackbar("Added to wishlist", { variant: "success" });
             }}
           >
-            <Typography variant="body1">Add to wishlist</Typography>
+            <Typography variant="body1">
+              {bookSate?.wish ? "Added to wishlist" : "Add to wishlist"}
+            </Typography>
           </Button>
           <Button
             sx={{ textTransform: "none", borderRadius: "10px" }}

@@ -38,8 +38,7 @@ const BookPage: FC<IBookPage> = () => {
       if (evaluations?.book_id) setEvaluations(evaluations);
       if (book?.book_id) setBook(book);
       const bookState = await getBookState(bookId);
-      console.log(bookState)
-      if (bookState?.check) setBookState(bookState);
+      setBookState(bookState);
       const authorsResponse = await getBookAuthors(bookId);
       if (Array.isArray(authorsResponse)) setAuthors(authorsResponse);
       const offer = await getBookOffer(bookId);
@@ -50,14 +49,13 @@ const BookPage: FC<IBookPage> = () => {
     get();
   }, []);
 
-  
-
   return (
     <PageWrapper>
       {book && (
         <BookInformation
           book={book}
           authors={authors}
+          bookSate={bookState}
           bookOffer={bookOffer}
           bookDiscount={bookDiscount}
           bookEvaluations={evaluations}
@@ -67,6 +65,7 @@ const BookPage: FC<IBookPage> = () => {
         <BookPageContent
           book={book}
           authors={authors}
+          bookSate={bookState}
           bookOffer={bookOffer}
           bookDiscount={bookDiscount}
           bookEvaluations={evaluations}
