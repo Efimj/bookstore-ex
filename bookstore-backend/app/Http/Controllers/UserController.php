@@ -48,22 +48,7 @@ class UserController extends Controller
 
         return $wishes->map(function ($wish) {
             $book = $wish->book;
-            $book->image = (new ImageHandler())->getImageFromStore($book->image);
-            $authors = $book->bookAuthors->map(function ($author){
-                $user = $author->author;
-                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
-            });
-            $offer = $book->offer;
-            $discount = $offer?->discount;
-            $evaluations = $this->getEvaluations($book->reviews, $book->id);
-
-            return [
-                'book' => $book,
-                'authors' => $authors,
-                'discount' => $discount,
-                'offer' => $offer,
-                'evaluations' => $evaluations,
-            ];
+            return $this->getBookInformation($book);
         });
     }
 
@@ -81,22 +66,7 @@ class UserController extends Controller
 
         return $books->map(function ($book) {
             $book = $book->book;
-            $book->image = (new ImageHandler())->getImageFromStore($book->image);
-            $authors = $book->bookAuthors->map(function ($author){
-                $user = $author->author;
-                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
-            });
-            $offer = $book->offer;
-            $discount = $offer?->discount;
-            $evaluations = $this->getEvaluations($book->reviews, $book->id);
-
-            return [
-                'book' => $book,
-                'authors' => $authors,
-                'discount' => $discount,
-                'offer' => $offer,
-                'evaluations' => $evaluations,
-            ];
+            return $this->getBookInformation($book);
         });
     }
 
@@ -114,22 +84,7 @@ class UserController extends Controller
 
         return $books->map(function ($book) {
             $book = $book->book;
-            $book->image = (new ImageHandler())->getImageFromStore($book->image);
-            $authors = $book->bookAuthors->map(function ($author){
-                $user = $author->author;
-                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
-            });
-            $offer = $book->offer;
-            $discount = $offer?->discount;
-            $evaluations = $this->getEvaluations($book->reviews, $book->id);
-
-            return [
-                'book' => $book,
-                'authors' => $authors,
-                'discount' => $discount,
-                'offer' => $offer,
-                'evaluations' => $evaluations,
-            ];
+            return $this->getBookInformation($book);
         });
     }
 
@@ -155,6 +110,30 @@ class UserController extends Controller
             'three_star_rating' => $three_star_rating,
             'four_star_rating' => $four_star_rating,
             'five_star_rating' => $five_star_rating,
+        ];
+    }
+
+    /**
+     * @param mixed $book
+     * @return array
+     */
+    function getBookInformation(mixed $book): array
+    {
+        $book->image = (new ImageHandler())->getImageFromStore($book->image);
+        $authors = $book->bookAuthors->map(function ($author) {
+            $user = $author->author;
+            $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+        });
+        $offer = $book->offer;
+        $discount = $offer?->discount;
+        $evaluations = $this->getEvaluations($book->reviews, $book->id);
+
+        return [
+            'book' => $book,
+            'authors' => $authors,
+            'discount' => $discount,
+            'offer' => $offer,
+            'evaluations' => $evaluations,
         ];
     }
 

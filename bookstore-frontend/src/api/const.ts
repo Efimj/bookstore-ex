@@ -6,6 +6,7 @@ const api = {
   // Book
   books: server + "books",
   book: server + "book",
+  book_state: server + "book_state",
   book_authors: server + "book_authors",
   book_offer: server + "book_offer",
   book_discount: server + "book_discount",

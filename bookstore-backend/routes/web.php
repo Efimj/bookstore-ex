@@ -27,6 +27,7 @@ Route::get('/', function () {
  */
 Route::get('/books', [BookController::class, 'all_books']);
 Route::get('/book', [BookController::class, 'book']);
+Route::get('/book_state', [BookController::class, 'bookState']);
 Route::get('/book_authors', [BookController::class, 'bookAuthors']);
 Route::get('/book_offer', [BookController::class, 'bookOffer']);
 Route::get('/book_discount', [BookController::class, 'bookDiscount']);
@@ -40,7 +41,6 @@ Route::get('/user', [UserController::class, 'user']);
 Route::get('/wishes', [UserController::class, 'userWishes']);
 Route::get('/library', [UserController::class, 'userLibrary']);
 Route::get('/publish', [UserController::class, 'userPublish']);
-
 Route::group([
     'middleware' => 'jwt.auth',
 ], function ($router) {

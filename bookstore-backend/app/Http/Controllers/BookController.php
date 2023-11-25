@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\User;
 use Database\Factories\ImageHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -17,22 +19,7 @@ class BookController extends BaseController
         $limit = $request->query('limit', 10);
 
         return Book::skip($startFrom)->take($limit)->get()->map(function ($book) {
-            $book->image = (new ImageHandler())->getImageFromStore($book->image);
-            $authors = $book->bookAuthors->map(function ($author){
-                $user = $author->author;
-                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
-            });
-            $offer = $book->offer;
-            $discount = $offer?->discount;
-            $evaluations = $this->getEvaluations($book->reviews, $book->id);
-
-            return [
-                'book' => $book,
-                'authors' => $authors,
-                'discount' => $discount,
-                'offer' => $offer,
-                'evaluations' => $evaluations,
-            ];
+            return $this->getBookInformation($book);
         })->toArray();
     }
 
@@ -47,6 +34,28 @@ class BookController extends BaseController
 
         $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
         return $book;
+    }
+
+    public function bookState(Request $request)
+    {
+        $book_id = $request->query('id');
+        $book = Book::find($book_id);
+        $user = Auth::user();
+
+        if (!$book) {
+            return null;
+        }
+
+        $wish = User::find($user->user_id)->wishes->where('book_id', $book_id)->first();
+        $review = User::find($user->user_id)->reviews->where('book_id', $book_id)->first();
+        $check = User::find($user->user_id)->checks->where('book_id', $book_id)->first();
+
+        return [
+            'book_id' => $book_id,
+            'review' => $review,
+            'check' => $check,
+            'wish' => $wish,
+        ];
     }
 
     public function bookByName(Request $request)
@@ -180,6 +189,30 @@ class BookController extends BaseController
             'three_star_rating' => $three_star_rating,
             'four_star_rating' => $four_star_rating,
             'five_star_rating' => $five_star_rating,
+        ];
+    }
+
+    /**
+     * @param $book
+     * @return array
+     */
+    function getBookInformation($book): array
+    {
+        $book->image = (new ImageHandler())->getImageFromStore($book->image);
+        $authors = $book->bookAuthors->map(function ($author) {
+            $user = $author->author;
+            $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+        });
+        $offer = $book->offer;
+        $discount = $offer?->discount;
+        $evaluations = $this->getEvaluations($book->reviews, $book->id);
+
+        return [
+            'book' => $book,
+            'authors' => $authors,
+            'discount' => $discount,
+            'offer' => $offer,
+            'evaluations' => $evaluations,
         ];
     }
 }

@@ -7,6 +7,7 @@ import {
   getBookOffer,
   getBookDiscount,
   getBookEvaluations,
+  getBookState,
 } from "../../api/book";
 import { Box } from "@mui/material";
 import IUser from "../../interfaces/IAuthor";
@@ -16,6 +17,7 @@ import BookInformation from "./BookInformation";
 import BookPageContent from "./BookPageContent";
 import IBookEvaluations from "../../interfaces/IBookEvaluations";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
+import IBookSate from "../../interfaces/IBookSate";
 
 export interface IBookPage {}
 
@@ -26,6 +28,7 @@ const BookPage: FC<IBookPage> = () => {
   const [bookOffer, setBookOffer] = useState<IBookOffer | null>(null);
   const [bookDiscount, setBookDiscount] = useState<IBookDiscount | null>(null);
   const [evaluations, setEvaluations] = useState<IBookEvaluations | null>(null);
+  const [bookState, setBookState] = useState<IBookSate | null>(null);
 
   useEffect(() => {
     async function get() {
@@ -34,6 +37,9 @@ const BookPage: FC<IBookPage> = () => {
       const evaluations = await getBookEvaluations(bookId);
       if (evaluations?.book_id) setEvaluations(evaluations);
       if (book?.book_id) setBook(book);
+      const bookState = await getBookState(bookId);
+      console.log(bookState)
+      if (bookState?.check) setBookState(bookState);
       const authorsResponse = await getBookAuthors(bookId);
       if (Array.isArray(authorsResponse)) setAuthors(authorsResponse);
       const offer = await getBookOffer(bookId);
@@ -43,6 +49,8 @@ const BookPage: FC<IBookPage> = () => {
     }
     get();
   }, []);
+
+  
 
   return (
     <PageWrapper>
