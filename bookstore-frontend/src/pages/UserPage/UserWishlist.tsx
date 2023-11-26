@@ -6,7 +6,7 @@ import BookBanner from "../../components/BookBanner/BookBanner";
 import IBook from "../../interfaces/IBook";
 import { useNavigate } from "react-router-dom";
 import { getUserWishlist } from "../../api/user";
-import { IBookInformation } from "../../api/book";
+import { IBookInformation } from "../../interfaces/IBookInformation";
 
 export interface IUserWishlist {
   user: IUser;

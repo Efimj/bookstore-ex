@@ -3,7 +3,7 @@ import api from "./const";
 import IUser from "../interfaces/IAuthor";
 import IBook from "../interfaces/IBook";
 import $api from "./axios";
-import { IBookInformation } from "./book";
+import { IBookInformation } from "../interfaces/IBookInformation";
 
 export async function getUser(userId: string): Promise<IUser> {
   const response: AxiosResponse<IUser> = await axios.get(

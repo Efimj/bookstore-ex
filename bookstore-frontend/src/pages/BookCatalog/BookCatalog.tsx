@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { IBookInformation, getBooks } from "../../api/book";
+import { getBooks } from "../../api/book";
+import { IBookInformation } from "../../interfaces/IBookInformation";
 import IBook from "../../interfaces/IBook";
 import HugeBookBanner from "../../components/HugeBookBanner/HugeBookBanner";
 import { Box, Typography } from "@mui/material";
@@ -18,7 +19,7 @@ export default function BookCatalog(props: IBookCatalog) {
   const navigate = useNavigate();
 
   const getNewBooks = async () => {
-    const nextBooks = await getBooks(books.length, countGet)
+    const nextBooks = await getBooks(books.length, countGet);
     if (nextBooks.length === 0) setHasMoreBooks(false);
     setBooks([...books, ...nextBooks]);
   };
@@ -39,6 +40,8 @@ export default function BookCatalog(props: IBookCatalog) {
     navigate(`/book/${bookId}`);
   };
 
+  if (books.length === 0) return;
+
   return (
     <PageWrapper>
       <InfiniteScroll
@@ -46,9 +49,6 @@ export default function BookCatalog(props: IBookCatalog) {
         next={getNewBooks}
         hasMore={hasMoreBooks}
         loader={""}
-        style={{
-          
-        }}
       >
         <Typography
           variant="h5"

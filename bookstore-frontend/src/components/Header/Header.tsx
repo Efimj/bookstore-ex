@@ -11,7 +11,7 @@ export default function Header(props: IAppHeader) {
   const { mode, toggleColorMode } = useThemeContext();
 
   return (
-    <Paper elevation={0}>
+    <Paper elevation={0} sx={{ borderRadius: 0 }}>
       <Toolbar style={{ height: 72 }}>
         <Typography
           gutterBottom

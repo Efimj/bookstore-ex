@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import BookBanner from "../../components/BookBanner/BookBanner";
 import { useNavigate } from "react-router-dom";
 import { getUserLibrary } from "../../api/user";
-import { IBookInformation } from "../../api/book";
+import { IBookInformation } from "../../interfaces/IBookInformation";
 
 export interface IUserLibrary {
   user: IUser;

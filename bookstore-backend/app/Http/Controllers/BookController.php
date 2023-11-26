@@ -202,6 +202,7 @@ class BookController extends BaseController
         $authors = $book->bookAuthors->map(function ($author) {
             $user = $author->author;
             $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+            return $user;
         });
         $offer = $book->offer;
         $discount = $offer?->discount;

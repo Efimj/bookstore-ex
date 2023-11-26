@@ -5,9 +5,10 @@ import {
   CardContent,
   CardMedia,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { FC } from "react";
-import { IBookInformation } from "../../api/book";
+import { IBookInformation } from "../../interfaces/IBookInformation";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 
 export interface IBookBanner {
@@ -23,7 +24,17 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
   };
 
   return (
-    <Card sx={{ borderRadius: 3 }} elevation={0}>
+    <Card
+      sx={{
+        borderRadius: 3,
+        border: "2px solid transparent",
+        transition: "all .2s linear",
+        "&:hover": {
+          borderColor: "secondary.main",
+        },
+      }}
+      elevation={0}
+    >
       <CardActionArea
         onClick={onClick}
         sx={{

@@ -8,14 +8,7 @@ import IBookEvaluations from "../interfaces/IBookEvaluations";
 import IBookReview from "../interfaces/IBookReview";
 import IBookSate from "../interfaces/IBookSate";
 import $api from "./axios";
-
-export interface IBookInformation {
-  book: IBook;
-  authors: IUser[];
-  discount: IBookDiscount;
-  offer: IBookOffer;
-  evaluations: IBookEvaluations;
-}
+import { IBookInformation } from "../interfaces/IBookInformation";
 
 export async function getBooks(
   startFrom: number,
