@@ -57,35 +57,45 @@ export default function BookCatalog(props: IBookCatalog) {
         >
           Best choice
         </Typography>
-        <CustomCarousel
-          responsive={{
-            mobile: 1,
-            tablet: 2,
-            desktop: 3,
-            superLargeDesktop: 3,
-          }}
-          visibilityGutter={{
-            mobile: 20,
-            tablet: 20,
-            desktop: 15,
-            superLargeDesktop: 15,
+        <Box
+          sx={{
+            marginLeft: {
+              xl: "-3rem",
+              md: "-3rem",
+              sm: "0rem",
+            },
           }}
         >
-          {books.slice(0, 3).map((book: IBookInformation) => (
-            <Box
-              sx={{
-                marginRight: ".5rem",
-                marginLeft: ".5rem",
-              }}
-              key={book.book.book_id}
-            >
-              <HugeBookBanner
-                book={book}
-                onClick={() => handleBookClick(book.book.book_id)}
-              />
-            </Box>
-          ))}
-        </CustomCarousel>
+          <CustomCarousel
+            responsive={{
+              mobile: 1,
+              tablet: 2,
+              desktop: 3,
+              superLargeDesktop: 3,
+            }}
+            visibilityGutter={{
+              mobile: 20,
+              tablet: 20,
+              desktop: 15,
+              superLargeDesktop: 15,
+            }}
+          >
+            {books.slice(0, 3).map((book: IBookInformation) => (
+              <Box
+                sx={{
+                  marginRight: ".5rem",
+                  marginLeft: ".5rem",
+                }}
+                key={book.book.book_id}
+              >
+                <HugeBookBanner
+                  book={book}
+                  onClick={() => handleBookClick(book.book.book_id)}
+                />
+              </Box>
+            ))}
+          </CustomCarousel>
+        </Box>
         <Typography
           variant="h5"
           sx={{

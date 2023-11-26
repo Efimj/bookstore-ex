@@ -15,6 +15,7 @@ import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import UserCard from "../../components/UserCard/UserCard";
 
 const BookInformation: FC<IBookPageItem> = ({
   book,
@@ -92,24 +93,22 @@ const BookInformation: FC<IBookPageItem> = ({
               {book?.publication_date.toLocaleString()}
             </Typography>
             <Stack
-              sx={{ paddingTop: ".5rem" }}
+              sx={{ paddingTop: ".5rem", width: "100%" }}
               direction="row"
               spacing={{ xs: 0.75, sm: 1 }}
               useFlexGap
               flexWrap="wrap"
             >
-              {authors.map((user: IUser, index: number) => {
+              {authors.slice(0, 6).map((user: IUser, index: number) => {
                 return (
-                  <span
-                    key={index}
-                    onClick={() =>
-                      handleAuthorNavigation(user.user_id.toString())
-                    }
-                  >
-                    <Typography variant="body1" color="secondary">
-                      {user.first_name}
-                    </Typography>
-                  </span>
+                  <Box key={index} sx={{paddingY:'5px'}}>
+                    <UserCard
+                      user={user}
+                      onClick={() =>
+                        handleAuthorNavigation(user.user_id.toString())
+                      }
+                    />
+                  </Box>
                 );
               })}
             </Stack>

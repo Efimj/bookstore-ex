@@ -33,18 +33,48 @@ const BookPage: FC<IBookPage> = () => {
   useEffect(() => {
     async function get() {
       if (!bookId) return;
-      const book = await getBook(bookId);
-      const evaluations = await getBookEvaluations(bookId);
-      if (evaluations?.book_id) setEvaluations(evaluations);
-      if (book?.book_id) setBook(book);
-      const bookState = await getBookState(bookId);
-      setBookState(bookState);
-      const authorsResponse = await getBookAuthors(bookId);
-      if (Array.isArray(authorsResponse)) setAuthors(authorsResponse);
-      const offer = await getBookOffer(bookId);
-      if (offer?.offer_id) setBookOffer(offer);
-      const discount = await getBookDiscount(bookId);
-      if (discount?.discount_id) setBookDiscount(discount);
+      try {
+        const book = await getBook(bookId);
+        if (book?.book_id) setBook(book);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const evaluations = await getBookEvaluations(bookId);
+        if (evaluations?.book_id) setEvaluations(evaluations);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const bookState = await getBookState(bookId);
+        setBookState(bookState);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const authorsResponse = await getBookAuthors(bookId);
+        if (Array.isArray(authorsResponse)) setAuthors(authorsResponse);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const offer = await getBookOffer(bookId);
+        if (offer?.offer_id) setBookOffer(offer);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const offer = await getBookOffer(bookId);
+        if (offer?.offer_id) setBookOffer(offer);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const discount = await getBookDiscount(bookId);
+        if (discount?.discount_id) setBookDiscount(discount);
+      } catch (error) {
+        console.log(error);
+      }
     }
     get();
   }, []);
