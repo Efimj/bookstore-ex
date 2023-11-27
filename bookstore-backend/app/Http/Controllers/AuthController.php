@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Database\Factories\ImageHandler;
+
 class AuthController extends Controller
 {
     /**
@@ -37,7 +40,14 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        if (!$user) {return response()->json($user);}
+        $user_id = $user->user_id;
+        $user = User::find($user_id);
+        if (!$user) {return response()->json($user);}
+        $user['user_type_name'] = $user->userType->name;
+        $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+        return response()->json($user);
     }
 
     /**

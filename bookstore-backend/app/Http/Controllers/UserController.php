@@ -70,6 +70,26 @@ class UserController extends Controller
         });
     }
 
+    public function myLibrary(Request $request)
+    {
+        $user = Auth::user();
+        if ($user == null) return null;
+        $user_id = $user->user_id;
+        $startFrom = $request->query('start_from', 1);
+        $limit = $request->query('limit', 10);
+        $user = User::find($user_id);
+        $books = $user->checks()->skip($startFrom)->take($limit)->get();
+
+        if (!$books) {
+            return null;
+        }
+
+        return $books->map(function ($book) {
+            $book = $book->book;
+            return $this->getBookInformation($book);
+        });
+    }
+
     public function userPublish(Request $request)
     {
         $user_id = $request->query('id');

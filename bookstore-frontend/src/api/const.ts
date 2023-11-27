@@ -15,9 +15,12 @@ const api = {
 
   // User
   user: server + "user",
-  user_wishes: server + "wishes",
-  user_library: server + "library",
-  user_publish: server + "publish",
+  user_wishes: server + "user_wishes",
+  user_library: server + "user_library",
+  user_publish: server + "user_publish",
+  // my_wishes: server + "my_wishes",
+  // my_library: server + "my_library",
+  // my_publish: server + "my_publish",
   account: server + "account",
 
   // Auth
