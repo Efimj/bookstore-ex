@@ -1,39 +1,31 @@
 import { FC, useEffect, useState } from "react";
 import IUser from "../../interfaces/IAuthor";
-import { Typography, Box } from "@mui/material";
-import InfiniteScroll from "react-infinite-scroll-component";
-import BookBanner from "../../components/BookBanner/BookBanner";
-import IBook from "../../interfaces/IBook";
-import { useNavigate } from "react-router-dom";
+import { Typography } from "@mui/material";
 import { getUserWishlist } from "../../api/user";
 import { IBookInformation } from "../../interfaces/IBookInformation";
+import BookList from "../../components/BookList/BookList";
 
 export interface IUserWishlist {
   user: IUser;
 }
 
 const UserWishlist: FC<IUserWishlist> = ({ user }) => {
-  const navigate = useNavigate();
-  const [wishlist, setWishlist] = useState<IBookInformation[]>([]);
-  const [hasMoreWishes, setHasMoreWishes] = useState<boolean>(true);
+  const [books, setBooks] = useState<IBookInformation[]>([]);
+  const [hasMoreBooks, setHasMoreWishes] = useState<boolean>(true);
   const countWishesLoad = 5;
 
-  const handleBookClick = (bookId: number) => {
-    navigate(`/book/${bookId}`);
-  };
-
-  const getNewWishes = async () => {
+  const getNewBook = async () => {
     const nextWishes = await getUserWishlist(
       user.user_id.toString(),
-      wishlist.length,
+      books.length,
       countWishesLoad
     );
     if (nextWishes.length === 0) setHasMoreWishes(false);
-    setWishlist([...wishlist, ...nextWishes]);
+    setBooks([...books, ...nextWishes]);
   };
 
   useEffect(() => {
-    getNewWishes();
+    getNewBook();
   }, []);
 
   return (
@@ -48,37 +40,11 @@ const UserWishlist: FC<IUserWishlist> = ({ user }) => {
       >
         Wishlist
       </Typography>
-      <InfiniteScroll
-        dataLength={wishlist.length}
-        next={getNewWishes}
-        hasMore={hasMoreWishes}
-        loader={""}
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          width: "100%",
-          justifyContent: "flex-start",
-        }}
-      >
-        {wishlist.map((book, index) => {
-          return (
-            <Box
-              sx={{
-                marginRight: ".5rem",
-                marginLeft: ".5rem",
-                marginBottom: ".5rem",
-                width: { xs: "45%", sm: "150px", md: "200px" },
-              }}
-              key={index}
-            >
-              <BookBanner
-                book={book}
-                onClick={() => handleBookClick(book.book.book_id)}
-              />
-            </Box>
-          );
-        })}
-      </InfiniteScroll>
+      <BookList
+        books={books}
+        getNewBook={getNewBook}
+        hasMoreBooks={hasMoreBooks}
+      />
     </>
   );
 };

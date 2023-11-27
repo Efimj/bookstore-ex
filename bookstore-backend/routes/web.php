@@ -39,12 +39,12 @@ Route::get('/book_reviews', [BookController::class, 'bookReviews']);
  */
 Route::get('/user', [UserController::class, 'user']);
 Route::get('/wishes', [UserController::class, 'userWishes']);
-Route::get('/library', [UserController::class, 'userLibrary']);
 Route::get('/publish', [UserController::class, 'userPublish']);
 Route::group([
     'middleware' => 'jwt.auth',
 ], function ($router) {
     Route::get('/account', [UserController::class, 'account']);
+    Route::get('/library', [UserController::class, 'userLibrary']);
 });
 
 

@@ -46,7 +46,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async (values: AuthorizationFormValues) => {
-    await logIn(values.email, values.password, values.saveStatus)
+    await logIn(values.email, values.password, values.saveStatus);
     onSignIn();
   };
 
@@ -104,7 +104,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
                 onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) => {
                   event.preventDefault();
                 }}
-                sx={{ opacity: ".5" }}
+                sx={{ opacity: ".5", padding: 0 }}
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>

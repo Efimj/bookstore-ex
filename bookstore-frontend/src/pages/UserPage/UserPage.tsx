@@ -170,8 +170,7 @@ const UserPage: FC<IUserPage> = () => {
       </Box>
       <Box sx={{ display: selectedBtn === "published" ? "block" : "none" }}>
         <UserPublish user={user} />
-      </Box>{" "}
-      */
+      </Box>
     </PageWrapper>
   );
 };

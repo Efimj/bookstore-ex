@@ -1,38 +1,31 @@
 import { FC, useEffect, useState } from "react";
 import IUser from "../../interfaces/IAuthor";
-import { Typography, Box } from "@mui/material";
-import InfiniteScroll from "react-infinite-scroll-component";
-import BookBanner from "../../components/BookBanner/BookBanner";
-import { useNavigate } from "react-router-dom";
+import { Typography } from "@mui/material";
 import { getUserLibrary } from "../../api/user";
 import { IBookInformation } from "../../interfaces/IBookInformation";
+import BookList from "../../components/BookList/BookList";
 
 export interface IUserLibrary {
   user: IUser;
 }
 
 const UserLibrary: FC<IUserLibrary> = ({ user }) => {
-  const navigate = useNavigate();
-  const [wishlist, setWishlist] = useState<IBookInformation[]>([]);
-  const [hasMoreLibrary, setHasMoreLibrary] = useState<boolean>(true);
+  const [books, setBooks] = useState<IBookInformation[]>([]);
+  const [hasMoreBooks, setHasMoreLibrary] = useState<boolean>(true);
   const countLibraryLoad = 5;
 
-  const handleBookClick = (bookId: number) => {
-    navigate(`/book/${bookId}`);
-  };
-
-  const getNewLibrary = async () => {
+  const getNewBook = async () => {
     const nextLibrary = await getUserLibrary(
       user.user_id.toString(),
-      wishlist.length,
+      books.length,
       countLibraryLoad
     );
     if (nextLibrary.length === 0) setHasMoreLibrary(false);
-    setWishlist([...wishlist, ...nextLibrary]);
+    setBooks([...books, ...nextLibrary]);
   };
 
   useEffect(() => {
-    getNewLibrary();
+    getNewBook();
   }, []);
 
   return (
@@ -47,37 +40,7 @@ const UserLibrary: FC<IUserLibrary> = ({ user }) => {
       >
         Library
       </Typography>
-      <InfiniteScroll
-        dataLength={wishlist.length}
-        next={getNewLibrary}
-        hasMore={hasMoreLibrary}
-        loader={""}
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          width: "100%",
-          justifyContent: "flex-start",
-        }}
-      >
-        {wishlist.map((book, index) => {
-          return (
-            <Box
-              sx={{
-                marginRight: ".5rem",
-                marginLeft: ".5rem",
-                marginBottom: ".5rem",
-                width: { xs: "45%", sm: "150px", md: "200px" },
-              }}
-              key={index}
-            >
-              <BookBanner
-                book={book}
-                onClick={() => handleBookClick(book.book.book_id)}
-              />
-            </Box>
-          );
-        })}
-      </InfiniteScroll>
+      <BookList books={books} getNewBook={getNewBook} hasMoreBooks={hasMoreBooks} />
     </>
   );
 };

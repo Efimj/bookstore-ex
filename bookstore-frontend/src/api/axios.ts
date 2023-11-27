@@ -26,11 +26,16 @@ $api.interceptors.response.use(
       error.config._isRetry !== true
     ) {
       originalRequest._isRetry = true;
-      try {
-        const response = await axios.get(api.refresh, {
-          withCredentials: true,
-        });
-        localStorage.access_token = response.data.response.accessToken;
+      try { 
+        const response = await axios.post(
+          api.refresh,
+          {},
+          { headers: { 'authorization': `Bearer ${localStorage.access_token}` }},
+        );
+       
+        console.log(response.data.accessToken);
+        console.log(response.data.response);
+        localStorage.access_token = response.data.access_token;
         return $api.request(originalRequest);
       } catch (error) {
         console.log(error);

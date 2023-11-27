@@ -50,6 +50,7 @@ const AuthorizationForm: FC<IAuthorizationForm> = ({
       }}
       PaperProps={{
         sx: {
+          margin: "1rem",
           borderRadius: "1rem",
           backgroundColor: theme.palette.background.default,
         },

@@ -81,7 +81,6 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignUp = (values: RegistrationFormValues) => {
-    
     onSignUp();
     console.log(values);
   };
@@ -102,7 +101,13 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
       onSubmit={formik.handleSubmit}
       action=""
     >
-      <Box sx={{ display: "flex", gap: "1.5rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: "1rem", sm: "1.5rem" },
+        }}
+      >
         <FormControl defaultValue="" fullWidth required>
           <TextField
             label="First name"
@@ -142,7 +147,13 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
           type="email"
         />
       </FormControl>
-      <Box sx={{ display: "flex", gap: "1.5rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: "1rem", sm: "1.5rem" },
+        }}
+      >
         <FormControl variant="standard" required>
           <InputLabel htmlFor="standard-adornment-password">
             {formik.touched.password
@@ -166,7 +177,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
                   onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) => {
                     event.preventDefault();
                   }}
-                  sx={{ opacity: ".5" }}
+                  sx={{ opacity: ".5", padding: 0 }}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -200,7 +211,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
                   onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) => {
                     event.preventDefault();
                   }}
-                  sx={{ opacity: ".5" }}
+                  sx={{ opacity: ".5", padding: 0 }}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
