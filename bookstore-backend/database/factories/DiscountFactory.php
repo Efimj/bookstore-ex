@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Offer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 
@@ -17,9 +18,10 @@ class DiscountFactory extends Factory
      */
     public function definition(): array
     {
+        $offer = Offer::inRandomOrder()->first();
         return [
-            'offer_id' => DB::table('offers')->inRandomOrder()->first()->offer_id,
-            'price' => round(0.99 + (1100 - 99) * rand() / getrandmax(), 2),
+            'offer_id' => $offer->offer_id,
+            'price' => round(0.99 + ($offer->price - 99) * rand() / getrandmax(), 2),
             'expiration_date' => $this->faker->dateTimeThisDecade,
         ];
     }

@@ -13,6 +13,7 @@ use App\Models\Review;
 use App\Models\User;
 use App\Models\Wish;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +22,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $MAX_attempts = 10;
+        $filename = 'users.txt';
+        if (Storage::exists($filename)) {
+            Storage::delete($filename);
+            echo "Файл $filename удален.";
+        } else {
+            echo "Файл $filename не существует.";
+        }
+
+        $MAX_attempts = 15;
 
         Book::factory()->times(25)->create();
         User::factory()->times(25)->create();
@@ -67,7 +76,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $attempts = 0;
-        while ($attempts < $MAX_attempts && Check::count() >= 100) {
+        while ($attempts < $MAX_attempts && Check::count() <= 100) {
             $countToCreate = 5;
             try {
                 Check::factory()->times($countToCreate)->create();
@@ -77,7 +86,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $attempts = 0;
-        while ($attempts < $MAX_attempts && Discount::count() >= 15) {
+        while ($attempts < $MAX_attempts && Discount::count() <= 15) {
             $countToCreate = 5;
             try {
                 Discount::factory()->times($countToCreate)->create();
@@ -87,7 +96,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $attempts = 0;
-        while ($attempts < $MAX_attempts && GenreBook::count() >= 100) {
+        while ($attempts < $MAX_attempts && GenreBook::count() <= 100) {
             $countToCreate = 5;
             try {
                 GenreBook::factory()->times($countToCreate)->create();
@@ -95,10 +104,5 @@ class DatabaseSeeder extends Seeder
                 $attempts++;
             }
         }
-//        Wish::factory()->times(100)->create();
-//        Offer::factory()->times(25)->create();
-//        Check::factory()->times(50)->create();
-//        Discount::factory()->times(10)->create();
-//        GenreBook::factory()->times(100)->create();
     }
 }

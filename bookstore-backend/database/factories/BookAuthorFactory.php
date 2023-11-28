@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,10 @@ class BookAuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => DB::table('users')->inRandomOrder()->first()->user_id,
+            'user_id' => User::
+                where('user_type_id', 2)
+                ->inRandomOrder()
+                ->first(),
             'book_id' => DB::table('books')->inRandomOrder()->first()->book_id,
         ];
     }

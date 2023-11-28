@@ -17,9 +17,11 @@ export interface IBookBanner {
 }
 
 const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
+  const theme = useTheme();
+
   const getBookPriceText = (): string => {
     if (book?.offer == null) return "not for sale";
-    if (book?.discount != null) return `Buy for ${book?.discount.price} usd.`;
+    if (book?.discount != null) return `${book?.discount.price} usd.`;
     return `Buy for ${book?.offer.price} usd.`;
   };
 
@@ -99,13 +101,13 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
               {book?.discount && (
                 <Typography
                   variant="body2"
-                  color={"#FFFFFF"}
                   sx={{
                     display: "-webkit-box",
                     overflow: "hidden",
                     WebkitBoxOrient: "vertical",
                     WebkitLineClamp: 6,
-                    opacity: ".7",
+                    opacity: ".9",
+                    color: theme.palette.text.disabled,
                     textDecoration: "line-through",
                   }}
                 >
