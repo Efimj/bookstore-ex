@@ -34,7 +34,7 @@ const NavigationBar: FC<INavigationBar> = ({}) => {
           icon={<BookOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("library")}
+          onClick={() => handleNavigation("library/library")}
         />
         <Tab
           label="Account"

@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <BookCatalog />,
       },
       {
-        path: "/library",
+        path: "/library/:page",
         element: <LibraryPage />,
         loader: checkAuth,
         errorElement: AuthForm,

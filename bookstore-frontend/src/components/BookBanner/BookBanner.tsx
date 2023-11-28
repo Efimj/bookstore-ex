@@ -24,17 +24,7 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
   };
 
   return (
-    <Card
-      sx={{
-        borderRadius: 3,
-        border: "2px solid transparent",
-        transition: "all .2s linear",
-        "&:hover": {
-          borderColor: "secondary.main",
-        },
-      }}
-      elevation={0}
-    >
+    <Card elevation={0}>
       <CardActionArea
         onClick={onClick}
         sx={{
@@ -43,6 +33,13 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
           height: 350,
           alignItems: "flex-start",
           justifyContent: "space-between",
+          borderRadius: 3,
+          border: "2px solid transparent",
+          transition: "all .2s linear",
+          "&:hover": {
+            borderColor: "secondary.main",
+          },
+          overflow: "hidden",
         }}
       >
         <Box

@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { useCurrentRouteNumber } from "../../hooks/useCurrentRouteNumber";
 
 function getRouteNumber(pathname: string): number {
   const cleanPathname = pathname.replace("/", "");
@@ -32,26 +33,24 @@ export interface IBottomNavigation {}
 const CustomBottomNavigation: FC<IBottomNavigation> = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const location = useLocation();
+  const currentRoute = useCurrentRouteNumber();
 
-  const [selectedTab, setSelectedTab] = useState<number>(
-    getRouteNumber(location.pathname)
-  );
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {};
 
   const handleNavigation = (position: string) => {
     navigate(position);
   };
-
-  useEffect(() => {
-    setSelectedTab(getRouteNumber(location.pathname));
-  }, [location]);
 
   return (
     <Paper
       sx={{ backgroundColor: theme.palette.background.paper, width: "100%" }}
       elevation={5}
     >
-      <BottomNavigation showLabels value={selectedTab}>
+      <BottomNavigation
+        showLabels
+        value={currentRoute}
+        onChange={handleChangeTab}
+      >
         <BottomNavigationAction
           label="Recents"
           icon={<ReceiptLongOutlinedIcon />}
@@ -62,7 +61,7 @@ const CustomBottomNavigation: FC<IBottomNavigation> = ({}) => {
           label="Library"
           icon={<BookOutlinedIcon />}
           key={"library"}
-          onClick={() => handleNavigation("library")}
+          onClick={() => handleNavigation("library/library")}
         />
         <BottomNavigationAction
           label="Account"

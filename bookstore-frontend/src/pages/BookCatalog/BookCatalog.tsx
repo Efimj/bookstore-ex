@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getBooks } from "../../api/book";
 import { IBookInformation } from "../../interfaces/IBookInformation";
-import IBook from "../../interfaces/IBook";
 import HugeBookBanner from "../../components/HugeBookBanner/HugeBookBanner";
 import { Box, Typography } from "@mui/material";
 import CustomCarousel from "../../components/CustomCarousel/CustomCarousel";

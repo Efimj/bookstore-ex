@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 export const useCurrentRouteNumber = () => {
   function getRouteNumber(pathname: string): number {
-    const cleanPathname = pathname.replace("/", "");
+    const cleanPathname = pathname.split("/")[1];
 
     if (cleanPathname === "bookcatalog") {
       return 0;

@@ -24,7 +24,7 @@ export default function LibraryPage(props: ILibrary) {
   return (
     <PageWrapper>
       {/* <UserInformation user={user} /> */}
-      <UserLibraryContent user={user} />
+      <UserLibraryContent showCreateBook user={user} />
     </PageWrapper>
   );
 }

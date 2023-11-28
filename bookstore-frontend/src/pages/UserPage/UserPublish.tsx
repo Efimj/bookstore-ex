@@ -4,12 +4,16 @@ import { Typography } from "@mui/material";
 import { getUserPublish } from "../../api/user";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import BookList from "../../components/BookList/BookList";
+import CreateBookBanner from "../../components/CreateBookBanner/CreateBookBanner";
+import { useNavigate } from "react-router-dom";
 
 export interface IUserPublish {
   user: IUser;
+  showCreateBook?: boolean;
 }
 
-const UserPublish: FC<IUserPublish> = ({ user }) => {
+const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState<IBookInformation[]>([]);
   const [hasMoreBooks, setHasMoreBook] = useState<boolean>(true);
   const countBookLoad = 5;
@@ -40,7 +44,20 @@ const UserPublish: FC<IUserPublish> = ({ user }) => {
       >
         Book
       </Typography>
-      <BookList books={books} getNewBook={getNewBook} hasMoreBooks={hasMoreBooks} />
+      <BookList
+        books={books}
+        firstItem={
+          showCreateBook && (
+            <CreateBookBanner
+              onClick={() => {
+                navigate("/publish");
+              }}
+            />
+          )
+        }
+        getNewBook={getNewBook}
+        hasMoreBooks={hasMoreBooks}
+      />
     </>
   );
 };
