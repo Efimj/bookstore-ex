@@ -26,29 +26,17 @@ const UserLibraryContent: FC<IUserLibraryContent> = ({
 }) => {
   const params = useParams();
   const navigate = useNavigate();
-  const [selectedBtn, setSelectedBtn] = useState("library");
+  const [selectedBtn, setSelectedBtn] = useState(params?.page ?? "library");
   const theme = useTheme();
   const lessThanSmall = useMediaQuery(theme.breakpoints.down("sm"));
- console.log(params)
-  // useEffect(() => {
-  //   if (
-  //     params?.page !== "wishlist" &&
-  //     params?.page !== "library" &&
-  //     params?.page !== "published"
-  //   ) {
-  //     console.log(1);
-  //     navigate("library/library");
-  //   } else {
-  //     console.log(2);
-  //     setSelectedBtn(params.page);
-  //     navigate(`library/${selectedBtn}`);
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   console.log(3);
-  //   navigate(`library/${selectedBtn}`);
-  // }, [selectedBtn]);
+  useEffect(() => {
+    navigate(`/library/${selectedBtn}`);
+  }, [selectedBtn]);
+
+  // useEffect(()=>{
+  //   setSelectedBtn(params?.page ?? "library")
+  // },[params])
 
   if (user === null) return;
 
@@ -96,7 +84,9 @@ const UserLibraryContent: FC<IUserLibraryContent> = ({
               key={index}
               sx={{ borderRadius: ".5rem" }}
               variant={selectedBtn === element.id ? "contained" : "outlined"}
-              onClick={() => setSelectedBtn(element.id)}
+              onClick={() => {
+                setSelectedBtn(element.id);
+              }}
               startIcon={element.icon}
             >
               {element.content}

@@ -27,21 +27,21 @@ const NavigationBar: FC<INavigationBar> = ({}) => {
           icon={<ReceiptLongOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("bookcatalog")}
+          onClick={() => handleNavigation("/bookcatalog")}
         />
         <Tab
           label="Library"
           icon={<BookOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("library/library")}
+          onClick={() => handleNavigation("/library/library")}
         />
         <Tab
           label="Account"
           icon={<AccountCircleOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("account")}
+          onClick={() => handleNavigation("/account")}
         />
       </Tabs>
     </Box>

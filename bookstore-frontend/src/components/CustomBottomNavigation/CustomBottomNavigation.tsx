@@ -55,19 +55,19 @@ const CustomBottomNavigation: FC<IBottomNavigation> = ({}) => {
           label="Recents"
           icon={<ReceiptLongOutlinedIcon />}
           key={"bookcatalog"}
-          onClick={() => handleNavigation("bookcatalog")}
+          onClick={() => handleNavigation("/bookcatalog")}
         />
         <BottomNavigationAction
           label="Library"
           icon={<BookOutlinedIcon />}
           key={"library"}
-          onClick={() => handleNavigation("library/library")}
+          onClick={() => handleNavigation("/library/library")}
         />
         <BottomNavigationAction
           label="Account"
           icon={<AccountCircleOutlinedIcon />}
           key={"account"}
-          onClick={() => handleNavigation("account")}
+          onClick={() => handleNavigation("/account")}
         />
       </BottomNavigation>
     </Paper>
