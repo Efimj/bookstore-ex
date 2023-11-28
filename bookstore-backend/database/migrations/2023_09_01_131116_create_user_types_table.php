@@ -13,7 +13,11 @@ return new class extends Migration {
     {
         Schema::create('user_types', function (Blueprint $table) {
             $table->id('user_type_id');
-            $table->tinyText('name');
+            $table->string('name');
+
+            // indexes
+            $table->fulltext('name');
+            $table->unique('name');
         });
 
         DB::table('user_types')->insert([
@@ -22,6 +26,8 @@ return new class extends Migration {
         DB::table('user_types')->insert([
             'name' => 'writer',
         ]);
+
+
     }
 
     /**
@@ -29,6 +35,11 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('user_types', function (Blueprint $table) {
+//            $table->dropIndex('name');
+//            $table->dropUnique('name');
+//        });
+
         Schema::dropIfExists('user_types');
     }
 };

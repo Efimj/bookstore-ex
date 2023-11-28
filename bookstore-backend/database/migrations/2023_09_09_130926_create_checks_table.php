@@ -24,6 +24,10 @@ return new class extends Migration {
             $table->unsignedDouble('price');
             $table->timestamps();
             $table->date('date');
+
+            // indexes
+            $table->index('book_id');
+            $table->index('user_id');
         });
 
 //        Schema::partitionByRange($table_name, 'YEAR(date)', [
@@ -44,6 +48,12 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('checks', function (Blueprint $table) {
+//            $table->dropIndex('book_id');
+//            $table->dropIndex('user_id');
+//
+//        });
+
         Schema::dropIfExists('checks');
     }
 };

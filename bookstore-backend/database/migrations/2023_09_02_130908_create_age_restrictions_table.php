@@ -13,7 +13,11 @@ return new class extends Migration {
     {
         Schema::create('age_restrictions', function (Blueprint $table) {
             $table->id("age_restriction_id");
-            $table->tinyText("name");
+            $table->string("name");
+
+            // indexes
+            $table->fulltext('name');
+            $table->unique('name');
         });
 
         DB::table('age_restrictions')->insert([
@@ -32,6 +36,11 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('age_restrictions', function (Blueprint $table) {
+//            $table->dropIndex('name');
+//            $table->dropUnique('name');
+//        });
+
         Schema::dropIfExists('age_restrictions');
     }
 };

@@ -18,6 +18,10 @@ return new class extends Migration {
             $table->unsignedDouble('price');
             $table->dateTime('expiration_date');
             $table->timestamps();
+
+            // indexes
+            $table->index('offer_id');
+            $table->unique('offer_id');
         });
     }
 
@@ -26,6 +30,13 @@ return new class extends Migration {
      */
     public function down(): void
     {
+
+//        Schema::table('discounts', function (Blueprint $table) {
+//            $table->dropIndex('offer_id');
+//            $table->dropUnique('offer_id');
+//
+//        });
+
         Schema::dropIfExists('discounts');
     }
 };

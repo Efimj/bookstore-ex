@@ -21,6 +21,11 @@ return new class extends Migration {
             $table->text('description');
             $table->unsignedTinyInteger('rating');
             $table->timestamps();
+
+            // indexes
+            $table->index('book_id');
+            $table->index('user_id');
+            $table->unique(['book_id','user_id']);
         });
     }
 
@@ -29,6 +34,13 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('reviews', function (Blueprint $table) {
+//            $table->dropIndex('book_id');
+//            $table->dropIndex('user_id');
+//            $table->dropUnique(['book_id','user_id']);
+//
+//        });
+
         Schema::dropIfExists('reviews');
     }
 };

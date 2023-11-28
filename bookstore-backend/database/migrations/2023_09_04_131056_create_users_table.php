@@ -17,13 +17,18 @@ return new class extends Migration {
             $table->foreignId('user_type_id')->constrained(
                 table: 'user_types', column: 'user_type_id', indexName: 'user_user_type_id'
             );
-            $table->tinyText('first_name');
-            $table->tinyText('last_name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->dateTime('birthday');
             $table->string('password');
-            $table->tinyText('email');
+            $table->string('email');
             $table->string('image')->nullable();
             $table->timestamps();
+
+            // indexes
+            $table->index(['first_name', 'last_name']);
+            $table->fullText('email');
+            $table->unique('email');
         });
     }
 
@@ -39,6 +44,12 @@ return new class extends Migration {
                 Storage::delete($user->image);
             }
         }
+
+//        Schema::table('users', function (Blueprint $table) {
+//            $table->dropIndex(['first_name', 'last_name']);
+//            $table->dropIndex('email');
+//            $table->dropUnique('email');
+//        });
 
         Schema::dropIfExists('users');
     }

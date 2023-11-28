@@ -19,6 +19,11 @@ return new class extends Migration {
                 table: 'users',  column: 'user_id', indexName: 'book_user_id'
             );
             $table->timestamps();
+
+            // indexes
+            $table->index('book_id');
+            $table->index('user_id');
+            $table->unique(['book_id','user_id']);
         });
     }
 
@@ -27,6 +32,13 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('book_authors', function (Blueprint $table) {
+//            $table->dropIndex('book_id');
+//            $table->dropIndex('user_id');
+//            $table->dropUnique(['book_id','user_id']);
+//
+//        });
+
         Schema::dropIfExists('book_authors');
     }
 };

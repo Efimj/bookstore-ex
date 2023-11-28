@@ -23,6 +23,12 @@ return new class extends Migration {
             $table->string('image')->nullable();
             $table->date('publication_date');
             $table->timestamps();
+
+            // indexes
+            $table->fullText(['title', 'description']);
+            $table->index('age_restriction_id');
+            $table->index('page_count');
+            $table->index('publication_date');
         });
     }
 
@@ -38,6 +44,13 @@ return new class extends Migration {
                 Storage::delete($user->image);
             }
         }
+
+//        Schema::table('books', function (Blueprint $table) {
+//            $table->dropIndex(['title', 'description']);
+//            $table->dropIndex('age_restriction_id');
+//            $table->dropIndex('page_count');
+//            $table->dropIndex('publication_date');
+//        });
 
         Schema::dropIfExists('books');
     }

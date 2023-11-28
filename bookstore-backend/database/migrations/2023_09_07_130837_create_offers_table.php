@@ -17,6 +17,10 @@ return new class extends Migration {
             );
             $table->unsignedDouble('price');
             $table->timestamps();
+
+            // indexes
+            $table->index('book_id');
+            $table->unique('book_id');
         });
     }
 
@@ -25,6 +29,12 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('offers', function (Blueprint $table) {
+//            $table->dropUnique('book_id');
+//            $table->dropIndex('book_id');
+//
+//        });
+
         Schema::dropIfExists('offers');
     }
 };

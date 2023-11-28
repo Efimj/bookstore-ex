@@ -13,7 +13,11 @@ return new class extends Migration {
     {
         Schema::create('genres', function (Blueprint $table) {
             $table->id('genre_id');
-            $table->tinyText('name');
+            $table->string('name');
+
+            // indexes
+            $table->fulltext('name');
+            $table->unique('name');
         });
 
         DB::table('genres')->insert([
@@ -38,9 +42,6 @@ return new class extends Migration {
             'name' => 'Historical',
         ]);
         DB::table('genres')->insert([
-            'name' => 'Historical',
-        ]);
-        DB::table('genres')->insert([
             'name' => 'Thriller',
         ]);
         DB::table('genres')->insert([
@@ -53,6 +54,11 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('genres', function (Blueprint $table) {
+//            $table->dropIndex('name');
+//            $table->dropUnique('name');
+//        });
+
         Schema::dropIfExists('genres');
     }
 };

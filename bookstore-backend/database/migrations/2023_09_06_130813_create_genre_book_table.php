@@ -18,6 +18,11 @@ return new class extends Migration {
             $table->foreignId('book_id')->constrained(
                 table: 'books', column: 'book_id', indexName: 'genre_book_book_id'
             );
+
+            // indexes
+            $table->index('genre_id');
+            $table->index('book_id');
+            $table->unique(['genre_id', 'book_id']);
         });
     }
 
@@ -26,6 +31,13 @@ return new class extends Migration {
      */
     public function down(): void
     {
+//        Schema::table('genre_books', function (Blueprint $table) {
+//            $table->dropUnique(['genre_id', 'book_id']);
+//            $table->dropIndex('book_id');
+//            $table->dropIndex('genre_id');
+//
+//        });
+
         Schema::dropIfExists('genre_books');
     }
 };
