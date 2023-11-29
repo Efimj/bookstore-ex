@@ -7,8 +7,11 @@ import { me } from "../../api/auth";
 
 export interface ILibrary {}
 
-export default function LibraryPage(props: ILibrary) {
+export const LibraryPageRoute = "/library/:page";
+export const NavigateLibraryPageRoute = (page: string): string =>
+  `/library/${page}`;
 
+export default function LibraryPage(props: ILibrary) {
   const [user, setUser] = React.useState<IUser | null>(null);
 
   React.useEffect(() => {

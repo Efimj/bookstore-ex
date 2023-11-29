@@ -28,9 +28,10 @@ const CreateBookBanner: FC<ICreateBookBanner> = ({ onClick }) => {
           border: `2px dashed ${secondaryColor}`,
           transition: "all .2s linear",
           "& h5": { transition: "all .2s linear" },
+          "& .ImportContactsTwoToneIcon": { transition: "all .2s linear" },
           "&:hover": {
             borderColor: "secondary.main",
-            "& h5": {
+            "& .ImportContactsTwoToneIcon": {
               color: theme.palette.primary.main, // Измените цвет текста на зеленый при наведении
             },
           },
@@ -38,6 +39,7 @@ const CreateBookBanner: FC<ICreateBookBanner> = ({ onClick }) => {
         }}
       >
         <ImportContactsTwoToneIcon
+          className="ImportContactsTwoToneIcon"
           sx={{
             width: "70px",
             height: "70px",

@@ -13,20 +13,9 @@ import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { useCurrentRouteNumber } from "../../hooks/useCurrentRouteNumber";
-
-function getRouteNumber(pathname: string): number {
-  const cleanPathname = pathname.replace("/", "");
-
-  if (cleanPathname === "bookcatalog") {
-    return 0;
-  } else if (cleanPathname === "library") {
-    return 1;
-  } else if (cleanPathname === "account") {
-    return 2;
-  }
-
-  return 0;
-}
+import { NavigateBookCatalogRoute } from "../../pages/BookCatalog/BookCatalog";
+import { NavigateLibraryPageRoute } from "../../pages/LibraryPage/LibraryPage";
+import { NavigateAccountPageRoute } from "../../pages/AccoutPage/AccountPage";
 
 export interface IBottomNavigation {}
 
@@ -55,19 +44,19 @@ const CustomBottomNavigation: FC<IBottomNavigation> = ({}) => {
           label="Recents"
           icon={<ReceiptLongOutlinedIcon />}
           key={"bookcatalog"}
-          onClick={() => handleNavigation("/bookcatalog")}
+          onClick={() => handleNavigation(NavigateBookCatalogRoute())}
         />
         <BottomNavigationAction
           label="Library"
           icon={<BookOutlinedIcon />}
           key={"library"}
-          onClick={() => handleNavigation("/library/library")}
+          onClick={() => handleNavigation(NavigateLibraryPageRoute("library"))}
         />
         <BottomNavigationAction
           label="Account"
           icon={<AccountCircleOutlinedIcon />}
           key={"account"}
-          onClick={() => handleNavigation("/account")}
+          onClick={() => handleNavigation(NavigateAccountPageRoute())}
         />
       </BottomNavigation>
     </Paper>

@@ -1,13 +1,15 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ScreenLayout from "../components/ScreenLayout";
-import BookCatalog from "./BookCatalog/BookCatalog";
-import LibraryPage from "./LibraryPage/LibraryPage";
-import BookPage from "./BookPage/BookPage";
-import UserPage from "./UserPage/UserPage";
-import AccountPage from "./AccoutPage/AccountPage";
+import BookCatalog, { BookCatalogRoute } from "./BookCatalog/BookCatalog";
+import LibraryPage, { LibraryPageRoute } from "./LibraryPage/LibraryPage";
+import BookPage, { BookPageRoute } from "./BookPage/BookPage";
+import UserPage, { UserPageRoute } from "./UserPage/UserPage";
+import AccountPage, { AccountPageRoute } from "./AccoutPage/AccountPage";
 import AuthorizationForm from "../components/AuthorizationForm/AuthorizationForm";
 import { me } from "../api/auth";
-import { getAccount } from "../api/user";
+import PublishBookPage, {
+  PublishBookPageRoute,
+} from "./PublishBookPage/PublishBookPage";
 
 const AuthForm = (
   <AuthorizationForm
@@ -36,37 +38,43 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/bookcatalog" replace />,
+        element: <Navigate to={BookCatalogRoute} replace />,
       },
       {
-        path: "/bookcatalog",
+        path: BookCatalogRoute,
         element: <BookCatalog />,
       },
       {
-        path: "/library/:page",
+        path: LibraryPageRoute,
         element: <LibraryPage />,
         loader: checkAuth,
         errorElement: AuthForm,
       },
       {
-        path: "/account",
+        path: AccountPageRoute,
         element: <AccountPage />,
         loader: checkAuth,
         errorElement: AuthForm,
       },
       {
-        path: "/book/:bookId",
+        path: PublishBookPageRoute,
+        element: <PublishBookPage />,
+        loader: checkAuth,
+        errorElement: AuthForm,
+      },
+      {
+        path: BookPageRoute,
         element: <BookPage />,
       },
       {
-        path: "/user/:userId",
+        path: UserPageRoute,
         element: <UserPage />,
       },
     ],
   },
   {
     path: "*",
-    element: <Navigate to="/bookcatalog" replace />,
+    element: <Navigate to={BookCatalogRoute} replace />,
   },
 ]);
 

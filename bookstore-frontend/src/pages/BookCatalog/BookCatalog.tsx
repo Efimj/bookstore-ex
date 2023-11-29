@@ -8,8 +8,12 @@ import BookBanner from "../../components/BookBanner/BookBanner";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { NavigateBookPageRoute } from "../BookPage/BookPage";
 
 export interface IBookCatalog {}
+
+export const BookCatalogRoute = "/bookcatalog";
+export const NavigateBookCatalogRoute = (): string => `/bookcatalog`;
 
 export default function BookCatalog(props: IBookCatalog) {
   const [books, setBooks] = useState<Array<IBookInformation>>([]);
@@ -36,7 +40,7 @@ export default function BookCatalog(props: IBookCatalog) {
   }
 
   const handleBookClick = (bookId: number) => {
-    navigate(`/book/${bookId}`);
+    navigate(NavigateBookPageRoute(bookId.toString()));
   };
 
   if (books.length === 0) return;

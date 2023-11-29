@@ -5,6 +5,9 @@ import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { useCurrentRouteNumber } from "../../hooks/useCurrentRouteNumber";
+import { NavigateBookCatalogRoute } from "../../pages/BookCatalog/BookCatalog";
+import { NavigateLibraryPageRoute } from "../../pages/LibraryPage/LibraryPage";
+import { NavigateAccountPageRoute } from "../../pages/AccoutPage/AccountPage";
 
 export interface INavigationBar {}
 
@@ -27,21 +30,21 @@ const NavigationBar: FC<INavigationBar> = ({}) => {
           icon={<ReceiptLongOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("/bookcatalog")}
+          onClick={() => handleNavigation(NavigateBookCatalogRoute())}
         />
         <Tab
           label="Library"
           icon={<BookOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("/library/library")}
+          onClick={() => handleNavigation(NavigateLibraryPageRoute("library"))}
         />
         <Tab
           label="Account"
           icon={<AccountCircleOutlinedIcon />}
           iconPosition="start"
           sx={{ textTransform: "none", fontSize: "1.1rem" }}
-          onClick={() => handleNavigation("/account")}
+          onClick={() => handleNavigation(NavigateAccountPageRoute())}
         />
       </Tabs>
     </Box>

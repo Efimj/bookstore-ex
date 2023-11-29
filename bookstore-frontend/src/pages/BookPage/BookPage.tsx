@@ -21,6 +21,9 @@ import IBookSate from "../../interfaces/IBookSate";
 
 export interface IBookPage {}
 
+export const BookPageRoute = "/book/:bookId";
+export const NavigateBookPageRoute = (bookId: string):string => `/book/${bookId}`;
+
 const BookPage: FC<IBookPage> = () => {
   const { bookId } = useParams();
   const [book, setBook] = useState<IBook | null>(null);

@@ -46,7 +46,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async (values: AuthorizationFormValues) => {
-    await logIn(values.email, values.password, values.saveStatus);
+    await logIn(values.email.trim(), values.password.trim(), values.saveStatus);
     onSignIn();
   };
 

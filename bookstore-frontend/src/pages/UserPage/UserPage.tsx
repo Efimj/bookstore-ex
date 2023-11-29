@@ -9,6 +9,9 @@ import UserInformation from "../../components/UserInformation/UserInformation";
 
 export interface IUserPage {}
 
+export const UserPageRoute = "/user/:userId";
+export const NavigateUserPageRoute = (userId: string):string => `/user/${userId}`;
+
 const UserPage: FC<IUserPage> = () => {
   const { userId } = useParams();
   const [user, setUser] = useState<IUser | null>(null);

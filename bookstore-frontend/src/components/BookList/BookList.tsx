@@ -4,6 +4,7 @@ import { IBookInformation } from "../../interfaces/IBookInformation";
 import InfiniteScroll from "react-infinite-scroll-component";
 import BookBanner from "../BookBanner/BookBanner";
 import { useNavigate } from "react-router-dom";
+import { NavigateBookPageRoute } from "../../pages/BookPage/BookPage";
 
 export interface IBookList {
   books: IBookInformation[];
@@ -21,7 +22,7 @@ const BookList: FC<IBookList> = ({
   const navigate = useNavigate();
 
   const handleBookClick = (bookId: number) => {
-    navigate(`/book/${bookId}`);
+    navigate(NavigateBookPageRoute(bookId.toString()));
   };
 
   const getListSize = (): number => {

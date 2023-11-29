@@ -19,17 +19,12 @@ export interface IHugeBookBanner {
 }
 
 const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
-  const navigate = useNavigate();
-
   const getBookPriceText = (): string => {
     if (book?.offer == null) return "not for sale";
     if (book?.discount != null) return `Buy for ${book?.discount.price} usd.`;
     return `Buy for ${book?.offer.price} usd.`;
   };
 
-  const handleNavigation = (position: string) => {
-    navigate(position);
-  };
 
   return (
     <Card

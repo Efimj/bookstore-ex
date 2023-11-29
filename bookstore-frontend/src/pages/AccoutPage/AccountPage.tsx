@@ -4,6 +4,9 @@ import AuthorizationForm from "../../components/AuthorizationForm/AuthorizationF
 
 export interface IAccountPage {}
 
+export const AccountPageRoute = "/account";
+export const NavigateAccountPageRoute = ():string => `/account`;
+
 const AccountPage: FC<IAccountPage> = () => {
   const [openLogInForm, setOpenLogInForm] = useState(false);
 

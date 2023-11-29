@@ -6,6 +6,7 @@ import { IBookInformation } from "../../interfaces/IBookInformation";
 import BookList from "../../components/BookList/BookList";
 import CreateBookBanner from "../../components/CreateBookBanner/CreateBookBanner";
 import { useNavigate } from "react-router-dom";
+import { NavigatePublishBookPageRoute } from "../PublishBookPage/PublishBookPage";
 
 export interface IUserPublish {
   user: IUser;
@@ -50,7 +51,7 @@ const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
           showCreateBook && (
             <CreateBookBanner
               onClick={() => {
-                navigate("/publish");
+                navigate(NavigatePublishBookPageRoute());
               }}
             />
           )

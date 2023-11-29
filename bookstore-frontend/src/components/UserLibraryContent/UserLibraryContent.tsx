@@ -24,19 +24,10 @@ const UserLibraryContent: FC<IUserLibraryContent> = ({
   user,
   showCreateBook = false,
 }) => {
-  const params = useParams();
-  const navigate = useNavigate();
-  const [selectedBtn, setSelectedBtn] = useState(params?.page ?? "library");
+
+  const [selectedBtn, setSelectedBtn] = useState("library");
   const theme = useTheme();
   const lessThanSmall = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {
-    navigate(`/library/${selectedBtn}`);
-  }, [selectedBtn]);
-
-  // useEffect(()=>{
-  //   setSelectedBtn(params?.page ?? "library")
-  // },[params])
 
   if (user === null) return;
 
