@@ -11,6 +11,7 @@ export interface IUserWishlist {
 
 const UserWishlist: FC<IUserWishlist> = ({ user }) => {
   const [books, setBooks] = useState<IBookInformation[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasMoreBooks, setHasMoreWishes] = useState<boolean>(true);
   const countWishesLoad = 5;
 
@@ -22,6 +23,7 @@ const UserWishlist: FC<IUserWishlist> = ({ user }) => {
     );
     if (nextWishes.length === 0) setHasMoreWishes(false);
     setBooks([...books, ...nextWishes]);
+    setIsLoading(false);
   };
 
   return (
@@ -39,6 +41,8 @@ const UserWishlist: FC<IUserWishlist> = ({ user }) => {
       <BookList
         books={books}
         getNewBook={getNewBook}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
         hasMoreBooks={hasMoreBooks}
       />
     </>

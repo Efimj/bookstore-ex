@@ -11,6 +11,7 @@ export interface IUserLibrary {
 
 const UserLibrary: FC<IUserLibrary> = ({ user }) => {
   const [books, setBooks] = useState<IBookInformation[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasMoreBooks, setHasMoreLibrary] = useState<boolean>(true);
   const countLibraryLoad = 5;
 
@@ -22,6 +23,7 @@ const UserLibrary: FC<IUserLibrary> = ({ user }) => {
     );
     if (nextLibrary.length === 0) setHasMoreLibrary(false);
     setBooks([...books, ...nextLibrary]);
+    setIsLoading(false);
   };
 
   return (
@@ -36,7 +38,13 @@ const UserLibrary: FC<IUserLibrary> = ({ user }) => {
       >
         Library
       </Typography>
-      <BookList books={books} getNewBook={getNewBook} hasMoreBooks={hasMoreBooks} />
+      <BookList
+        books={books}
+        getNewBook={getNewBook}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        hasMoreBooks={hasMoreBooks}
+      />
     </>
   );
 };

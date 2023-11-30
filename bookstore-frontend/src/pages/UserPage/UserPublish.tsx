@@ -16,6 +16,7 @@ export interface IUserPublish {
 const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
   const navigate = useNavigate();
   const [books, setBooks] = useState<IBookInformation[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasMoreBooks, setHasMoreBook] = useState<boolean>(true);
   const countBookLoad = 5;
 
@@ -27,6 +28,7 @@ const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
     );
     if (nextBook.length === 0) setHasMoreBook(false);
     setBooks([...books, ...nextBook]);
+    setIsLoading(false);
   };
 
   return (
@@ -42,7 +44,6 @@ const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
         Book
       </Typography>
       <BookList
-        books={books}
         firstItem={
           showCreateBook && (
             <CreateBookBanner
@@ -52,7 +53,10 @@ const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
             />
           )
         }
+        books={books}
         getNewBook={getNewBook}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
         hasMoreBooks={hasMoreBooks}
       />
     </>

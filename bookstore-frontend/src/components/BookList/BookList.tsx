@@ -11,12 +11,16 @@ export interface IBookList {
   firstItem?: ReactNode;
   getNewBook: () => void;
   hasMoreBooks: boolean;
+  isLoading: boolean;
+  setIsLoading: (value: boolean) => void;
 }
 
 const BookList: FC<IBookList> = ({
   books,
   getNewBook,
   hasMoreBooks,
+  isLoading,
+  setIsLoading,
   firstItem,
 }) => {
   const navigate = useNavigate();
@@ -31,7 +35,9 @@ const BookList: FC<IBookList> = ({
   };
 
   useEffect(() => {
+    if (isLoading) return;
     if (hasMoreBooks && document.body.scrollHeight === window.innerHeight) {
+      setIsLoading(true);
       getNewBook();
     }
   });

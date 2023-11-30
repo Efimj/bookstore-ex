@@ -7,6 +7,7 @@ import {
   FormControl,
   InputAdornment,
   InputLabel,
+  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -92,6 +93,40 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
           onSubmit={formik.handleSubmit}
           action=""
         >
+          <Typography
+            component={"span"}
+            gutterBottom
+            variant="h5"
+            sx={{
+              marginBottom: "0",
+            }}
+            noWrap
+          >
+            Book information
+          </Typography>
+          <Typography
+            component={"span"}
+            gutterBottom
+            variant="body1"
+            color="text.secondary"
+            sx={{
+              marginBottom: "0",
+            }}
+          >
+            To avoid common problems with your Google Play app page, review the{" "}
+            <Link href="" underline="hover">
+              Metadata Guidelines
+            </Link>{" "}
+            and information from{" "}
+            <Link href="" underline="hover">
+              Help Center
+            </Link>{" "}
+            . Please review the{" "}
+            <Link href="" underline="hover">
+              program rules
+            </Link>{" "}
+            before submitting your application.
+          </Typography>
           <FormControl
             defaultValue=""
             sx={{
@@ -205,6 +240,41 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               inputProps={{}}
             />
           </FormControl>
+          <Typography
+            component={"span"}
+            gutterBottom
+            variant="h5"
+            sx={{
+              marginBottom: "0",
+              mt: { xs: ".5rem", sm: "1rem" },
+            }}
+            noWrap
+          >
+            Book information
+          </Typography>
+          <Typography
+            component={"span"}
+            gutterBottom
+            variant="body1"
+            color="text.secondary"
+            sx={{
+              marginBottom: "0",
+            }}
+          >
+            To avoid common problems with your Google Play app page, review the{" "}
+            <Link href="" underline="hover">
+              Metadata Guidelines
+            </Link>{" "}
+            and information from{" "}
+            <Link href="" underline="hover">
+              Help Center
+            </Link>{" "}
+            . Please review the{" "}
+            <Link href="" underline="hover">
+              program rules
+            </Link>{" "}
+            before submitting your application.
+          </Typography>
         </form>
       </Box>
     </PageWrapper>
