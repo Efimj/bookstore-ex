@@ -29,10 +29,6 @@ const UserPublish: FC<IUserPublish> = ({ user, showCreateBook = false }) => {
     setBooks([...books, ...nextBook]);
   };
 
-  useEffect(() => {
-    getNewBook();
-  }, []);
-
   return (
     <>
       <Typography

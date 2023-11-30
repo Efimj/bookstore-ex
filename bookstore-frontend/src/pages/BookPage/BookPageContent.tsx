@@ -23,9 +23,10 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [reviews, setReviews] = useState<IBookReview[]>([]);
   const [hasMoreReviews, setHasMoreReviews] = useState<boolean>(true);
-  const countReviewsLoad = 5;
+  const countReviewsLoad = 2;
 
   const handleNavigation = (position: string) => {
     navigate(position);
@@ -33,6 +34,7 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
 
   const getNewReviews = async () => {
     if (!book?.book_id) return;
+
     const nextReviews = await getBookReviews(
       book.book_id.toString(),
       reviews.length,
@@ -40,11 +42,16 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
     );
     if (nextReviews.length === 0) setHasMoreReviews(false);
     setReviews([...reviews, ...nextReviews]);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    getNewReviews();
-  }, []);
+    if (isLoading) return;
+    if (hasMoreReviews && document.body.scrollHeight === window.innerHeight) {
+      setIsLoading(true);
+      getNewReviews();
+    }
+  });
 
   const handleClickOpen = () => {
     setDescriptionOpened(true);

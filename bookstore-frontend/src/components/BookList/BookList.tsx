@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import InfiniteScroll from "react-infinite-scroll-component";
 import BookBanner from "../BookBanner/BookBanner";
@@ -29,6 +29,12 @@ const BookList: FC<IBookList> = ({
     if (firstItem) return books.length + 1;
     return books.length;
   };
+
+  useEffect(() => {
+    if (hasMoreBooks && document.body.scrollHeight === window.innerHeight) {
+      getNewBook();
+    }
+  });
 
   return (
     <InfiniteScroll

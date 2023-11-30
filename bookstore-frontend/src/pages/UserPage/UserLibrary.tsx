@@ -24,10 +24,6 @@ const UserLibrary: FC<IUserLibrary> = ({ user }) => {
     setBooks([...books, ...nextLibrary]);
   };
 
-  useEffect(() => {
-    getNewBook();
-  }, []);
-
   return (
     <>
       <Typography

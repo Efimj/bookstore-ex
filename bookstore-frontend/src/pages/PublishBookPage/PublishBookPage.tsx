@@ -97,7 +97,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             sx={{
               display: "flex",
               flexDirection: { xs: "column", sm: "row" },
-              gap: { xs: "1rem", sm: "1.5rem" },
+              gap: { xs: ".5rem", sm: "1.5rem" },
             }}
             required
           >
@@ -150,7 +150,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             sx={{
               display: "flex",
               flexDirection: { xs: "column", sm: "row" },
-              gap: { xs: "1rem", sm: "1.5rem" },
+              gap: { xs: ".5rem", sm: "1.5rem" },
             }}
             required
           >

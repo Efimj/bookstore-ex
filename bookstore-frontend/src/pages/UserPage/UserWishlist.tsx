@@ -24,10 +24,6 @@ const UserWishlist: FC<IUserWishlist> = ({ user }) => {
     setBooks([...books, ...nextWishes]);
   };
 
-  useEffect(() => {
-    getNewBook();
-  }, []);
-
   return (
     <>
       <Typography

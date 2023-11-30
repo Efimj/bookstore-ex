@@ -18,7 +18,7 @@ export const NavigateBookCatalogRoute = (): string => `/bookcatalog`;
 export default function BookCatalog(props: IBookCatalog) {
   const [books, setBooks] = useState<Array<IBookInformation>>([]);
   const [hasMoreBooks, setHasMoreBooks] = useState<boolean>(true);
-  const countGet = 20;
+  const countGet = 10;
   const navigate = useNavigate();
 
   const getNewBooks = async () => {
@@ -28,8 +28,10 @@ export default function BookCatalog(props: IBookCatalog) {
   };
 
   useEffect(() => {
-    getNewBooks();
-  }, []);
+    if (hasMoreBooks && document.body.scrollHeight === window.innerHeight) {
+      getNewBooks();
+    }
+  });
 
   function chunkArray(array: Array<IBookInformation>, chunkSize: number) {
     const chunkedArr = [];
