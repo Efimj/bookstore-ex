@@ -102,6 +102,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             required
           >
             <Typography
+              component={"span"}
               gutterBottom
               variant="body1"
               sx={{
@@ -128,6 +129,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
                     This title will be displayed in Bookstore
                   </Box>
                   <Typography
+                    component={"span"}
                     gutterBottom
                     variant="body2"
                     noWrap
@@ -153,6 +155,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             required
           >
             <Typography
+              component={"span"}
               gutterBottom
               variant="body1"
               sx={{
@@ -182,6 +185,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
                     read the full description.
                   </Box>
                   <Typography
+                    component={"span"}
                     gutterBottom
                     variant="body2"
                     noWrap
