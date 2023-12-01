@@ -28,6 +28,9 @@ const api = {
   logout: server + "auth/logout",
   refresh: server + "auth/refresh",
   me: server + "auth/me",
+
+  // service
+  allAgeRestrictions: server + "all_age_restrictions",
 };
 
 export default api;

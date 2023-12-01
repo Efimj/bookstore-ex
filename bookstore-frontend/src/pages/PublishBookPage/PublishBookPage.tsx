@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -15,6 +15,10 @@ import {
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
+import { getAllAgeRestrictions } from "../../api/service";
+import IAgeRestrictions from "../../interfaces/IAgeRestrictions";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const PublishBookPageRoute = "/publish";
 export const NavigatePublishBookPageRoute = (): string => `/publish`;
@@ -27,7 +31,7 @@ interface PublishBookFormValues {
   image: string;
   pages: number;
   authors: number[];
-  ageRestrictions: number;
+  ageRestrictions: IAgeRestrictions;
   publicationDate: dayjs.Dayjs;
 }
 
@@ -40,13 +44,18 @@ const maxPageCount = 20000;
 const minAuthorsCount = 1;
 const maxAuthorsCount = 30;
 
+const defaultAgeRestriction: IAgeRestrictions = {
+  age_restrictions_id: 1,
+  name: "adolescents",
+};
+
 const defaultFormValues: PublishBookFormValues = {
   title: "",
   description: "",
   image: "",
   pages: minPageCount,
   authors: [],
-  ageRestrictions: 0,
+  ageRestrictions: defaultAgeRestriction,
   publicationDate: dayjs(Date.now()),
 };
 
@@ -75,12 +84,15 @@ const SigninSchema = Yup.object().shape({
     .required("Authors is required")
     .min(minAuthorsCount, `The book must have an author`)
     .max(maxAuthorsCount, `Maximum authors = ${maxAuthorsCount}`),
-  ageRestrictions: Yup.number().required("Restrictions required"),
+  ageRestrictions: Yup.object().required("Restrictions required"),
   publicationDate: Yup.date().required("Publication date required"),
 });
 
 const PublishBookPage: FC<IPublishBookPage> = ({}) => {
-  const handlePublish = (values: PublishBookFormValues) => {};
+  const [loading, setLoading] = useState<boolean>(false);
+  const [ageRestrictions, setAgeRestrictions] = useState<IAgeRestrictions[]>(
+    []
+  );
 
   const formik = useFormik({
     validateOnMount: true,
@@ -91,6 +103,16 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
       handlePublish(values);
     },
   });
+
+  useEffect(() => {
+    const putAgeRestrictions = async () => {
+      let restrictions = await getAllAgeRestrictions();
+      setAgeRestrictions(restrictions);
+    };
+    putAgeRestrictions();
+  }, []);
+
+  const handlePublish = (values: PublishBookFormValues) => {};
 
   return (
     <PageWrapper>
@@ -361,52 +383,121 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             </Typography>
             <Autocomplete
               disablePortal
-              options={[1, 2, 3]}
+              options={ageRestrictions}
+              sx={{ ".MuiIconButton-root": { opacity: ".5" } }}
               fullWidth
               size="small"
-              onChange={formik.handleChange}
               value={formik.values.ageRestrictions}
+              onChange={(e, value) => {
+                formik.setFieldValue("ageRestrictions", value);
+                console.log(value);
+              }}
+              getOptionLabel={(option) => option.name}
               disableClearable
+              isOptionEqualToValue={(option, value) =>
+                option.age_restrictions_id === value.age_restrictions_id
+              }
               renderInput={(params) => (
                 <TextField name="ageRestrictions" {...params} />
               )}
             />
-            {/* <TextField
-              name="description"
-              size="small"
-              variant="outlined"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-              helperText={
-                <Box sx={{ width: "100%", display: "flex" }}>
-                  <Box sx={{ width: "100%" }}>
-                    A brief description of your book. Users can expand it to
-                    read the full description.
-                  </Box>
-                  <Typography
-                    component={"span"}
-                    gutterBottom
-                    variant="body2"
-                    noWrap
-                    sx={{ minWidth: "fit-content" }}
-                  >
-                    {formik.values.description.length +
-                      "/" +
-                      maxDescriptionLength}
-                  </Typography>
-                </Box>
-              }
-              fullWidth
-              placeholder=""
-              type="text"
-              multiline
-              rows={4}
-              inputProps={{}}
-            /> */}
+          </FormControl>
+          <FormControl
+            defaultValue=""
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: { xs: ".5rem", sm: "1.5rem" },
+            }}
+            required
+          >
+            <Typography
+              component={"span"}
+              gutterBottom
+              variant="body1"
+              sx={{
+                width: "220px",
+                marginBottom: "0",
+                mt: { xs: "0rem", sm: ".5rem" },
+              }}
+              color="text.secondary"
+              noWrap
+            >
+              Publication date
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                sx={{ ".MuiIconButton-root": { opacity: ".5" } }}
+                defaultValue={dayjs(Date.now())}
+                value={formik.values.publicationDate}
+                onChange={(value: any) => {
+                  formik.setFieldValue(
+                    "publicationDate",
+                    new Date(value?.["$d"]),
+                    true
+                  );
+                }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: "small",
+                    variant: "outlined",
+                    error: Boolean(formik.errors.publicationDate),
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </FormControl>
+          <Typography
+            component={"span"}
+            gutterBottom
+            variant="h5"
+            sx={{
+              marginBottom: "0",
+              mt: { xs: ".5rem", sm: "1rem" },
+            }}
+            noWrap
+          >
+            Graphics
+          </Typography>
+          <Typography
+            component={"span"}
+            gutterBottom
+            variant="body1"
+            color="text.secondary"
+            sx={{
+              marginBottom: "0",
+            }}
+          >
+            Upload a picture to promote your book in the BookStore. Before doing
+            this, please read the{" "}
+            <Link href="" underline="hover">
+              content requirements.
+            </Link>
+          </Typography>
+          <FormControl
+            defaultValue=""
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: { xs: ".5rem", sm: "1.5rem" },
+            }}
+            required
+          >
+            <Typography
+              component={"span"}
+              gutterBottom
+              variant="body1"
+              sx={{
+                width: "220px",
+                marginBottom: "0",
+                mt: { xs: "0rem", sm: ".5rem" },
+              }}
+              color="text.secondary"
+              noWrap
+            >
+              Book preview
+            </Typography>
           </FormControl>
         </form>
       </Box>
