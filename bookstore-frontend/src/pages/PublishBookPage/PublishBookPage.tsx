@@ -5,10 +5,9 @@ import * as Yup from "yup";
 import {
   Autocomplete,
   Box,
+  Button,
   FormControl,
   Input,
-  InputAdornment,
-  InputLabel,
   Link,
   Slider,
   TextField,
@@ -19,6 +18,8 @@ import { getAllAgeRestrictions } from "../../api/service";
 import IAgeRestrictions from "../../interfaces/IAgeRestrictions";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ImageDropZone from "../../components/ImageDropZone/ImageDropZone";
 
 export const PublishBookPageRoute = "/publish";
 export const NavigatePublishBookPageRoute = (): string => `/publish`;
@@ -28,7 +29,7 @@ export interface IPublishBookPage {}
 interface PublishBookFormValues {
   title: string;
   description: string;
-  image: string;
+  image: File | null;
   pages: number;
   authors: number[];
   ageRestrictions: IAgeRestrictions;
@@ -52,7 +53,7 @@ const defaultAgeRestriction: IAgeRestrictions = {
 const defaultFormValues: PublishBookFormValues = {
   title: "",
   description: "",
-  image: "",
+  image: null,
   pages: minPageCount,
   authors: [],
   ageRestrictions: defaultAgeRestriction,
@@ -74,7 +75,7 @@ const SigninSchema = Yup.object().shape({
       `Description must be at most ${maxDescriptionLength} characters`
     )
     .required("Description is required"),
-  image: Yup.string().required("Image is required"),
+  image: Yup.object().required("Image is required"),
   pages: Yup.number()
     .required("Count pages is required")
     .min(minPageCount, `The book must be more than ${minPageCount} pages`)
@@ -103,6 +104,8 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
       handlePublish(values);
     },
   });
+
+  console.log(formik.errors)
 
   useEffect(() => {
     const putAgeRestrictions = async () => {
@@ -390,7 +393,6 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               value={formik.values.ageRestrictions}
               onChange={(e, value) => {
                 formik.setFieldValue("ageRestrictions", value);
-                console.log(value);
               }}
               getOptionLabel={(option) => option.name}
               disableClearable
@@ -498,9 +500,34 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             >
               Book preview
             </Typography>
+            <ImageDropZone
+              value={formik.values.image}
+              onChange={(file: File) => {
+                formik.setFieldValue("image", file);
+              }}
+            />
           </FormControl>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              sx={{ borderRadius: ".5rem" }}
+              size="large"
+              variant={formik.isValid ? "contained" : "outlined"}
+              disabled={!formik.isValid}
+              startIcon={<CheckCircleIcon></CheckCircleIcon>}
+              type="submit"
+            >
+              Publish
+            </Button>
+          </Box>
         </form>
       </Box>
+      <Box sx={{ mb: "5rem" }}></Box>
     </PageWrapper>
   );
 };
