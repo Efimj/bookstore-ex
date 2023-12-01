@@ -57,12 +57,13 @@ const ImageDropZone: FC<IImageDropZone> = ({
         alignItems: "center",
         gap: ".5rem",
         height: "220px",
+        borderRadius: ".65rem",
         border: `1px solid ${
           theme.palette.mode === "dark"
             ? theme.palette.grey[800]
             : theme.palette.grey[400]
         }`,
-        borderRadius: "4px",
+
         ":hover": {
           border: `1px solid ${theme.palette.secondary.main}`,
         },

@@ -20,6 +20,8 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ImageDropZone from "../../components/ImageDropZone/ImageDropZone";
+import { mixed } from "yup";
+import AuthorSelector from "../../components/AuthorSelector/AuthorSelector";
 
 export const PublishBookPageRoute = "/publish";
 export const NavigatePublishBookPageRoute = (): string => `/publish`;
@@ -75,7 +77,7 @@ const SigninSchema = Yup.object().shape({
       `Description must be at most ${maxDescriptionLength} characters`
     )
     .required("Description is required"),
-  image: Yup.object().required("Image is required"),
+  image: Yup.mixed().required("required"),
   pages: Yup.number()
     .required("Count pages is required")
     .min(minPageCount, `The book must be more than ${minPageCount} pages`)
@@ -105,7 +107,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
     },
   });
 
-  console.log(formik.errors)
+  console.log(formik.errors);
 
   useEffect(() => {
     const putAgeRestrictions = async () => {
@@ -248,6 +250,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              InputProps={{ sx: { borderRadius: ".75rem" } }}
               error={
                 formik.touched.description && Boolean(formik.errors.description)
               }
@@ -400,7 +403,11 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
                 option.age_restrictions_id === value.age_restrictions_id
               }
               renderInput={(params) => (
-                <TextField name="ageRestrictions" {...params} />
+                <TextField
+                  sx={{ borderRadius: ".75rem" }}
+                  name="ageRestrictions"
+                  {...params}
+                />
               )}
             />
           </FormControl>
@@ -429,7 +436,10 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                sx={{ ".MuiIconButton-root": { opacity: ".5" } }}
+                sx={{
+                  ".MuiIconButton-root": { opacity: ".5" },
+                  borderRadius: ".75rem",
+                }}
                 defaultValue={dayjs(Date.now())}
                 value={formik.values.publicationDate}
                 onChange={(value: any) => {
@@ -506,6 +516,31 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
                 formik.setFieldValue("image", file);
               }}
             />
+          </FormControl>
+          <FormControl
+            defaultValue=""
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: { xs: ".5rem", sm: "1.5rem" },
+            }}
+            required
+          >
+            <Typography
+              component={"span"}
+              gutterBottom
+              variant="body1"
+              sx={{
+                width: "220px",
+                marginBottom: "0",
+                mt: { xs: "0rem", sm: ".5rem" },
+              }}
+              color="text.secondary"
+              noWrap
+            >
+              Authors
+            </Typography>
+            <AuthorSelector selectedAuthors={[]} onChange={() => {}} />
           </FormControl>
           <Box
             sx={{

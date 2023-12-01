@@ -74,3 +74,14 @@ export async function getBookReviews(
   );
   return response.data;
 }
+
+export async function getAuthorsByEmail(
+  email: string,
+  startFrom: number,
+  limit: number
+): Promise<IUser[]> {
+  const response: AxiosResponse<IUser[]> = await axios.get(
+    `${api.authors_by_email}?email=${email}&start_from=${startFrom}&limit=${limit}`
+  );
+  return response.data;
+}

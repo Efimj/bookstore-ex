@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\User;
+use App\Models\UserType;
 use Database\Factories\ImageHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
@@ -21,6 +22,28 @@ class BookController extends BaseController
         return Book::skip($startFrom)->take($limit)->get()->map(function ($book) {
             return $this->getBookInformation($book);
         })->toArray();
+    }
+
+    public function authorsByEmail(Request $request): array
+    {
+        $email = $request->query('email', "");
+        $startFrom = $request->query('start_from', 1);
+        $limit = $request->query('limit', 10);
+
+        $userType = UserType::find(2);
+        $users = User::where('user_type_id', $userType->user_type_id)
+            ->where(function ($query) use ($email) {
+                $query->where('email', 'LIKE', $email . '%') // начинается с указанной почты
+                ->orWhere('email', 'LIKE', '%' . $email . '%'); // содержит указанную почту в любом месте
+            })
+            ->skip($startFrom)
+            ->take($limit)
+            ->get()->map(function ($user) {
+                $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+                return$user;
+            })->toArray();
+
+        return $users;
     }
 
     public function book(Request $request)
