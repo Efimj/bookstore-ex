@@ -78,11 +78,14 @@ export interface IRegistrationFormContent {
 const RegistrationFormContent: FC<IRegistrationFormContent> = ({
   onSignUp = () => {},
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignUp = (values: RegistrationFormValues) => {
+    setLoading(true);
     onSignUp();
     console.log(values);
+    setLoading(false);
   };
 
   const formik = useFormik({
@@ -110,6 +113,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
       >
         <FormControl defaultValue="" fullWidth required>
           <TextField
+            disabled={loading}
             label="First name"
             variant="standard"
             name="firstName"
@@ -122,6 +126,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
         </FormControl>
         <FormControl defaultValue="" fullWidth required>
           <TextField
+            disabled={loading}
             label="Last name"
             name="lastName"
             value={formik.values.lastName}
@@ -135,6 +140,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
       </Box>
       <FormControl defaultValue="" required>
         <TextField
+          disabled={loading}
           sx={{ mt: "1rem" }}
           variant="standard"
           name="email"
@@ -163,6 +169,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
               : "Password"}
           </InputLabel>
           <Input
+            disabled={loading}
             name="password"
             type={showPassword ? "text" : "password"}
             value={formik.values.password}
@@ -194,6 +201,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
               : "Repeat password"}
           </InputLabel>
           <Input
+            disabled={loading}
             name="repeatPassword"
             type={showPassword ? "text" : "password"}
             value={formik.values.repeatPassword}
@@ -223,6 +231,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Birthday"
+          disabled={loading}
           maxDate={dayjs(Date.now()).subtract(14, "year")}
           sx={{ mt: "1rem", ".MuiIconButton-root": { opacity: ".5" } }}
           disableFuture
@@ -243,6 +252,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
         sx={{ ".MuiFormControlLabel-label": { opacity: ".5" } }}
         control={
           <Checkbox
+            disabled={loading}
             name="isPublisher"
             value={formik.values.isPublisher}
             onChange={formik.handleChange}
@@ -261,7 +271,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
           sx={{ borderRadius: ".5rem" }}
           size="large"
           variant={formik.isValid ? "contained" : "outlined"}
-          disabled={!formik.isValid}
+          disabled={loading || !formik.isValid}
           startIcon={<CheckCircleIcon></CheckCircleIcon>}
           type="submit"
         >

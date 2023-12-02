@@ -20,8 +20,8 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ImageDropZone from "../../components/ImageDropZone/ImageDropZone";
-import { mixed } from "yup";
 import AuthorSelector from "../../components/AuthorSelector/AuthorSelector";
+import IUser from "../../interfaces/IAuthor";
 
 export const PublishBookPageRoute = "/publish";
 export const NavigatePublishBookPageRoute = (): string => `/publish`;
@@ -33,7 +33,7 @@ interface PublishBookFormValues {
   description: string;
   image: File | null;
   pages: number;
-  authors: number[];
+  authors: IUser[];
   ageRestrictions: IAgeRestrictions;
   publicationDate: dayjs.Dayjs;
 }
@@ -48,7 +48,7 @@ const minAuthorsCount = 1;
 const maxAuthorsCount = 30;
 
 const defaultAgeRestriction: IAgeRestrictions = {
-  age_restrictions_id: 1,
+  age_restrictions_id: 2,
   name: "adolescents",
 };
 
@@ -83,7 +83,6 @@ const SigninSchema = Yup.object().shape({
     .min(minPageCount, `The book must be more than ${minPageCount} pages`)
     .max(maxPageCount, `The book must be less than ${maxPageCount} pages`),
   authors: Yup.array()
-    .of(Yup.number())
     .required("Authors is required")
     .min(minAuthorsCount, `The book must have an author`)
     .max(maxAuthorsCount, `Maximum authors = ${maxAuthorsCount}`),
@@ -107,8 +106,6 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
     },
   });
 
-  console.log(formik.errors);
-
   useEffect(() => {
     const putAgeRestrictions = async () => {
       let restrictions = await getAllAgeRestrictions();
@@ -117,7 +114,9 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
     putAgeRestrictions();
   }, []);
 
-  const handlePublish = (values: PublishBookFormValues) => {};
+  const handlePublish = (values: PublishBookFormValues) => {
+    setLoading(true);
+  };
 
   return (
     <PageWrapper>
@@ -194,6 +193,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               name="title"
               size="small"
               variant="outlined"
+              disabled={loading}
               value={formik.values.title}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -247,6 +247,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               name="description"
               size="small"
               variant="outlined"
+              disabled={loading}
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -334,6 +335,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
                 value={formik.values.pages}
                 size="small"
                 defaultValue={formik.values.pages}
+                disabled={loading}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 inputProps={{
@@ -349,6 +351,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               <Slider
                 max={maxPageCount}
                 min={minPageCount}
+                disabled={loading}
                 name="pages"
                 size="small"
                 defaultValue={formik.values.pages}
@@ -388,6 +391,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               Age restrictions
             </Typography>
             <Autocomplete
+              disabled={loading}
               disablePortal
               options={ageRestrictions}
               sx={{ ".MuiIconButton-root": { opacity: ".5" } }}
@@ -399,9 +403,9 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               }}
               getOptionLabel={(option) => option.name}
               disableClearable
-              isOptionEqualToValue={(option, value) =>
-                option.age_restrictions_id === value.age_restrictions_id
-              }
+              isOptionEqualToValue={(option, value) => {
+                return option.name === value.name;
+              }}
               renderInput={(params) => (
                 <TextField
                   sx={{ borderRadius: ".75rem" }}
@@ -436,6 +440,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                disabled={loading}
                 sx={{
                   ".MuiIconButton-root": { opacity: ".5" },
                   borderRadius: ".75rem",
@@ -511,6 +516,7 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
               Book preview
             </Typography>
             <ImageDropZone
+              disabled={loading}
               value={formik.values.image}
               onChange={(file: File) => {
                 formik.setFieldValue("image", file);
@@ -540,7 +546,13 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             >
               Authors
             </Typography>
-            <AuthorSelector selectedAuthors={[]} onChange={() => {}} />
+            <AuthorSelector
+              disabled={loading}
+              authors={formik.values.authors}
+              onChange={(value) => {
+                formik.setFieldValue("authors", value);
+              }}
+            />
           </FormControl>
           <Box
             sx={{
@@ -552,8 +564,8 @@ const PublishBookPage: FC<IPublishBookPage> = ({}) => {
             <Button
               sx={{ borderRadius: ".5rem" }}
               size="large"
+              disabled={!formik.isValid || loading}
               variant={formik.isValid ? "contained" : "outlined"}
-              disabled={!formik.isValid}
               startIcon={<CheckCircleIcon></CheckCircleIcon>}
               type="submit"
             >

@@ -44,10 +44,13 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
   onSignIn = () => {},
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignIn = async (values: AuthorizationFormValues) => {
+    setLoading(true);
     await logIn(values.email.trim(), values.password.trim(), values.saveStatus);
     onSignIn();
+    setLoading(false);
   };
 
   const formik = useFormik({
@@ -69,6 +72,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
       <FormControl defaultValue="" required>
         <TextField
           sx={{ mt: "1rem" }}
+          disabled={loading}
           variant="standard"
           name="email"
           value={formik.values.email}
@@ -90,6 +94,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
             : "Password"}
         </InputLabel>
         <Input
+          disabled={loading}
           name="password"
           type={showPassword ? "text" : "password"}
           value={formik.values.password}
@@ -116,6 +121,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
         sx={{ ".MuiFormControlLabel-label": { opacity: ".5" } }}
         control={
           <Checkbox
+            disabled={loading}
             name="saveStatus"
             value={formik.values.saveStatus}
             onChange={formik.handleChange}
@@ -134,7 +140,7 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
           sx={{ borderRadius: ".5rem" }}
           size="large"
           variant={formik.isValid ? "contained" : "outlined"}
-          disabled={!formik.isValid}
+          disabled={loading || !formik.isValid}
           startIcon={<CheckCircleIcon></CheckCircleIcon>}
           type="submit"
         >

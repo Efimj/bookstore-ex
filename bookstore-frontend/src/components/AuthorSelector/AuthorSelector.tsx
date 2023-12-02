@@ -4,12 +4,18 @@ import IUser from "../../interfaces/IAuthor";
 import { getAuthorsByEmail } from "../../api/book";
 
 export interface IAuthorSelector {
-  selectedAuthors: IUser[];
+  authors?: IUser[];
+  disabled?: boolean;
   onChange: (selectedAuthors: IUser[]) => void;
 }
 
-const AuthorSelector: FC<IAuthorSelector> = ({ selectedAuthors, onChange }) => {
+const AuthorSelector: FC<IAuthorSelector> = ({
+  authors = [],
+  disabled = false,
+  onChange,
+}) => {
   const [foundAuthors, setFoundAuthors] = useState<IUser[]>([]);
+  const [selectedAuthors, setSelectedAuthors] = useState<IUser[]>(authors);
   const [timer, setTimer] = useState<number | null>(null);
   const [text, setText] = useState<string>("");
   const maxAuthors = 5;
@@ -27,7 +33,7 @@ const AuthorSelector: FC<IAuthorSelector> = ({ selectedAuthors, onChange }) => {
       if (timer) {
         clearTimeout(timer);
       }
-      return
+      return;
     }
 
     const newTimer = window.setTimeout(async () => {
@@ -43,6 +49,14 @@ const AuthorSelector: FC<IAuthorSelector> = ({ selectedAuthors, onChange }) => {
     };
   }, [text]);
 
+  const onValueChanged = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: IUser[]
+  ) => {
+    setSelectedAuthors(value);
+    onChange(value);
+  };
+
   return (
     <Box
       sx={{
@@ -53,11 +67,15 @@ const AuthorSelector: FC<IAuthorSelector> = ({ selectedAuthors, onChange }) => {
       }}
     >
       <Autocomplete
+        disabled={disabled}
         multiple
         size="medium"
         fullWidth
         options={foundAuthors}
+        value={selectedAuthors}
+        onChange={onValueChanged}
         getOptionLabel={(option) => option.email}
+        isOptionEqualToValue={(option, value) => option.email === value.email}
         //defaultValue={[foundAuthors]}
         renderInput={(params) => (
           <TextField
