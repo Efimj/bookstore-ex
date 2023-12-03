@@ -17,11 +17,11 @@ class UserStore {
     makeAutoObservable(this);
   }
 
-  async signIn(
+  signIn = async (
     email: string,
     password: string,
     remember?: boolean
-  ): Promise<boolean> {
+  ): Promise<boolean> => {
     try {
       await logIn(email.trim(), password.trim(), remember);
       this.user = await me();
@@ -29,30 +29,30 @@ class UserStore {
       return false;
     }
     return true;
-  }
+  };
 
   checkAuth(): boolean {
     if (this._user) return true;
     return false;
   }
 
-  async tryRefreshAuth(): Promise<boolean> {
+  tryRefreshAuth = async (): Promise<boolean> => {
     try {
       this.user = await me();
     } catch (error) {
       return false;
     }
     return true;
-  }
+  };
 
-  async logOutUser() {
-    this._user = null;
-  }
+  logOutUser = async () => {
+    this.user = null;
+  };
 
-  async logOut() {
+  logOut = async () => {
     await logOut();
-    this._user = null;
-  }
+    this.user = null;
+  };
 }
 
 const userStore = new UserStore();

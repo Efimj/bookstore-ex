@@ -1,24 +1,12 @@
-import { useThemeContext } from "../../theming/ThemeContextProvider";
-import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
-import LightModeOutlinedIcon from "@mui/icons-material/LightMode";
-import {
-  Toolbar,
-  Typography,
-  Box,
-  IconButton,
-  Paper,
-  CardActionArea,
-  useTheme,
-} from "@mui/material";
+import { Toolbar, Typography, Box, Paper, CardActionArea } from "@mui/material";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import SearchModal from "../SearchModal/SearchModal";
 import { useNavigate } from "react-router-dom";
+import AccountMenu from "../AccountMenu/AccountMenu";
 
 export interface IAppHeader {}
 
 export default function Header(props: IAppHeader) {
-  const theme = useTheme();
-  const { mode, toggleColorMode } = useThemeContext();
   const navigate = useNavigate();
 
   return (
@@ -27,7 +15,6 @@ export default function Header(props: IAppHeader) {
         <CardActionArea
           sx={{
             overflow: "visible",
-            paddingRight: "20px",
             alignItems: "center",
             margin: 0,
             display: { xs: "flex", sm: "none", md: "flex" },
@@ -60,16 +47,7 @@ export default function Header(props: IAppHeader) {
           }}
         >
           <SearchModal></SearchModal>
-          <IconButton
-            onClick={toggleColorMode}
-            sx={{ color: theme.palette.text.secondary }}
-          >
-            {mode === "light" ? (
-              <Brightness4OutlinedIcon />
-            ) : (
-              <LightModeOutlinedIcon />
-            )}
-          </IconButton>
+          <AccountMenu></AccountMenu>
         </Box>
       </Toolbar>
     </Paper>

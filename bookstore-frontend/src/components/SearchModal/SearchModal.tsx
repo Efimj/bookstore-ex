@@ -36,6 +36,7 @@ export default function SearchModal() {
       <Button
         variant="outlined"
         onClick={handleClickOpen}
+        sx={{ color: theme.palette.text.secondary }}
       >
         <SearchIcon sx={{ marginRight: ".5rem" }}></SearchIcon>
         Search...

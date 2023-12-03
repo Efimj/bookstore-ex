@@ -22,6 +22,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ImageDropZone from "../../components/ImageDropZone/ImageDropZone";
 import AuthorSelector from "../../components/AuthorSelector/AuthorSelector";
 import IUser from "../../interfaces/IAuthor";
+import userStore from "../../store/UserStore";
 
 export const PublishBookPageRoute = "/publish";
 export const NavigatePublishBookPageRoute = (): string => `/publish`;

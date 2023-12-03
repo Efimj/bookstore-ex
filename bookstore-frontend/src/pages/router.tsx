@@ -13,6 +13,8 @@ import userStore from "../store/UserStore";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 
+export const LogInRoute = "LogInRoute";
+
 const AuthForm = (
   <AuthorizationForm
     isOpened={true}

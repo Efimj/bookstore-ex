@@ -10,15 +10,16 @@ export const getDesignTokens = (mode: PaletteMode) => ({
       styleOverrides: {
         outlined: {
           borderRadius: BorderRadius,
-          
         },
-        outlinedPrimary: {
-          
-        },
+        outlinedPrimary: {},
       },
     },
-    ".MuiButton": {
-      border: "12px solid red",
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: BorderRadius,
+        },
+      },
     },
     MuiOutlinedButton: {
       styleOverrides: {
