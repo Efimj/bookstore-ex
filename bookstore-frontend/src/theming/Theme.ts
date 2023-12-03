@@ -1,29 +1,52 @@
 import { PaletteMode } from "@mui/material";
 import { green, grey, lightGreen } from "@mui/material/colors";
 
+const BorderRadius = ".50rem";
+
 export const getDesignTokens = (mode: PaletteMode) => ({
   components: {
     MuiButton: {
-      borderRadius: ".65rem",
+      borderRadius: BorderRadius,
+      styleOverrides: {
+        outlined: {
+          borderRadius: BorderRadius,
+          
+        },
+        outlinedPrimary: {
+          
+        },
+      },
+    },
+    ".MuiButton": {
+      border: "12px solid red",
+    },
+    MuiOutlinedButton: {
+      styleOverrides: {
+        root: {
+          MuiButtonBase: {
+            borderRadius: BorderRadius,
+          },
+        },
+      },
     },
     MuiInputBase: {
       styleOverrides: {
         root: {
-          borderRadius: ".65rem",
+          borderRadius: BorderRadius,
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: ".65rem",
+          borderRadius: BorderRadius,
         },
       },
     },
     MuiTextField: {
       styleOverrides: {
         root: {
-          borderRadius: ".65rem",
+          borderRadius: BorderRadius,
         },
       },
     },

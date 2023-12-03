@@ -41,7 +41,6 @@ const CustomCarousel: FC<ICustomCarousel> = ({
   },
 }) => {
   const theme = useTheme();
-
   const defaultResponsive = {
     superLargeDesktop: {
       breakpoint: {

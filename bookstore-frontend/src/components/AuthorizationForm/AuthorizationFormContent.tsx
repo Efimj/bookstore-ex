@@ -10,12 +10,14 @@ import {
   InputAdornment,
   InputLabel,
   Button,
+  Typography,
 } from "@mui/material";
 import { FC, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { logIn } from "../../api/auth";
+import userStore from "../../store/UserStore";
 
 interface AuthorizationFormValues {
   password: string;
@@ -45,11 +47,22 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [signInError, setSignInError] = useState<string>("");
 
   const handleSignIn = async (values: AuthorizationFormValues) => {
     setLoading(true);
-    await logIn(values.email.trim(), values.password.trim(), values.saveStatus);
-    onSignIn();
+    if (
+      await userStore.signIn(
+        values.email.trim(),
+        values.password.trim(),
+        values.saveStatus
+      )
+    ) {
+      onSignIn();
+      setSignInError("");
+    } else {
+      setSignInError("Occurred error. Check your details or try again later");
+    }
     setLoading(false);
   };
 
@@ -133,11 +146,25 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
         sx={{
           display: "flex",
           width: "100%",
-          justifyContent: "flex-end",
+          alignContent: "center",
         }}
       >
+        <Typography
+          variant="body1"
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            pr: "1rem",
+          }}
+          color="error"
+        >
+          {signInError}
+        </Typography>
         <Button
-          sx={{ borderRadius: ".5rem" }}
+          sx={{ borderRadius: ".5rem", minWidth: "120px" }}
           size="large"
           variant={formik.isValid ? "contained" : "outlined"}
           disabled={loading || !formik.isValid}

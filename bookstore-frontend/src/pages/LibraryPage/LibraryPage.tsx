@@ -1,9 +1,8 @@
 import * as React from "react";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
-import UserInformation from "../../components/UserInformation/UserInformation";
 import UserLibraryContent from "../../components/UserLibraryContent/UserLibraryContent";
-import IUser from "../../interfaces/IAuthor";
-import { me } from "../../api/auth";
+import { observer } from "mobx-react-lite";
+import userStore from "../../store/UserStore";
 
 export interface ILibrary {}
 
@@ -11,23 +10,17 @@ export const LibraryPageRoute = "/library/:page";
 export const NavigateLibraryPageRoute = (page: string): string =>
   `/library/${page}`;
 
-export default function LibraryPage(props: ILibrary) {
-  const [user, setUser] = React.useState<IUser | null>(null);
+const LibraryPage: React.FC = observer((props: ILibrary) => {
+  if (!userStore.checkAuth()) return;
 
-  React.useEffect(() => {
-    async function get() {
-      let response = await me();
-      if (response !== null) setUser(response);
-    }
-    get();
-  }, []);
-
-  if (user === null) return;
+  if (userStore.user === null) throw "unauthorized";
 
   return (
     <PageWrapper>
       {/* <UserInformation user={user} /> */}
-      <UserLibraryContent showCreateBook user={user} />
+      <UserLibraryContent showCreateBook user={userStore.user} />
     </PageWrapper>
   );
-}
+});
+
+export default LibraryPage;

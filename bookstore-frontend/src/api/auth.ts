@@ -18,10 +18,9 @@ export async function logIn(
     { withCredentials: true }
   );
 
-  console.log(response.data)
-
   if (response.data?.access_token) {
     localStorage.access_token = response.data.access_token;
+
     return true;
   }
 
@@ -29,17 +28,15 @@ export async function logIn(
 }
 
 export async function logOut(): Promise<boolean> {
-  const response: AxiosResponse = await $api.post(
-    api.logout,
-    { withCredentials: true }
-  );
- return true
+  const response: AxiosResponse = await $api.post(api.logout, {
+    withCredentials: true,
+  });
+  return true;
 }
 
 export async function me(): Promise<IUser> {
-  const response: AxiosResponse = await $api.post(
-    api.me,
-    { withCredentials: true }
-  );
- return response.data
+  const response: AxiosResponse = await $api.post(api.me, {
+    withCredentials: true,
+  });
+  return response.data;
 }

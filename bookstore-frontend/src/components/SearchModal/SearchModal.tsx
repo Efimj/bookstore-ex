@@ -34,7 +34,6 @@ export default function SearchModal() {
   return (
     <div>
       <Button
-        sx={{ textTransform: "none", borderRadius: "10px" }}
         variant="outlined"
         onClick={handleClickOpen}
       >

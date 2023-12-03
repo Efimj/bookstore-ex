@@ -8,6 +8,7 @@ import {
   IconButton,
   Paper,
   CardActionArea,
+  useTheme,
 } from "@mui/material";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import SearchModal from "../SearchModal/SearchModal";
@@ -16,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 export interface IAppHeader {}
 
 export default function Header(props: IAppHeader) {
+  const theme = useTheme();
   const { mode, toggleColorMode } = useThemeContext();
   const navigate = useNavigate();
 
@@ -58,7 +60,10 @@ export default function Header(props: IAppHeader) {
           }}
         >
           <SearchModal></SearchModal>
-          <IconButton onClick={toggleColorMode}>
+          <IconButton
+            onClick={toggleColorMode}
+            sx={{ color: theme.palette.text.secondary }}
+          >
             {mode === "light" ? (
               <Brightness4OutlinedIcon />
             ) : (

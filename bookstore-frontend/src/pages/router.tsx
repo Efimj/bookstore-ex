@@ -6,10 +6,12 @@ import BookPage, { BookPageRoute } from "./BookPage/BookPage";
 import UserPage, { UserPageRoute } from "./UserPage/UserPage";
 import AccountPage, { AccountPageRoute } from "./AccoutPage/AccountPage";
 import AuthorizationForm from "../components/AuthorizationForm/AuthorizationForm";
-import { me } from "../api/auth";
 import PublishBookPage, {
   PublishBookPageRoute,
 } from "./PublishBookPage/PublishBookPage";
+import userStore from "../store/UserStore";
+import { observer } from "mobx-react-lite";
+import { FC } from "react";
 
 const AuthForm = (
   <AuthorizationForm
@@ -17,19 +19,22 @@ const AuthForm = (
     onDismiss={() => {
       history.back();
     }}
-    onSignIn={() => {
-      window.location.reload();
-    }}
-    onSignUp={() => {
-      window.location.reload();
-    }}
+    onSignIn={() => {}}
+    onSignUp={() => {}}
   />
 );
 
-const checkAuth = async (): Promise<boolean> => {
-  await me();
-  return true;
-};
+interface IPrivatePage {
+  children: React.ReactElement;
+}
+
+const PrivatePage: FC<IPrivatePage> = observer(({ children }) => {
+  if (userStore.checkAuth()) {
+    return children;
+  } else {
+    return AuthForm;
+  }
+});
 
 const router = createBrowserRouter([
   {
@@ -46,20 +51,29 @@ const router = createBrowserRouter([
       },
       {
         path: LibraryPageRoute,
-        element: <LibraryPage />,
-        loader: checkAuth,
+        element: (
+          <PrivatePage>
+            <LibraryPage />
+          </PrivatePage>
+        ),
         errorElement: AuthForm,
       },
       {
         path: AccountPageRoute,
-        element: <AccountPage />,
-        loader: checkAuth,
+        element: (
+          <PrivatePage>
+            <AccountPage />
+          </PrivatePage>
+        ),
         errorElement: AuthForm,
       },
       {
         path: PublishBookPageRoute,
-        element: <PublishBookPage />,
-        loader: checkAuth,
+        element: (
+          <PrivatePage>
+            <PublishBookPage />
+          </PrivatePage>
+        ),
         errorElement: AuthForm,
       },
       {

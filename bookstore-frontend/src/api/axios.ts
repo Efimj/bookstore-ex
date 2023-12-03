@@ -1,5 +1,7 @@
 import axios from "axios";
 import api from "./const";
+import userStore from "../store/UserStore";
+import UserStore from "../store/UserStore";
 
 const $api = axios.create({
   withCredentials: true,
@@ -26,13 +28,13 @@ $api.interceptors.response.use(
       error.config._isRetry !== true
     ) {
       originalRequest._isRetry = true;
-      try { 
+      try {
         const response = await axios.post(
           api.refresh,
           {},
-          { headers: { 'authorization': `Bearer ${localStorage.access_token}` }},
+          { headers: { authorization: `Bearer ${localStorage.access_token}` } }
         );
-       
+
         console.log(response.data.accessToken);
         console.log(response.data.response);
         localStorage.access_token = response.data.access_token;
@@ -41,6 +43,7 @@ $api.interceptors.response.use(
         console.log(error);
       }
     }
+    UserStore.logOutUser();
     throw error;
   }
 );

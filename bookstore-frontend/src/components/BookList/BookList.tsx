@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import { FC, ReactNode, useEffect } from "react";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -60,20 +60,48 @@ const BookList: FC<IBookList> = ({
           sx={{
             marginRight: ".5rem",
             marginLeft: ".5rem",
-            marginBottom: ".5rem",
+            marginBottom: "1rem",
             width: { xs: "45%", sm: "150px", md: "200px" },
           }}
         >
           {firstItem}
         </Box>
       )}
+      {books.length === 0 &&
+        isLoading &&
+        [...Array(10)].map((index) => {
+          return (
+            <Box
+              sx={{
+                marginRight: ".5rem",
+                marginLeft: ".5rem",
+                marginBottom: "1rem",
+                width: { xs: "45%", sm: "150px", md: "200px" },
+              }}
+              key={index}
+            >
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  width: {
+                    xs: "45%",
+                    sm: "150px",
+                    md: "200px",
+                    borderRadius: ".75rem",
+                  },
+                }}
+                height={350}
+              />
+            </Box>
+          );
+        })}
       {books.map((book, index) => {
         return (
           <Box
             sx={{
               marginRight: ".5rem",
               marginLeft: ".5rem",
-              marginBottom: ".5rem",
+              marginBottom: "1rem",
               width: { xs: "45%", sm: "150px", md: "200px" },
             }}
             key={index}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getBooks } from "../../api/book";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import HugeBookBanner from "../../components/HugeBookBanner/HugeBookBanner";
-import { Box, Typography } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import CustomCarousel from "../../components/CustomCarousel/CustomCarousel";
 import BookBanner from "../../components/BookBanner/BookBanner";
 import { useNavigate } from "react-router-dom";
@@ -48,8 +48,6 @@ export default function BookCatalog(props: IBookCatalog) {
   const handleBookClick = (bookId: number) => {
     navigate(NavigateBookPageRoute(bookId.toString()));
   };
-
-  if (books.length === 0) return;
 
   return (
     <PageWrapper>
@@ -103,6 +101,25 @@ export default function BookCatalog(props: IBookCatalog) {
                 />
               </Box>
             ))}
+            {books.length === 0 &&
+              isLoading &&
+              [...Array(3)].map((index) => {
+                return (
+                  <Box
+                    sx={{
+                      marginRight: ".5rem",
+                      marginLeft: ".5rem",
+                    }}
+                    key={index}
+                  >
+                    <Skeleton
+                      variant="rectangular"
+                      height={250}
+                      sx={{ width: "100%", borderRadius: ".75rem" }}
+                    />
+                  </Box>
+                );
+              })}
           </CustomCarousel>
         </Box>
         <Typography
@@ -137,6 +154,31 @@ export default function BookCatalog(props: IBookCatalog) {
             </Box>
           );
         })}
+        {books.length === 0 &&
+          isLoading &&
+          chunkArray([...Array(15)], 7).map((group, index) => {
+            return (
+              <Box sx={{ paddingBottom: ".5rem" }} key={index}>
+                <CustomCarousel>
+                  {group.map((element, i: number) => (
+                    <Box
+                      sx={{
+                        marginRight: ".5rem",
+                        marginLeft: ".5rem",
+                      }}
+                      key={i}
+                    >
+                      <Skeleton
+                        variant="rectangular"
+                        height={250}
+                        sx={{ width: "100%", borderRadius: ".75rem" }}
+                      />
+                    </Box>
+                  ))}
+                </CustomCarousel>
+              </Box>
+            );
+          })}
       </InfiniteScroll>
     </PageWrapper>
   );

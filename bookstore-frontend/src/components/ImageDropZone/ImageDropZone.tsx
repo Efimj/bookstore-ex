@@ -53,7 +53,7 @@ const ImageDropZone: FC<IImageDropZone> = ({
   });
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Box
         sx={
           disabled
