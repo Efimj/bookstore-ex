@@ -17,10 +17,10 @@ return new class extends Migration {
             $table->id('check_id');
             $table->foreignId('book_id')->constrained(
                 table: 'books', column: 'book_id', indexName: 'check_book_id'
-            );
+            )->on('books')->onDelete('cascade');
             $table->foreignId('user_id')->constrained(
                 table: 'users', column: 'user_id', indexName: 'check_user_id'
-            );
+            )->on('users')->onDelete('cascade');
             $table->unsignedDouble('price');
             $table->timestamps();
             $table->date('date');

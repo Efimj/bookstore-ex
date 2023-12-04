@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->id('genre_book_id');
             $table->foreignId('genre_id')->constrained(
                 table: 'genres', column: 'genre_id', indexName: 'genre_book_genre_id'
-            );
+            )->on('genres')->onDelete('cascade');
             $table->foreignId('book_id')->constrained(
                 table: 'books', column: 'book_id', indexName: 'genre_book_book_id'
-            );
+            )->on('books')->onDelete('cascade');
 
             // indexes
             $table->index('genre_id');

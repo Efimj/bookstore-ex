@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id('book_id');
             $table->foreignId('age_restriction_id')->constrained(
                 table: 'age_restrictions', column: 'age_restriction_id', indexName: 'book_age_restriction_id'
-            );
+            )->on('age_restrictions')->onDelete('cascade');
             $table->text('title');
             $table->text('description');
             $table->integer('page_count');
@@ -30,6 +30,21 @@ return new class extends Migration {
             $table->index('page_count');
             $table->index('publication_date');
         });
+
+        // Create a trigger
+        DB::unprepared('
+CREATE TRIGGER before_delete_book
+BEFORE DELETE ON books FOR EACH ROW
+BEGIN
+  DELETE FROM book_authors WHERE book_id = OLD.book_id;
+  DELETE FROM wishes WHERE book_id = OLD.book_id;
+  DELETE FROM checks WHERE book_id = OLD.book_id;
+  DELETE FROM offers WHERE book_id = OLD.book_id;
+  DELETE FROM discounts WHERE offer_id IN (SELECT offer_id FROM offers WHERE book_id = OLD.book_id);
+  DELETE FROM reviews WHERE book_id = OLD.book_id;
+  DELETE FROM genre_books WHERE book_id = OLD.book_id;
+END;
+        ');
     }
 
     /**

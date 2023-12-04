@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id('offer_id');
             $table->foreignId('book_id')->constrained(
                 table: 'books', column: 'book_id', indexName: 'offer_book_id'
-            );
+            )->on('books')->onDelete('cascade');
             $table->unsignedDouble('price');
             $table->timestamps();
 

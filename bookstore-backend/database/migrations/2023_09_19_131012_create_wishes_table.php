@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->id('wish_id');
             $table->foreignId('book_id')->constrained(
                 table: 'books', column: 'book_id', indexName: 'wish_book_id'
-            );
+            )->on('books')->onDelete('cascade');
             $table->foreignId('user_id')->constrained(
                 table: 'users',  column: 'user_id', indexName: 'wish_user_id'
-            );
+            )->on('users')->onDelete('cascade');
             $table->timestamps();
 
             // indexes

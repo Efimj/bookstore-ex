@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->id("review_id");
             $table->foreignId('book_id')->constrained(
                 table: 'books', column: 'book_id', indexName: 'review_book_id'
-            );
+            )->on('books')->onDelete('cascade');
             $table->foreignId('user_id')->constrained(
                 table: 'users',  column: 'user_id', indexName: 'review_user_id'
-            );
+            )->on('users')->onDelete('cascade');
             $table->text('description');
             $table->unsignedTinyInteger('rating');
             $table->timestamps();

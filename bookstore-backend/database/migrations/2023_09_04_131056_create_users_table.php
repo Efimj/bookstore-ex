@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id('user_id');
             $table->foreignId('user_type_id')->constrained(
                 table: 'user_types', column: 'user_type_id', indexName: 'user_user_type_id'
-            );
+            )->on('user_types')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->dateTime('birthday');
@@ -30,6 +30,19 @@ return new class extends Migration {
             $table->fullText('email');
             $table->unique('email');
         });
+
+        // Create a trigger
+        DB::unprepared('
+CREATE TRIGGER before_delete_user
+BEFORE DELETE ON users FOR EACH ROW
+BEGIN
+  DELETE FROM wishes WHERE user_id = OLD.user_id;
+  DELETE FROM book_authors WHERE user_id = OLD.user_id;
+  DELETE FROM checks WHERE user_id = OLD.user_id;
+  DELETE FROM reviews WHERE user_id = OLD.user_id;
+END;
+        ');
+
     }
 
     /**

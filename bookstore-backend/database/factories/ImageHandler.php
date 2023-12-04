@@ -28,7 +28,7 @@ class ImageHandler
         $imageContent = file_get_contents('https://source.unsplash.com/random/' . $width . 'x' . $height . '/?' . $tag);
         $filename = 'image_' . uniqid() . '.jpg';
         $disk = self::PathToFolder;
-        self::saveToDisk($filename, $imageContent, $disk);
+        Storage::disk($disk)->put($filename, $imageContent);
         return $filename;
     }
 
