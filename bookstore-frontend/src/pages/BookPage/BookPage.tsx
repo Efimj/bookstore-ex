@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import IBook from "../../interfaces/IBook";
 import {
   getBookAuthors,
@@ -18,13 +18,16 @@ import BookPageContent from "./BookPageContent";
 import IBookEvaluations from "../../interfaces/IBookEvaluations";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
 import IBookSate from "../../interfaces/IBookSate";
+import { NavigateBookCatalogRoute } from "../BookCatalog/BookCatalog";
 
 export interface IBookPage {}
 
 export const BookPageRoute = "/book/:bookId";
-export const NavigateBookPageRoute = (bookId: string):string => `/book/${bookId}`;
+export const NavigateBookPageRoute = (bookId: string): string =>
+  `/book/${bookId}`;
 
 const BookPage: FC<IBookPage> = () => {
+  const navigate = useNavigate();
   const { bookId } = useParams();
   const [book, setBook] = useState<IBook | null>(null);
   const [authors, setAuthors] = useState<IUser[]>([]);
@@ -36,11 +39,17 @@ const BookPage: FC<IBookPage> = () => {
   useEffect(() => {
     async function get() {
       if (!bookId) return;
+      let book: IBook;
       try {
-        const book = await getBook(bookId);
+        book = await getBook(bookId);
         if (book?.book_id) setBook(book);
       } catch (error) {
         console.log(error);
+        return;
+      }
+      if (book === null) {
+        navigate(NavigateBookCatalogRoute());
+        return;
       }
       try {
         const evaluations = await getBookEvaluations(bookId);

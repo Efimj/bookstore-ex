@@ -85,3 +85,44 @@ export async function getAuthorsByEmail(
   );
   return response.data;
 }
+
+export interface PublishBookData {
+  title: string;
+  description: string;
+  image: File;
+  pages: number;
+  authors: number[];
+  ageRestrictions: number;
+  publicationDate: Date;
+}
+
+export function createFormData(bookData: PublishBookData): FormData {
+  const formData = new FormData();
+  formData.append("title", bookData.title);
+  formData.append("description", bookData.description);
+  formData.append("image", bookData.image);
+  formData.append("pages", bookData.pages.toString());
+
+  formData.append(`authors`, JSON.stringify(bookData.authors));
+
+  formData.append("ageRestrictions", bookData.ageRestrictions.toString());
+
+  const dateString = bookData.publicationDate.toISOString();
+  formData.append("publicationDate", dateString);
+
+  return formData;
+}
+
+export async function postPublishBook(data: PublishBookData): Promise<string> {
+  const response: AxiosResponse<string> = await $api.post(
+    `${api.publish_book}`,
+    createFormData(data),
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}

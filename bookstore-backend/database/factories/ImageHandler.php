@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
  */
 class ImageHandler
 {
+    const PathToFolder = 'public';
+
     /**
      * @param $path
      * @return string
@@ -25,9 +27,19 @@ class ImageHandler
     {
         $imageContent = file_get_contents('https://source.unsplash.com/random/' . $width . 'x' . $height . '/?' . $tag);
         $filename = 'image_' . uniqid() . '.jpg';
-        $disk = 'public';
-        Storage::disk($disk)->put($filename, $imageContent);
+        $disk = self::PathToFolder;
+        self::saveToDisk($filename, $imageContent, $disk);
         return $filename;
+    }
+
+    public static function makeUniqueFileName($image): string
+    {
+        return $filename = 'image_' . uniqid() . '.' . $image->getClientOriginalExtension();
+    }
+
+    public static function saveToDisk($filename, $imageContent, $disk): void
+    {
+        Storage::putFileAs($disk, $imageContent, $filename);
     }
 }
 

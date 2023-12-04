@@ -17,7 +17,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
     MuiMenu: {
       styleOverrides: {
         paper: {
-          borderRadius: BorderRadius,
+          borderRadius: "1rem",
         },
       },
     },

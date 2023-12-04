@@ -18,6 +18,8 @@ class Book extends Model
         'title',
         'description',
         'image',
+        'page_count',
+        'publication_date',
     ];
 
     public function bookAuthors(): HasMany

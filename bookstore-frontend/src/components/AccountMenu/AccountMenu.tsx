@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   Tooltip,
+  Typography,
   useTheme,
 } from "@mui/material";
 import { FC, useState } from "react";
@@ -146,7 +147,16 @@ const AccountMenu: FC<IAccountMenu> = observer(({}) => {
             {...(user.image && { alt: user.first_name, src: user.image })}
             {...(!user.image && stringAvatar(user.first_name, user.last_name))}
           />
-          {user.first_name + " " + user.last_name}
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            {user.first_name + " " + user.last_name}
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ marginTop: "-4px" }}
+            >
+              {user.email}
+            </Typography>
+          </Box>
         </MenuItem>
         <Divider />
         <MenuItem onClick={togleTheme}>

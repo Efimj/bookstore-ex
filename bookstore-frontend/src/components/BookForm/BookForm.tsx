@@ -48,7 +48,7 @@ const minAuthorsCount = 0;
 const maxAuthorsCount = 30;
 
 const defaultAgeRestriction: IAgeRestrictions = {
-  age_restrictions_id: 2,
+  age_restriction_id: 2,
   name: "adolescents",
 };
 
@@ -95,6 +95,7 @@ const BookForm: FC<IBookForm> = ({
   onPublish,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [ageRestrictions, setAgeRestrictions] = useState<IAgeRestrictions[]>(
     []
   );
@@ -119,7 +120,17 @@ const BookForm: FC<IBookForm> = ({
 
   const handlePublish = async (values: PublishBookFormValues) => {
     setLoading(true);
-    await onPublish(values);
+    try {
+      await onPublish(values);
+    } catch (e) {
+      console.log(e)
+      if (e instanceof Error) {
+        setError(e.message);
+        setLoading(false);
+        return;
+      }
+    }
+    setError("");
     setLoading(false);
   };
 
@@ -309,12 +320,13 @@ const BookForm: FC<IBookForm> = ({
               size="small"
               value={formik.values.ageRestrictions}
               onChange={(e, value) => {
+                console.log(value);
                 formik.setFieldValue("ageRestrictions", value);
               }}
               getOptionLabel={(option) => option.name}
               disableClearable
               isOptionEqualToValue={(option, value) => {
-                return option.name === value.name;
+                return option.age_restriction_id === value.age_restriction_id;
               }}
               renderInput={(params) => (
                 <TextField
@@ -400,9 +412,23 @@ const BookForm: FC<IBookForm> = ({
             sx={{
               display: "flex",
               width: "100%",
-              justifyContent: "flex-end",
+              alignContent: "center",
             }}
           >
+            <Typography
+              variant="body1"
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+                pr: "1rem",
+              }}
+              color="error"
+            >
+              {error}
+            </Typography>
             <Button
               sx={{ borderRadius: ".5rem" }}
               size="large"

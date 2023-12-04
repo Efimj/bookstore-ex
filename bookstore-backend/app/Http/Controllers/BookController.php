@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\BookAuthor;
 use App\Models\User;
 use App\Models\UserType;
 use Database\Factories\ImageHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends BaseController
 {
@@ -40,10 +43,59 @@ class BookController extends BaseController
             ->take($limit)
             ->get()->map(function ($user) {
                 $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
-                return$user;
+                return $user;
             })->toArray();
 
         return $users;
+    }
+
+    public function publishBook(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Adjust file type and size as needed
+            'pages' => 'required|integer',
+            'authors' => 'required|string',
+            'ageRestrictions' => 'required|integer',
+            'publicationDate' => 'required|date',
+        ]);
+
+        $user = Auth::user();
+        $publisher_id = $user->user_id;
+
+        $title = $request->input('title');
+        $description = $request->input('description');
+        $image = $request->file('image');
+        $pages = $request->input('pages');
+        $authors = json_decode($request->input('authors'));
+        $ageRestrictions = $request->input('ageRestrictions');
+        $publicationDate = Carbon::parse($request->input('publicationDate'))->toDateTimeString();
+
+        $imageName = ImageHandler::makeUniqueFileName($image);
+        ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
+
+        $book = Book::create([
+            'age_restriction_id' => $ageRestrictions,
+            'title' => $title,
+            'description' => $description,
+            'page_count' => $pages,
+            'image' => $imageName,
+            'publication_date' => $publicationDate,
+        ]);
+
+        $bookId = $book->book_id;
+
+        $authors[] = $publisher_id;
+        $uniqueAuthors = array_unique($authors);
+        foreach ($uniqueAuthors as $authorId) {
+            BookAuthor::create([
+                'book_id' => $bookId,
+                'user_id' => $authorId,
+            ]);
+        }
+
+        return $bookId;
     }
 
     public function book(Request $request)

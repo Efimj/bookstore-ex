@@ -48,7 +48,7 @@ Route::group([
     'middleware' => 'jwt.auth',
 ], function ($router) {
     Route::get('/account', [UserController::class, 'account']);
-//    Route::get('/my_library', [UserController::class, 'myLibrary']);
+    Route::post('/publish_book', [BookController::class, 'publishBook']);
 });
 
 

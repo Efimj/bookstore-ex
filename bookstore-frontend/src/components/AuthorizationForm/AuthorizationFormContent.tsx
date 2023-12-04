@@ -51,16 +51,15 @@ const AuthorizationFormContent: FC<IAuthorizationFormContent> = ({
 
   const handleSignIn = async (values: AuthorizationFormValues) => {
     setLoading(true);
-    if (
+    try {
       await userStore.signIn(
         values.email.trim(),
         values.password.trim(),
         values.saveStatus
-      )
-    ) {
+      );
       onSignIn();
       setSignInError("");
-    } else {
+    } catch (error) {
       setSignInError("Occurred error. Check your details or try again later");
     }
     setLoading(false);

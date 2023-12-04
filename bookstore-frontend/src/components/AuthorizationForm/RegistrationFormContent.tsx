@@ -84,7 +84,6 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
   const handleSignUp = (values: RegistrationFormValues) => {
     setLoading(true);
     onSignUp();
-    console.log(values);
     setLoading(false);
   };
 

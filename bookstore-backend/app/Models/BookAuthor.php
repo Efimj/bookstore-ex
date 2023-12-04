@@ -12,6 +12,11 @@ class BookAuthor extends Model
 
     protected $primaryKey = 'book_author_id';
 
+    protected $fillable = [
+        'book_id',
+        'user_id',
+    ];
+
     public function author(): HasOne
     {
         return $this->hasOne(User::class, 'user_id', 'user_id');
