@@ -45,6 +45,54 @@ BEGIN
   DELETE FROM genre_books WHERE book_id = OLD.book_id;
 END;
         ');
+
+        // Create a procedure and functions
+        DB::unprepared('
+CREATE PROCEDURE GetBooksWithDiscountInPeriod(
+    IN p_start_date DATE,
+    IN p_end_date DATE
+)
+BEGIN
+    SELECT b.*, d.price AS discount_price
+    FROM books b
+    LEFT JOIN offers o ON b.book_id = o.book_id
+    LEFT JOIN discounts d ON o.offer_id = d.offer_id
+    WHERE (o.price < d.price OR d.price IS NULL)
+          AND o.created_at BETWEEN p_start_date AND p_end_date;
+END;
+        ');
+
+        DB::unprepared('
+CREATE PROCEDURE GetAverageRatingForBook(
+    IN p_book_id BIGINT,
+    OUT p_avg_rating DECIMAL(3,2)
+)
+BEGIN
+    SELECT AVG(rating) INTO p_avg_rating
+    FROM reviews
+    WHERE book_id = p_book_id;
+END;
+        ');
+
+//        DB::unprepared('
+//CREATE FUNCTION GetReviewCountForBook(IN p_book_id BIGINT)
+//RETURNS INT
+//BEGIN
+//    DECLARE review_count INT;
+//    SELECT COUNT(review_id) INTO review_count FROM reviews WHERE book_id = p_book_id;
+//    RETURN review_count;
+//END ;
+//        ');
+
+//        DB::unprepared('
+//CREATE FUNCTION GetAverageRatingForBook(IN p_book_id BIGINT)
+//RETURNS DECIMAL(3,2)
+//BEGIN
+//    DECLARE avg_rating DECIMAL(3,2);
+//    SELECT AVG(rating) INTO avg_rating FROM reviews WHERE book_id = p_book_id;
+//    RETURN COALESCE(avg_rating, 0.0);
+//END;
+//        ');
     }
 
     /**

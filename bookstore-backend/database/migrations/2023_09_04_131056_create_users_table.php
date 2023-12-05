@@ -43,6 +43,34 @@ BEGIN
 END;
         ');
 
+        // Create a procedures
+        DB::unprepared('
+CREATE PROCEDURE GetTopUsersByPurchases(
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_limit INT
+)
+BEGIN
+    SELECT u.*, COUNT(c.check_id) AS total_purchases
+    FROM users u
+    LEFT JOIN checks c ON u.user_id = c.user_id
+    WHERE c.date BETWEEN p_start_date AND p_end_date
+    GROUP BY u.user_id
+    ORDER BY total_purchases DESC
+    LIMIT p_limit;
+END;
+        ');
+
+//        DB::unprepared('
+//CREATE FUNCTION GetPurchaseCountForUser(IN p_user_id BIGINT)
+//RETURNS INT
+//BEGIN
+//    DECLARE purchase_count INT;
+//    SELECT COUNT(check_id) INTO purchase_count FROM checks WHERE user_id = p_user_id;
+//    RETURN purchase_count;
+//END ;
+//        ');
+
     }
 
     /**
