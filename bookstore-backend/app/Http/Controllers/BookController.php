@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\BookAuthor;
+use App\Models\Check;
 use App\Models\User;
 use App\Models\UserType;
 use Database\Factories\ImageHandler;
@@ -86,6 +87,12 @@ class BookController extends BaseController
 
         $bookId = $book->book_id;
 
+        Check::create([
+            'book_id' => $bookId,
+            'user_id' => $publisher_id,
+            'price' => 0,
+        ]);
+
         $authors[] = $publisher_id;
         $uniqueAuthors = array_unique($authors);
         foreach ($uniqueAuthors as $authorId) {
@@ -120,12 +127,16 @@ class BookController extends BaseController
             return null;
         }
 
-        $wish = User::find($user->user_id)->wishes->where('book_id', $book_id)->first();
-        $review = User::find($user->user_id)->reviews->where('book_id', $book_id)->first();
-        $check = User::find($user->user_id)->checks->where('book_id', $book_id)->first();
+        $user = User::find($user->user_id);
+
+        $wish = $user->wishes->where('book_id', $book_id)->first();
+        $review = $user->reviews->where('book_id', $book_id)->first();
+        $check = $user->checks->where('book_id', $book_id)->first();
+        $isAuthor = $user->bookAuthors->where('book_id', $book_id)->first();
 
         return [
             'book_id' => $book_id,
+            'author' => $isAuthor,
             'review' => $review,
             'check' => $check,
             'wish' => $wish,

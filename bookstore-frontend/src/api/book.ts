@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import api from "./const";
-import IBook from "../interfaces/IBook";
 import IUser from "../interfaces/IAuthor";
 import IBookOffer from "../interfaces/IBookOffer";
 import IBookDiscount from "../interfaces/IBookDiscount";

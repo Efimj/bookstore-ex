@@ -19,6 +19,7 @@ import UserCard from "../../components/UserCard/UserCard";
 import BookPurchaseModal from "../../components/BookPurchaseModal/BookPurchaseModal";
 import { observer } from "mobx-react-lite";
 import userStore from "../../store/UserStore";
+import BookEditMenu from "./BookEditMenu";
 
 const BookInformation: FC<IBookPageItem> = observer(
   ({ book, bookSate, updateBookState }) => {
@@ -27,10 +28,12 @@ const BookInformation: FC<IBookPageItem> = observer(
       useState<boolean>(false);
 
     const getBookBuyButtonText = (): string => {
-      if (bookSate?.check) return `In library`;
-      if (book.offer == null) return "not for sale";
-      if (book.discount != null) return `Buy for ${book.discount.price} usd.`;
-      return `Buy for ${book.offer.price} usd.`;
+      let inLibrary = "";
+      if (bookSate?.check) inLibrary = `In library`;
+      if (book.offer == null) return `not for sale ${inLibrary}`;
+      if (book.discount != null)
+        return `Buy for ${book.discount.price} usd. ${inLibrary}`;
+      return `Buy for ${book.offer.price} usd. ${inLibrary}`;
     };
 
     const handleAuthorNavigation = (position: string) => {
@@ -168,35 +171,46 @@ const BookInformation: FC<IBookPageItem> = observer(
                 width: { xs: "100%", sm: "fit-content" },
               }}
             >
-              <Button
+              <Box
                 sx={{
-                  textTransform: "none",
-                  borderRadius: "10px",
-                }}
-                disabled={book?.offer == null || bookSate?.check ? true : false}
-                disableElevation={true}
-                variant="contained"
-                onClick={() => {
-                  setPurchaseDialogOpened(true);
+                  display: "flex",
+                  gap: "0.5rem",
+                  width: { xs: "100%", sm: "fit-content" },
                 }}
               >
-                <Box sx={{ display: "flex", gap: ".5rem" }}>
-                  {book?.discount && (
-                    <Typography
-                      variant="body1"
-                      color={"#FFFFFF"}
-                      sx={{ opacity: ".7", textDecoration: "line-through" }}
-                    >
-                      {book?.offer && `${book?.offer.price} usd.`}
+                <Button
+                  sx={{
+                    textTransform: "none",
+                    width: "100%",
+                  }}
+                  disabled={
+                    book?.offer == null || bookSate?.check ? true : false
+                  }
+                  disableElevation={true}
+                  variant="contained"
+                  onClick={() => {
+                    setPurchaseDialogOpened(true);
+                  }}
+                >
+                  <Box sx={{ display: "flex", gap: ".5rem" }}>
+                    {book?.discount && (
+                      <Typography
+                        variant="body1"
+                        color={"#FFFFFF"}
+                        sx={{ opacity: ".7", textDecoration: "line-through" }}
+                      >
+                        {book?.offer && `${book?.offer.price} usd.`}
+                      </Typography>
+                    )}
+                    <Typography variant="body1" color={"#FFFFFF"}>
+                      {getBookBuyButtonText()}
                     </Typography>
-                  )}
-                  <Typography variant="body1" color={"#FFFFFF"}>
-                    {getBookBuyButtonText()}
-                  </Typography>
-                </Box>
-              </Button>
+                  </Box>
+                </Button>
+                {bookSate?.author && <BookEditMenu book={book} />}
+              </Box>
               <Button
-                sx={{ textTransform: "none", borderRadius: "10px" }}
+                sx={{ textTransform: "none" }}
                 variant="outlined"
                 onClick={() => {
                   bookSate?.wish
