@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Check;
 use App\Models\User;
 use Database\Factories\ImageHandler;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -32,6 +33,34 @@ class UserController extends Controller
         $user['user_type_name'] = $user->userType->name;
         $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
         return $user;
+    }
+
+    public function purchaseBook(Request $request)
+    {
+        $user = Auth::user();
+        if ($user == null) return null;
+        $book_id = $request->query('id');
+        $book = Book::find($book_id);
+        $offer = $book->offer;
+        $discount = $offer?->discount;
+
+        $checkPrice = -1;
+
+        if ($discount) {
+            $checkPrice = $discount->price;
+        }
+
+        if ($offer) {
+            $checkPrice = $offer->price;
+        }
+
+        if($checkPrice === -1) return "";
+
+        return Check::create([
+            'book_id' => $book_id,
+            'user_id' => $user->user_id,
+            'price' => $checkPrice,
+        ]);
     }
 
     public function userWishes(Request $request)

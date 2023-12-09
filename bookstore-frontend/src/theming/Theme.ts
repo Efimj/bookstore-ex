@@ -11,6 +11,12 @@ export const getDesignTokens = (mode: PaletteMode) => ({
         outlined: {
           borderRadius: BorderRadius,
         },
+        text: {
+          borderRadius: BorderRadius,
+        },
+        contained: {
+          borderRadius: BorderRadius,
+        },
         outlinedPrimary: {},
       },
     },

@@ -107,8 +107,7 @@ class BookController extends BaseController
             return null;
         }
 
-        $book['image'] = (new ImageHandler())->getImageFromStore($book->image);
-        return $book;
+        return $this->getBookInformation($book);
     }
 
     public function bookState(Request $request)

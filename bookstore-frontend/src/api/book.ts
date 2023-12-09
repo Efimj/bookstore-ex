@@ -20,8 +20,8 @@ export async function getBooks(
   return response.data;
 }
 
-export async function getBook(bookId: string): Promise<IBook> {
-  const response: AxiosResponse<IBook> = await axios.get(
+export async function getBook(bookId: string): Promise<IBookInformation> {
+  const response: AxiosResponse<IBookInformation> = await axios.get(
     `${api.book}?id=${bookId}`
   );
   return response.data;
@@ -35,24 +35,38 @@ export async function getBookState(bookId: string): Promise<IBookSate> {
 }
 
 export async function getBookAuthors(bookId: string): Promise<IUser[]> {
-  const response: AxiosResponse<Array<IUser>> = await axios.get(
-    `${api.book_authors}?id=${bookId}`
-  );
-  return response.data;
+  try {
+    const response: AxiosResponse<Array<IUser>> = await axios.get(
+      `${api.book_authors}?id=${bookId}`
+    );
+    return response.data;
+  } catch (error) {
+    return [];
+  }
 }
 
-export async function getBookOffer(bookId: string): Promise<IBookOffer> {
-  const response: AxiosResponse<IBookOffer> = await axios.get(
-    `${api.book_offer}?id=${bookId}`
-  );
-  return response.data;
+export async function getBookOffer(bookId: string): Promise<IBookOffer | null> {
+  try {
+    const response: AxiosResponse<IBookOffer> = await axios.get(
+      `${api.book_offer}?id=${bookId}`
+    );
+    return response.data;
+  } catch (error) {
+    return null;
+  }
 }
 
-export async function getBookDiscount(bookId: string): Promise<IBookDiscount> {
-  const response: AxiosResponse<IBookDiscount> = await axios.get(
-    `${api.book_discount}?id=${bookId}`
-  );
-  return response.data;
+export async function getBookDiscount(
+  bookId: string
+): Promise<IBookDiscount | null> {
+  try {
+    const response: AxiosResponse<IBookDiscount> = await axios.get(
+      `${api.book_discount}?id=${bookId}`
+    );
+    return response.data;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function getBookEvaluations(

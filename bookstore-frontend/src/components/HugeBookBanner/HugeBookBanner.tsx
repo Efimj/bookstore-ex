@@ -25,7 +25,6 @@ const HugeBookBanner: FC<IHugeBookBanner> = ({ book, onClick }) => {
     return `Buy for ${book?.offer.price} usd.`;
   };
 
-
   return (
     <Card
       sx={{

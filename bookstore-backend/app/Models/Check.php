@@ -12,6 +12,13 @@ class Check extends Model
 
     protected $primaryKey = 'check_id';
 
+    protected $fillable = [
+        'book_id',
+        'user_id',
+        'price',
+        'date',
+    ];
+
     public function book(): HasOne
     {
         return $this->hasOne(Book::class, 'book_id', 'book_id');

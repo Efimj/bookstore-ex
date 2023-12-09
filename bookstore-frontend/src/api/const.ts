@@ -24,6 +24,7 @@ const api = {
   // my_library: server + "my_library",
   // my_publish: server + "my_publish",
   account: server + "account",
+  purchase_book: server + "purchase_book",
 
   // Auth
   login: server + "auth/login",

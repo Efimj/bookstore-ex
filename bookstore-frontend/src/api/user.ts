@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import api from "./const";
 import IUser from "../interfaces/IAuthor";
-import IBook from "../interfaces/IBook";
 import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
+import ICheck from "../interfaces/ICheck";
 
 export async function getUser(userId: string): Promise<IUser> {
   const response: AxiosResponse<IUser> = await axios.get(
@@ -11,6 +11,14 @@ export async function getUser(userId: string): Promise<IUser> {
   );
   return response.data;
 }
+
+export async function purchaseBook(bookId: string): Promise<ICheck> {
+  const response: AxiosResponse<ICheck> = await $api.get(
+    `${api.purchase_book}?id=${bookId}`
+  );
+  return response.data;
+}
+
 
 export async function getUserWishlist(
   userId: string,

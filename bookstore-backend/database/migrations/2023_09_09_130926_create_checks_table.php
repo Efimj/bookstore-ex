@@ -23,7 +23,7 @@ return new class extends Migration {
             )->on('users')->onDelete('cascade');
             $table->unsignedDouble('price');
             $table->timestamps();
-            $table->date('date');
+            $table->date('date')->default(now());;
 
             // indexes
             $table->index('book_id');

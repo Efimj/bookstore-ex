@@ -19,7 +19,7 @@ import BookReviewCard from "../../components/BookReview/BookReview";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
 
-const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
+const BookPageContent: FC<IBookPageItem> = ({ book }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [descriptionOpened, setDescriptionOpened] = useState<boolean>(false);
@@ -33,10 +33,10 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
   };
 
   const getNewReviews = async () => {
-    if (!book?.book_id) return;
+    if (!book?.book?.book_id) return;
 
     const nextReviews = await getBookReviews(
-      book.book_id.toString(),
+      book?.book.book_id.toString(),
       reviews.length,
       countReviewsLoad
     );
@@ -88,7 +88,7 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
               textTransform: "none",
             }}
             onClick={handleClickOpen}
-            disabled={book?.description == null}
+            disabled={book?.book?.description == null}
           >
             <ArrowForwardRoundedIcon />
           </IconButton>
@@ -104,10 +104,12 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
           }}
           color="text.secondary"
         >
-          {book?.description}
+          {book?.book?.description}
         </Typography>
         <Box sx={{ paddingY: "1rem" }}>
-          {bookEvaluations && <BookRating bookEvaluations={bookEvaluations} />}
+          {book?.evaluations?.average_rating && (
+            <BookRating bookEvaluations={book?.evaluations} />
+          )}
         </Box>
         <InfiniteScroll
           dataLength={reviews.length}
@@ -156,7 +158,7 @@ const BookPageContent: FC<IBookPageItem> = ({ book, bookEvaluations }) => {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <Typography gutterBottom>{book?.description}</Typography>
+          <Typography gutterBottom>{book?.book?.description}</Typography>
         </DialogContent>
       </BootstrapDialog>
     </>
