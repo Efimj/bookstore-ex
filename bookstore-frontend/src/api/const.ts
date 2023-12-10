@@ -14,6 +14,7 @@ const api = {
   book_reviews: server + "book_reviews",
   authors_by_email: server + "authors_by_email",
   publish_book: server + "publish_book",
+  edit_book_offer: server + "edit_book_offer",
 
   // User
   user: server + "user",

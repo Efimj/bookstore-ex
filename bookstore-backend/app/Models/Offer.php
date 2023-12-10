@@ -14,6 +14,7 @@ class Offer extends Model
     protected $primaryKey = 'offer_id';
 
     protected $fillable = [
+        'book_id',
         'price',
     ];
 

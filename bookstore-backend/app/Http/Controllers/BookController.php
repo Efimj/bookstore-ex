@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\BookAuthor;
 use App\Models\Check;
+use App\Models\Discount;
+use App\Models\Offer;
 use App\Models\User;
 use App\Models\UserType;
 use Database\Factories\ImageHandler;
@@ -26,6 +28,82 @@ class BookController extends BaseController
         return Book::skip($startFrom)->take($limit)->get()->map(function ($book) {
             return $this->getBookInformation($book);
         })->toArray();
+    }
+
+    private function getUserAndBook($request)
+    {
+        $user = Auth::user();
+        $user = User::find($user->user_id);
+
+        $bookId = $request->input('book_id');
+        $book = Book::find($bookId);
+
+        $userIsAuthor = $book->bookAuthors->where('user_id', $user->user_id)->first();
+        if ($userIsAuthor === null) {
+            abort(404, 'Author not found');
+        }
+
+        return [$user, $book];
+    }
+
+
+    public function editBookOffer(Request $request)
+    {
+        $request->validate([
+            'book_id' => 'required|integer',
+            'price' => 'required|numeric'
+        ]);
+
+        $bookId = $request->input('book_id');
+        $price = $request->input('price');
+        [$user, $book] = $this->getUserAndBook($request);
+
+        $existedOffer = $book->offer;
+
+        if ($existedOffer === null) {
+            return Offer::create([
+                'book_id' => $bookId,
+                'price' => $price,
+            ]);
+        } else {
+            return $existedOffer->update([
+                'book_id' => $bookId,
+                'price' => $price,
+            ]);
+        }
+    }
+
+    public function editBookDiscount(Request $request)
+    {
+        $request->validate([
+            'book_id' => 'required|integer',
+            'price' => 'required|numeric',
+            'expiration_date' => 'required|date'
+        ]);
+
+        $price = $request->input('price');
+        $expirationDate = Carbon::parse($request->input('expiration_date'))->toDateTimeString();
+
+        [$user, $book] = $this->getUserAndBook($request);
+
+        $existedOffer = $book->offer;
+
+        if ($existedOffer === null) abort(404, 'Offer not found');
+
+        $existedDiscount = $existedOffer->discount;
+
+        if ($existedDiscount === null) {
+            return Discount::create([
+                'offer_id' => $existedOffer->offer_id,
+                'price' => $price,
+                'expiration_date' => $expirationDate,
+            ]);
+        } else {
+            return $existedDiscount->update([
+                'price' => $price,
+                'expiration_date' => $expirationDate,
+            ]);
+        }
     }
 
     public function authorsByEmail(Request $request): array

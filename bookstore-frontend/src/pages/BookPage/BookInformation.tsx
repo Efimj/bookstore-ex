@@ -19,7 +19,7 @@ import UserCard from "../../components/UserCard/UserCard";
 import BookPurchaseModal from "../../components/BookPurchaseModal/BookPurchaseModal";
 import { observer } from "mobx-react-lite";
 import userStore from "../../store/UserStore";
-import BookEditMenu from "./BookEditMenu";
+import BookEditMenu from "../../components/BookEditMenu/BookEditMenu";
 
 const BookInformation: FC<IBookPageItem> = observer(
   ({ book, bookSate, updateBookState }) => {
@@ -207,7 +207,12 @@ const BookInformation: FC<IBookPageItem> = observer(
                     </Typography>
                   </Box>
                 </Button>
-                {bookSate?.author && <BookEditMenu book={book} />}
+                {bookSate?.author && (
+                  <BookEditMenu
+                    refreshBookState={updateBookState}
+                    book={book}
+                  />
+                )}
               </Box>
               <Button
                 sx={{ textTransform: "none" }}

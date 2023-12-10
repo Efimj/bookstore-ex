@@ -8,6 +8,7 @@ import IBookReview from "../interfaces/IBookReview";
 import IBookSate from "../interfaces/IBookSate";
 import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
+import { BookEditOfferFormValues } from "../components/BookEditMenu/BookEditOfferModal";
 
 export async function getBooks(
   startFrom: number,
@@ -130,6 +131,27 @@ export async function postPublishBook(data: PublishBookData): Promise<string> {
   const response: AxiosResponse<string> = await $api.post(
     `${api.publish_book}`,
     createFormData(data),
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function postUpdateBookOffer(
+  book_id: number,
+  data: BookEditOfferFormValues
+): Promise<string> {
+  const formData = new FormData();
+  formData.append("book_id", book_id.toString());
+  formData.append("price", data.price.toString());
+
+  const response: AxiosResponse<string> = await $api.post(
+    `${api.edit_book_offer}`,
+    formData,
     {
       headers: {
         "Content-Type": "multipart/form-data",
