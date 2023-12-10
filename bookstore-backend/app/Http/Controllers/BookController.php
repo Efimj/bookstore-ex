@@ -106,6 +106,27 @@ class BookController extends BaseController
         }
     }
 
+    public function deleteBookDiscount(Request $request)
+    {
+        $bookId = $request->query('id');
+
+        $user = Auth::user();
+        $user = User::find($user->user_id);
+        $book = Book::find($bookId);
+
+        $userIsAuthor = $book->bookAuthors->where('user_id', $user->user_id)->first();
+        if ($userIsAuthor === null) {
+            abort(404, 'Author not found');
+        }
+
+        $existedOffer = $book->offer;
+
+        if ($existedOffer === null) abort(404, 'Offer not found');
+
+        $existedDiscount = $existedOffer->discount;
+        return $existedDiscount->delete();
+    }
+
     public function authorsByEmail(Request $request): array
     {
         $email = $request->query('email', "");

@@ -118,7 +118,13 @@ const BookEditOfferModal: FC<IBookEditOfferModal> = ({
           onSubmit={formik.handleSubmit}
           action=""
         >
-          <DialogContent sx={{ display: "flex" }}>
+          <DialogContent
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: { xs: "1rem", sm: "0" },
+            }}
+          >
             <CardMedia
               component="img"
               alt="451 degrees Fahrenheit.jpeg"
@@ -135,7 +141,7 @@ const BookEditOfferModal: FC<IBookEditOfferModal> = ({
                 display: "flex",
                 width: "100%",
                 flexDirection: "column",
-                marginLeft: "1rem",
+                marginLeft: { xs: "0rem", sm: "1rem" },
                 alignContent: "space-between",
               }}
             >

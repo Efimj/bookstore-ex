@@ -5,6 +5,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import React from "react";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import BookEditOfferModal from "./BookEditOfferModal";
+import BookEditDiscountModal from "./BookEditDiscountModal";
 
 export interface IBookEditMenu {
   book: IBookInformation;
@@ -51,7 +52,11 @@ const BookEditMenu: FC<IBookEditMenu> = ({ book, refreshBookState }) => {
           {book?.offer?.book_id ? "Edit offer" : "Create offer"}
         </MenuItem>
         {book?.offer?.book_id && (
-          <MenuItem onClick={() => {}}>
+          <MenuItem
+            onClick={() => {
+              setEditDiscount(true);
+            }}
+          >
             {book?.discount?.discount_id ? "Edit discount" : "Create discount"}
           </MenuItem>
         )}
@@ -65,6 +70,17 @@ const BookEditMenu: FC<IBookEditMenu> = ({ book, refreshBookState }) => {
         onOfferChange={async () => {
           await refreshBookState();
           setEditOffer(false);
+        }}
+      />
+      <BookEditDiscountModal
+        book={book}
+        isOpened={editDiscount}
+        onCancel={() => {
+          setEditDiscount(false);
+        }}
+        onOfferChange={async () => {
+          await refreshBookState();
+          setEditDiscount(false);
         }}
       />
     </>

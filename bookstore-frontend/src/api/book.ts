@@ -9,6 +9,7 @@ import IBookSate from "../interfaces/IBookSate";
 import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
 import { BookEditOfferFormValues } from "../components/BookEditMenu/BookEditOfferModal";
+import { BookEditDiscountFormValues } from "../components/BookEditMenu/BookEditDiscountModal";
 
 export async function getBooks(
   startFrom: number,
@@ -159,5 +160,35 @@ export async function postUpdateBookOffer(
     }
   );
 
+  return response.data;
+}
+
+export async function postUpdateBookDiscount(
+  book_id: number,
+  data: BookEditDiscountFormValues
+): Promise<string> {
+  const formData = new FormData();
+  formData.append("book_id", book_id.toString());
+  formData.append("price", data.price.toString());
+  const dateString = data.expirationDate.toISOString();
+  formData.append("expiration_date", dateString);
+
+  const response: AxiosResponse<string> = await $api.post(
+    `${api.edit_book_discount}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function getDeleteBookDiscount(bookId: number): Promise<boolean> {
+  const response: AxiosResponse<boolean> = await $api.get(
+    `${api.delete_book_discount}?id=${bookId}`
+  );
   return response.data;
 }

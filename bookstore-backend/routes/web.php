@@ -52,6 +52,7 @@ Route::group([
     Route::post('/publish_book', [BookController::class, 'publishBook']);
     Route::post('/edit_book_offer', [BookController::class, 'editBookOffer']);
     Route::post('/edit_book_discount', [BookController::class, 'editBookDiscount']);
+    Route::get('/delete_book_discount', [BookController::class, 'deleteBookDiscount']);
 });
 
 
