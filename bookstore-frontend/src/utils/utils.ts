@@ -48,3 +48,21 @@ export function getFormattedDate(date:Date): string {
 
   return `${day}.${month}.${year}`;
 }
+
+export function getFileFromBase64(string64: string, fileName: string) {
+  const base64String = string64.split(",")[1];
+  const imageContent = window.atob(base64String);
+  const buffer = new ArrayBuffer(imageContent.length);
+  const view = new Uint8Array(buffer);
+
+  for (let n = 0; n < imageContent.length; n++) {
+    view[n] = imageContent.charCodeAt(n);
+  }
+
+  const type = "image/jpeg";
+  const blob = new Blob([buffer], { type });
+  return new File([blob], fileName, {
+    lastModified: new Date().getTime(),
+    type,
+  });
+}

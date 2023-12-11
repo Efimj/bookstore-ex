@@ -22,10 +22,13 @@ import AuthorSelector from "../AuthorSelector/AuthorSelector";
 import ImageDropZone from "../ImageDropZone/ImageDropZone";
 import PageWrapper from "../PageWrapper/PageWrapper";
 import IUser from "../../interfaces/IAuthor";
+import { IBookInformation } from "../../interfaces/IBookInformation";
+import { getFileFromBase64 } from "../../utils/utils";
 
 export interface IBookForm {
-  defaultValues?: PublishBookFormValues;
-  onPublish: (values: PublishBookFormValues) => void;
+  book?: IBookInformation;
+  onCancel?: () => void;
+  onPublish: (values: PublishBookFormValues) => Promise<void>;
 }
 
 export interface PublishBookFormValues {
@@ -50,16 +53,6 @@ const maxAuthorsCount = 30;
 const defaultAgeRestriction: IAgeRestrictions = {
   age_restriction_id: 2,
   name: "adolescents",
-};
-
-const defaultFormValues: PublishBookFormValues = {
-  title: "",
-  description: "",
-  image: null,
-  pages: minPageCount,
-  authors: [],
-  ageRestrictions: defaultAgeRestriction,
-  publicationDate: dayjs(Date.now()),
 };
 
 const SigninSchema = Yup.object().shape({
@@ -91,7 +84,10 @@ const SigninSchema = Yup.object().shape({
 });
 
 const BookForm: FC<IBookForm> = ({
-  defaultValues = defaultFormValues,
+  book,
+  onCancel = () => {
+    window.history.back();
+  },
   onPublish,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -100,9 +96,56 @@ const BookForm: FC<IBookForm> = ({
     []
   );
 
+  useEffect(() => {
+    const putAgeRestrictions = async () => {
+      let restrictions = await getAllAgeRestrictions();
+      setAgeRestrictions(restrictions);
+      if (book)
+        formik.setFieldValue("ageRestrictions", {
+          age_restriction_id: book.book.age_restriction_id,
+          name:
+            restrictions.find(
+              (element) =>
+                element.age_restriction_id === book.book.age_restriction_id
+            )?.name ?? "",
+        });
+    };
+    putAgeRestrictions();
+  }, []);
+
+  const defaultFormValues = (): PublishBookFormValues => {
+    if (book)
+      return {
+        title: book.book.title,
+        description: book.book.description,
+        image: getFileFromBase64(book.book.image, "bookImage.jpg"),
+        pages: book.book.page_count,
+        authors: book.authors,
+        ageRestrictions: {
+          age_restriction_id: book.book.age_restriction_id,
+          name:
+            ageRestrictions.find(
+              (element) =>
+                element.age_restriction_id === book.book.age_restriction_id
+            )?.name ?? "",
+        },
+        publicationDate: dayjs(book.book.publication_date),
+      };
+    else
+      return {
+        title: "",
+        description: "",
+        image: null,
+        pages: minPageCount,
+        authors: [],
+        ageRestrictions: defaultAgeRestriction,
+        publicationDate: dayjs(Date.now()),
+      };
+  };
+
   const formik = useFormik({
     validateOnMount: true,
-    initialValues: defaultValues,
+    initialValues: defaultFormValues(),
     validationSchema: SigninSchema,
     onSubmit: (values, actions) => {
       actions.setSubmitting(false);
@@ -110,20 +153,12 @@ const BookForm: FC<IBookForm> = ({
     },
   });
 
-  useEffect(() => {
-    const putAgeRestrictions = async () => {
-      let restrictions = await getAllAgeRestrictions();
-      setAgeRestrictions(restrictions);
-    };
-    putAgeRestrictions();
-  }, []);
-
   const handlePublish = async (values: PublishBookFormValues) => {
     setLoading(true);
     try {
       await onPublish(values);
     } catch (e) {
-      console.log(e)
+      console.log(e);
       if (e instanceof Error) {
         setError(e.message);
         setLoading(false);
@@ -413,6 +448,8 @@ const BookForm: FC<IBookForm> = ({
               display: "flex",
               width: "100%",
               alignContent: "center",
+              mt: ".5rem",
+              gap: "1rem",
             }}
           >
             <Typography
@@ -429,6 +466,15 @@ const BookForm: FC<IBookForm> = ({
             >
               {error}
             </Typography>
+            <Button
+              sx={{ borderRadius: ".5rem" }}
+              size="large"
+              disabled={loading}
+              variant="text"
+              onClick={onCancel}
+            >
+              Cancel
+            </Button>
             <Button
               sx={{ borderRadius: ".5rem" }}
               size="large"

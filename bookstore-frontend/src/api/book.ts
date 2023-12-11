@@ -142,6 +142,24 @@ export async function postPublishBook(data: PublishBookData): Promise<string> {
   return response.data;
 }
 
+export async function postUpdateBook(
+  bookId: number,
+  data: PublishBookData
+): Promise<string> {
+  let formData = createFormData(data);
+  formData.append("book_id", bookId.toString());
+  const response: AxiosResponse<string> = await $api.post(
+    `${api.update_book}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+}
+
 export async function postUpdateBookOffer(
   book_id: number,
   data: BookEditOfferFormValues

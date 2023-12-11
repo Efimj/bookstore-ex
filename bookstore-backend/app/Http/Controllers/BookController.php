@@ -149,6 +149,59 @@ class BookController extends BaseController
         return $users;
     }
 
+    public function updateBook(Request $request)
+    {
+        $request->validate([
+            'book_id' => 'required|integer',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Adjust file type and size as needed
+            'pages' => 'required|integer',
+            'authors' => 'required|string',
+            'ageRestrictions' => 'required|integer',
+            'publicationDate' => 'required|date',
+        ]);
+
+        $user = Auth::user();
+
+        $image = $request->file('image');
+
+        $imageName = ImageHandler::makeUniqueFileName($image);
+        ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
+
+        $book = Book::find($request->input('book_id'));
+
+        if ($book === null) abort(404, 'Book not found');
+
+        $book->update([
+            'age_restriction_id' => $request->input('ageRestrictions'),
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'page_count' => $request->input('pages'),
+            'image' => $imageName,
+            'publication_date' => Carbon::parse($request->input('publicationDate'))->toDateTimeString(),
+        ]);
+
+        $authors = json_decode($request->input('authors'));
+        $authors[] = $user->user_id;
+        $uniqueAuthors = array_unique($authors);
+        $existingAuthors = BookAuthor::where('book_id', $book->book_id)->pluck('user_id')->toArray();
+
+        $authorsToAdd = array_diff($uniqueAuthors, $existingAuthors);
+        $authorsToDelete = array_diff($existingAuthors, $uniqueAuthors);
+
+        foreach ($authorsToAdd as $authorId) {
+            BookAuthor::create([
+                'book_id' => $book->book_id,
+                'user_id' => $authorId,
+            ]);
+        }
+
+        BookAuthor::where('book_id', $book->book_id)->whereIn('user_id', $authorsToDelete)->delete();
+
+        return $book->book_id;
+    }
+
     public function publishBook(Request $request)
     {
         $request->validate([
@@ -162,46 +215,38 @@ class BookController extends BaseController
         ]);
 
         $user = Auth::user();
-        $publisher_id = $user->user_id;
 
-        $title = $request->input('title');
-        $description = $request->input('description');
         $image = $request->file('image');
-        $pages = $request->input('pages');
-        $authors = json_decode($request->input('authors'));
-        $ageRestrictions = $request->input('ageRestrictions');
-        $publicationDate = Carbon::parse($request->input('publicationDate'))->toDateTimeString();
 
         $imageName = ImageHandler::makeUniqueFileName($image);
         ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
 
         $book = Book::create([
-            'age_restriction_id' => $ageRestrictions,
-            'title' => $title,
-            'description' => $description,
-            'page_count' => $pages,
+            'age_restriction_id' => $request->input('ageRestrictions'),
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'page_count' => $request->input('pages'),
             'image' => $imageName,
-            'publication_date' => $publicationDate,
+            'publication_date' => Carbon::parse($request->input('publicationDate'))->toDateTimeString(),
         ]);
 
-        $bookId = $book->book_id;
-
         Check::create([
-            'book_id' => $bookId,
-            'user_id' => $publisher_id,
+            'book_id' => $book->book_id,
+            'user_id' => $user->user_id,
             'price' => 0,
         ]);
 
-        $authors[] = $publisher_id;
+        $authors = json_decode($request->input('authors'));
+        $authors[] = $user->user_id;
         $uniqueAuthors = array_unique($authors);
         foreach ($uniqueAuthors as $authorId) {
             BookAuthor::create([
-                'book_id' => $bookId,
+                'book_id' => $book->book_id,
                 'user_id' => $authorId,
             ]);
         }
 
-        return $bookId;
+        return $book->book_id;
     }
 
     public function book(Request $request)

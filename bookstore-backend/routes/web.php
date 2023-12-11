@@ -50,6 +50,7 @@ Route::group([
     Route::get('/account', [UserController::class, 'account']);
     Route::get('/purchase_book', [UserController::class, 'purchaseBook']);
     Route::post('/publish_book', [BookController::class, 'publishBook']);
+    Route::post('/update_book', [BookController::class, 'updateBook']);
     Route::post('/edit_book_offer', [BookController::class, 'editBookOffer']);
     Route::post('/edit_book_discount', [BookController::class, 'editBookDiscount']);
     Route::get('/delete_book_discount', [BookController::class, 'deleteBookDiscount']);

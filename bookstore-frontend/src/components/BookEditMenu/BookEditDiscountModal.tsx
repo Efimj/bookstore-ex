@@ -43,7 +43,7 @@ const BookEditOfferModal: FC<IBookEditDiscountModal> = ({
   const [error, setError] = useState<string>("");
 
   const minPrice = 0;
-  const maxPrice = book.offer.price - 1;
+  const maxPrice = book?.offer?.price - 1 ?? 0;
 
   const BookEditDiscountFormSchema = Yup.object().shape({
     expirationDate: Yup.date()

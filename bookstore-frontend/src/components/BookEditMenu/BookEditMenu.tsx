@@ -1,11 +1,11 @@
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
-
 import React from "react";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import BookEditOfferModal from "./BookEditOfferModal";
 import BookEditDiscountModal from "./BookEditDiscountModal";
+import BookEditModal from "./BookEditModal";
 
 export interface IBookEditMenu {
   book: IBookInformation;
@@ -14,6 +14,7 @@ export interface IBookEditMenu {
 
 const BookEditMenu: FC<IBookEditMenu> = ({ book, refreshBookState }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [editBook, setEditBook] = useState<boolean>(false);
   const [editOffer, setEditOffer] = useState<boolean>(false);
   const [editDiscount, setEditDiscount] = useState<boolean>(false);
 
@@ -43,7 +44,13 @@ const BookEditMenu: FC<IBookEditMenu> = ({ book, refreshBookState }) => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={() => {}}>Edit book</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setEditBook(true);
+          }}
+        >
+          Edit book
+        </MenuItem>
         <MenuItem
           onClick={() => {
             setEditOffer(true);
@@ -81,6 +88,17 @@ const BookEditMenu: FC<IBookEditMenu> = ({ book, refreshBookState }) => {
         onOfferChange={async () => {
           await refreshBookState();
           setEditDiscount(false);
+        }}
+      />
+      <BookEditModal
+        book={book}
+        isOpened={editBook}
+        onCancel={() => {
+          setEditBook(false);
+        }}
+        onUpdate={async () => {
+          await refreshBookState();
+          setEditBook(false);
         }}
       />
     </>
