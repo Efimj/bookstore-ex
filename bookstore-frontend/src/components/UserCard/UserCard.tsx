@@ -6,9 +6,10 @@ import { stringAvatar } from "../../utils/utils";
 export interface IUserCard {
   user: IUser;
   onClick: () => void;
+  disabled?: boolean;
 }
 
-const UserCard: FC<IUserCard> = ({ user, onClick }) => {
+const UserCard: FC<IUserCard> = ({ user, onClick, disabled = false }) => {
   return (
     <Box
       sx={{
@@ -20,6 +21,7 @@ const UserCard: FC<IUserCard> = ({ user, onClick }) => {
     >
       <CardActionArea
         onClick={onClick}
+        disabled={disabled}
         sx={{
           display: "flex",
           alignItems: "center",

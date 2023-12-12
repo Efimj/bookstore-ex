@@ -7,6 +7,7 @@ use App\Models\BookAuthor;
 use App\Models\Check;
 use App\Models\Discount;
 use App\Models\Offer;
+use App\Models\Review;
 use App\Models\User;
 use App\Models\UserType;
 use Database\Factories\ImageHandler;
@@ -261,6 +262,63 @@ class BookController extends BaseController
         return $this->getBookInformation($book);
     }
 
+    public function deleteBookReview(Request $request)
+    {
+        $book_id = $request->query('id');
+        $user = Auth::user();
+
+        if (!$user) {
+            return null;
+        }
+
+        $review = Review::where('user_id', $user->user_id)
+            ->where('book_id', $book_id)
+            ->first();
+
+        if (!$review) {
+            return null;
+        }
+
+        $review->delete();
+        return true;
+    }
+
+    public function publishBookReview(Request $request)
+    {
+        $request->validate([
+            'book_id' => 'required|integer',
+            'description' => 'nullable|string',
+            'rating' => 'required|integer',
+        ]);
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return null;
+        }
+
+        $review = Review::where('user_id', $user->user_id)
+            ->where('book_id', $request->input('book_id'))
+            ->first();
+
+        if ($review) {
+            $review->update([
+                'rating' => $request->input('rating'),
+                'description' => $request->input('description') ?? '',
+            ]);
+            return $review;
+        } else {
+            $newReview = Review::create([
+                'book_id' => $request->input('book_id'),
+                'user_id' => $user->user_id,
+                'rating' => $request->input('rating'),
+                'description' => $request->input('description') ?? '',
+            ]);
+
+            return $newReview;
+        }
+    }
+
     public function bookState(Request $request)
     {
         $book_id = $request->query('id');
@@ -269,6 +327,15 @@ class BookController extends BaseController
 
         if (!$book) {
             return null;
+        }
+        if (!$user) {
+            return [
+                'book_id' => $book_id,
+                'author' => null,
+                'review' => null,
+                'check' => null,
+                'wish' => null,
+            ];
         }
 
         $user = User::find($user->user_id);

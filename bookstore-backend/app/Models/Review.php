@@ -13,6 +13,8 @@ class Review extends Model
     protected $primaryKey = 'review_id';
 
     protected $fillable = [
+        'user_id',
+        'book_id',
         'description',
         'rating',
     ];

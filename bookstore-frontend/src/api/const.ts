@@ -18,6 +18,8 @@ const api = {
   edit_book_offer: server + "edit_book_offer",
   edit_book_discount: server + "edit_book_discount",
   delete_book_discount: server + "delete_book_discount",
+  publish_book_review: server + "publish_book_review",
+  delete_book_review: server + "delete_book_review",
 
   // User
   user: server + "user",

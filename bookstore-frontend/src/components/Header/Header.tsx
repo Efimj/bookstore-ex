@@ -1,4 +1,4 @@
-import { Toolbar, Typography, Box, Paper, CardActionArea } from "@mui/material";
+import { Toolbar, Typography, Box, Paper, CardActionArea, useTheme } from "@mui/material";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import SearchModal from "../SearchModal/SearchModal";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,10 @@ export interface IAppHeader {}
 
 export default function Header(props: IAppHeader) {
   const navigate = useNavigate();
+  const theme = useTheme()
 
   return (
-    <Paper elevation={0} sx={{ borderRadius: 0 }}>
+    <Paper elevation={0} sx={{ borderRadius: 0, backgroundColor: theme.palette.background.default}}>
       <Toolbar style={{ height: 72 }}>
         <CardActionArea
           sx={{

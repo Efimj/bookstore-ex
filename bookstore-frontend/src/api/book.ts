@@ -10,6 +10,7 @@ import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
 import { BookEditOfferFormValues } from "../components/BookEditMenu/BookEditOfferModal";
 import { BookEditDiscountFormValues } from "../components/BookEditMenu/BookEditDiscountModal";
+import { UserBookReviewFormValues } from "../components/UserBookReview/UserBookReview";
 
 export async function getBooks(
   startFrom: number,
@@ -207,6 +208,35 @@ export async function postUpdateBookDiscount(
 export async function getDeleteBookDiscount(bookId: number): Promise<boolean> {
   const response: AxiosResponse<boolean> = await $api.get(
     `${api.delete_book_discount}?id=${bookId}`
+  );
+  return response.data;
+}
+
+export async function postPublishBookReview(
+  book_id: number,
+  data: UserBookReviewFormValues
+): Promise<IBookReview> {
+  const formData = new FormData();
+  formData.append("book_id", book_id.toString());
+  formData.append("rating", data.rating.toString());
+  formData.append("description", data.description);
+
+  const response: AxiosResponse<IBookReview> = await $api.post(
+    `${api.publish_book_review}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function getDeleteBookReview(bookId: number): Promise<boolean> {
+  const response: AxiosResponse<boolean> = await $api.get(
+    `${api.delete_book_review}?id=${bookId}`
   );
   return response.data;
 }
