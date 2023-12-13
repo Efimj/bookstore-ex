@@ -26,7 +26,7 @@ Route::get('/', function () {
 /**
  * Book
  */
-Route::get('/books', [BookController::class, 'all_books']);
+Route::post('/books', [BookController::class, 'all_books']);
 Route::get('/book', [BookController::class, 'book']);
 Route::get('/book_state', [BookController::class, 'bookState']);
 Route::get('/book_authors', [BookController::class, 'bookAuthors']);

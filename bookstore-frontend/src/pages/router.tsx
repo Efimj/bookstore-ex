@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ScreenLayout from "../components/ScreenLayout";
-import BookCatalog, { BookCatalogRoute } from "./BookCatalog/BookCatalog";
+import BookCatalog, { BookCatalogRoute, BookCatalogRouteName } from "./BookCatalog/BookCatalog";
 import LibraryPage, { LibraryPageRoute } from "./LibraryPage/LibraryPage";
 import BookPage, { BookPageRoute } from "./BookPage/BookPage";
 import UserPage, { UserPageRoute } from "./UserPage/UserPage";
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to={BookCatalogRoute} replace />,
+        element: <Navigate to={BookCatalogRouteName} replace />,
       },
       {
         path: BookCatalogRoute,

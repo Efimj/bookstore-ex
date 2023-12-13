@@ -11,13 +11,22 @@ import { IBookInformation } from "../interfaces/IBookInformation";
 import { BookEditOfferFormValues } from "../components/BookEditMenu/BookEditOfferModal";
 import { BookEditDiscountFormValues } from "../components/BookEditMenu/BookEditDiscountModal";
 import { UserBookReviewFormValues } from "../components/UserBookReview/UserBookReview";
+import { IBookCatalogPageSearchParams } from "../pages/BookCatalog/BookCatalog";
 
 export async function getBooks(
   startFrom: number,
-  limit: number
+  limit: number,
+  params: IBookCatalogPageSearchParams = { authors: [], query: "" }
 ): Promise<IBookInformation[]> {
-  const response: AxiosResponse<Array<IBookInformation>> = await axios.get(
-    `${api.books}?start_from=${startFrom}&limit=${limit}`
+  const formData = new FormData();
+  formData.append("start_from", startFrom.toString());
+  formData.append("limit", limit.toString());
+  formData.append("query", params.query);
+  formData.append("authors", JSON.stringify(params.authors));
+
+  const response: AxiosResponse<Array<IBookInformation>> = await axios.post(
+    `${api.books}`,
+    formData
   );
   return response.data;
 }

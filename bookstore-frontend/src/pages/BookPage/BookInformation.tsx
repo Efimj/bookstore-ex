@@ -181,7 +181,7 @@ const BookInformation: FC<IBookPageItem> = observer(
                 <Button
                   sx={{
                     textTransform: "none",
-                    width: "100%",
+                    width: { xs: "100%", sm: "fit-content" },
                   }}
                   disabled={
                     book?.offer == null || bookSate?.check ? true : false

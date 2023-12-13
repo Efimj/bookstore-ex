@@ -5,17 +5,39 @@ import HugeBookBanner from "../../components/HugeBookBanner/HugeBookBanner";
 import { Box, Skeleton, Typography } from "@mui/material";
 import CustomCarousel from "../../components/CustomCarousel/CustomCarousel";
 import BookBanner from "../../components/BookBanner/BookBanner";
-import { useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavigateBookPageRoute } from "../BookPage/BookPage";
+import IUser from "../../interfaces/IAuthor";
 
 export interface IBookCatalog {}
+export interface IBookCatalogPageSearchParams {
+  query: string;
+  authors: number[];
+}
 
-export const BookCatalogRoute = "/bookcatalog";
-export const NavigateBookCatalogRoute = (): string => `/bookcatalog`;
+const QueryParam = "query";
+const AuthorsParam = "authors";
+
+export const BookCatalogRouteName = "/bookcatalog";
+export const BookCatalogRoute = `${BookCatalogRouteName}/:${QueryParam}?/:${AuthorsParam}?`;
+export const NavigateBookCatalogRoute = (
+  params: IBookCatalogPageSearchParams | null = null
+): string => {
+  if (params === null) return `${BookCatalogRouteName}`;
+  return `${BookCatalogRouteName}?${QueryParam}=${
+    params.query
+  }&${AuthorsParam}=${JSON.stringify(params.authors)}`;
+};
 
 export default function BookCatalog(props: IBookCatalog) {
+  const [searchParams] = useSearchParams();
   const [books, setBooks] = useState<Array<IBookInformation>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasMoreBooks, setHasMoreBooks] = useState<boolean>(true);
@@ -23,10 +45,30 @@ export default function BookCatalog(props: IBookCatalog) {
   const navigate = useNavigate();
 
   const getNewBooks = async () => {
-    const nextBooks = await getBooks(books.length, countGet);
+    const query = searchParams.get(QueryParam) ?? "";
+    const authors: number[] = JSON.parse(
+      searchParams.get(AuthorsParam) ?? "[]"
+    );
+
+    const catalogSearchparams: IBookCatalogPageSearchParams = {
+      query: query,
+      authors: authors,
+    };
+
+    const nextBooks = await getBooks(
+      books.length,
+      countGet,
+      catalogSearchparams
+    );
     if (nextBooks.length === 0) setHasMoreBooks(false);
     setBooks([...books, ...nextBooks]);
     setIsLoading(false);
+  };
+
+  const reset = () => {
+    setBooks([]);
+    setIsLoading(false);
+    setHasMoreBooks(true);
   };
 
   useEffect(() => {
@@ -36,6 +78,10 @@ export default function BookCatalog(props: IBookCatalog) {
       getNewBooks();
     }
   });
+
+  useEffect(() => {
+    reset();
+  }, [searchParams]);
 
   function chunkArray(array: Array<IBookInformation>, chunkSize: number) {
     const chunkedArr = [];
@@ -49,6 +95,26 @@ export default function BookCatalog(props: IBookCatalog) {
     navigate(NavigateBookPageRoute(bookId.toString()));
   };
 
+  if (books.length === 0) {
+    return (
+      <PageWrapper>
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h5" color="primary">
+            No result ...
+          </Typography>
+        </Box>
+      </PageWrapper>
+    );
+  }
+
   return (
     <PageWrapper>
       <InfiniteScroll
@@ -59,7 +125,10 @@ export default function BookCatalog(props: IBookCatalog) {
       >
         <Typography
           variant="h5"
-          sx={{ marginLeft: ".5rem" }}
+          sx={{
+            marginLeft: ".5rem",
+            display: books.length > 0 ? "block" : "none",
+          }}
           color="text.secondary"
         >
           Best choice
@@ -127,6 +196,7 @@ export default function BookCatalog(props: IBookCatalog) {
           sx={{
             marginLeft: ".5rem",
             paddingTop: "1rem",
+            display: books.slice(3).length > 0 ? "block" : "none",
           }}
           color="text.secondary"
         >

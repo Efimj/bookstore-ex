@@ -17,18 +17,43 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends BaseController
 {
-    public function all_books(Request $request): array
+    public function all_books(Request $request)
     {
-        $startFrom = $request->query('start_from', 1);
-        $limit = $request->query('limit', 10);
+        $startFrom = $request->input('start_from', 0);
+        $limit = $request->input('limit', 10);
+        $query = $request->input('query', '');
+        $authors = json_decode($request->input('authors', []));
 
-        return Book::skip($startFrom)->take($limit)->get()->map(function ($book) {
-            return $this->getBookInformation($book);
-        })->toArray();
+        if (!empty($query) && empty($authors)) {
+            return Book::where('title', 'LIKE', "%$query%")->skip($startFrom)->take($limit)->get()->map(function ($book) {
+                return $this->getBookInformation($book);
+            })->toArray();
+        }
+
+        if (empty($query) && !empty($authors)) {
+            return Book::whereHas('bookAuthors', function ($query) use ($authors) {
+                $query->whereIn('user_id', $authors);
+            })->skip($startFrom)->take($limit)->get()->map(function ($book) {
+                return $this->getBookInformation($book);
+            })->toArray();
+        }
+
+        if (empty($query) && empty($authors)) {
+            return Book::skip($startFrom)->take($limit)->get()->map(function ($book) {
+                return $this->getBookInformation($book);
+            })->toArray();
+        } else {
+            return Book::whereHas('bookAuthors', function ($query) use ($authors) {
+                $query->whereIn('user_id', $authors);
+            })->where('title', 'LIKE', "%$query%")->skip($startFrom)->take($limit)->get()->map(function ($book) {
+                return $this->getBookInformation($book);
+            })->toArray();
+        }
     }
 
     private function getUserAndBook($request)
