@@ -26,7 +26,7 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
   };
 
   return (
-    <Card elevation={0}>
+    <Card elevation={0} sx={{ borderRadius: 3 }}>
       <CardActionArea
         onClick={onClick}
         sx={{
@@ -36,7 +36,7 @@ const BookBanner: FC<IBookBanner> = ({ book, onClick }) => {
           alignItems: "flex-start",
           justifyContent: "space-between",
           borderRadius: 3,
-          border: "2px solid transparent",
+          border: `2px solid transparent`,
           transition: "all .2s linear",
           "&:hover": {
             borderColor: "secondary.main",

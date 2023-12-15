@@ -16,10 +16,10 @@ import BookRating from "../../components/BookRating/BookRating";
 import IBookReview from "../../interfaces/IBookReview";
 import { getBookReviews } from "../../api/book";
 import BookReviewCard from "../../components/BookReview/BookReview";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
 import UserBookReview from "../../components/UserBookReview/UserBookReview";
 import { observer } from "mobx-react-lite";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 
 const BookPageContent: FC<IBookPageItem> = observer(
   ({ book, bookSate, updateBookState }) => {
@@ -36,6 +36,7 @@ const BookPageContent: FC<IBookPageItem> = observer(
     };
 
     const getNewReviews = async () => {
+      setIsLoading(true);
       if (!book?.book?.book_id) return;
 
       const nextReviews = (
@@ -51,12 +52,9 @@ const BookPageContent: FC<IBookPageItem> = observer(
     };
 
     useEffect(() => {
-      if (isLoading) return;
-      if (hasMoreReviews && document.body.scrollHeight === window.innerHeight) {
-        setIsLoading(true);
-        getNewReviews();
-      }
-    });
+      setHasMoreReviews(true);
+      setReviews([]);
+    }, [book]);
 
     const handleClickOpen = () => {
       setDescriptionOpened(true);
@@ -65,6 +63,12 @@ const BookPageContent: FC<IBookPageItem> = observer(
     const handleClose = () => {
       setDescriptionOpened(false);
     };
+
+    const [sentryRef] = useInfiniteScroll({
+      loading: isLoading,
+      hasNextPage: hasMoreReviews,
+      onLoadMore: getNewReviews,
+    });
 
     return (
       <>
@@ -128,12 +132,7 @@ const BookPageContent: FC<IBookPageItem> = observer(
               <BookRating bookEvaluations={book?.evaluations} />
             )}
           </Box>
-          <InfiniteScroll
-            dataLength={reviews.length}
-            next={getNewReviews}
-            hasMore={hasMoreReviews}
-            loader={""}
-          >
+          <Box>
             {reviews.map((element: IBookReview, index: number) => {
               return (
                 <Box sx={{ paddingTop: "0.5rem" }} key={index}>
@@ -146,7 +145,8 @@ const BookPageContent: FC<IBookPageItem> = observer(
                 </Box>
               );
             })}
-          </InfiniteScroll>
+            {(isLoading || hasMoreReviews) && <div ref={sentryRef}></div>}
+          </Box>
         </Box>{" "}
         <BootstrapDialog
           onClose={handleClose}

@@ -1,5 +1,10 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import IBook from "../../interfaces/IBook";
 import {
   getBookAuthors,
@@ -26,7 +31,7 @@ export const NavigateBookPageRoute = (bookId: string): string =>
   `/book/${bookId}`;
 
 const BookPage: FC<IBookPage> = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
   const { bookId } = useParams();
   const [book, setBook] = useState<IBookInformation | null>(null);
   const [bookState, setBookState] = useState<IBookSate | null>(null);
@@ -51,6 +56,13 @@ const BookPage: FC<IBookPage> = () => {
     }
     getBookData();
   }, []);
+
+  useEffect(() => {
+    async function getBookData() {
+      await getBookInformation();
+    }
+    getBookData();
+  }, [location]);
 
   return (
     <PageWrapper>

@@ -1,10 +1,10 @@
 import { Box, Skeleton } from "@mui/material";
 import { FC, ReactNode, useEffect } from "react";
 import { IBookInformation } from "../../interfaces/IBookInformation";
-import InfiniteScroll from "react-infinite-scroll-component";
 import BookBanner from "../BookBanner/BookBanner";
 import { useNavigate } from "react-router-dom";
 import { NavigateBookPageRoute } from "../../pages/BookPage/BookPage";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 
 export interface IBookList {
   books: IBookInformation[];
@@ -29,25 +29,14 @@ const BookList: FC<IBookList> = ({
     navigate(NavigateBookPageRoute(bookId.toString()));
   };
 
-  const getListSize = (): number => {
-    if (firstItem) return books.length + 1;
-    return books.length;
-  };
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (hasMoreBooks && document.body.scrollHeight === window.innerHeight) {
-      setIsLoading(true);
-      getNewBook();
-    }
+  const [sentryRef] = useInfiniteScroll({
+    loading: isLoading,
+    hasNextPage: hasMoreBooks,
+    onLoadMore: getNewBook,
   });
 
   return (
-    <InfiniteScroll
-      dataLength={getListSize()}
-      next={getNewBook}
-      hasMore={hasMoreBooks}
-      loader={""}
+    <Box
       style={{
         display: "flex",
         flexWrap: "wrap",
@@ -113,7 +102,8 @@ const BookList: FC<IBookList> = ({
           </Box>
         );
       })}
-    </InfiniteScroll>
+      {(isLoading || hasMoreBooks) && <div ref={sentryRef}></div>}
+    </Box>
   );
 };
 
