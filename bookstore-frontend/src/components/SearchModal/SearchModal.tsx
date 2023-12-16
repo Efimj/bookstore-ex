@@ -65,7 +65,7 @@ export default function SearchModal() {
     };
 
     const newBooks = await getBooks(
-      books.length,
+      books.length - 1,
       countGet,
       catalogSearchparams
     );

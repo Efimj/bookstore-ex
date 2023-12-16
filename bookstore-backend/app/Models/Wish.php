@@ -10,6 +10,13 @@ class Wish extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'wish_id';
+
+    protected $fillable = [
+        'book_id',
+        'user_id',
+    ];
+
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'user_id', 'user_id');

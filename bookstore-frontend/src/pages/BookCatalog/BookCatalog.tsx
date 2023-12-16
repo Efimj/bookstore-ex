@@ -155,7 +155,6 @@ export default function BookCatalog(props: IBookCatalog) {
 
   useEffect(() => {
     //setSearchAuthors([]);
-
     // authorsParams.forEach((authorId) => {
     //   getAuthor(authorId);
     // });

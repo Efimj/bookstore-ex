@@ -249,3 +249,20 @@ export async function getDeleteBookReview(bookId: number): Promise<boolean> {
   );
   return response.data;
 }
+
+export async function postHandleBookWish(book_id: number): Promise<boolean> {
+  const formData = new FormData();
+  formData.append("book_id", book_id.toString());
+
+  const response: AxiosResponse<boolean> = await $api.post(
+    `${api.handle_book_wish}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}

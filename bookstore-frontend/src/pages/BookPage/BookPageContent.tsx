@@ -36,7 +36,7 @@ const BookPageContent: FC<IBookPageItem> = observer(
     };
 
     const getNewReviews = async () => {
-      setIsLoading(true);
+      //setIsLoading(true);
       if (!book?.book?.book_id) return;
 
       const nextReviews = (

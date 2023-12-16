@@ -20,6 +20,8 @@ import BookPurchaseModal from "../../components/BookPurchaseModal/BookPurchaseMo
 import { observer } from "mobx-react-lite";
 import userStore from "../../store/UserStore";
 import BookEditMenu from "../../components/BookEditMenu/BookEditMenu";
+import { postHandleBookWish } from "../../api/book";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 const BookInformation: FC<IBookPageItem> = observer(
   ({ book, bookSate, updateBookState }) => {
@@ -43,6 +45,18 @@ const BookInformation: FC<IBookPageItem> = observer(
     const onPurchase = async () => {
       await updateBookState();
       setPurchaseDialogOpened(false);
+    };
+
+    const handleBookWish = async () => {
+      await postHandleBookWish(book.book.book_id);
+      await updateBookState();
+      bookSate?.wish
+        ? enqueueSnackbar("Removed from wishlist", {
+            variant: "success",
+          })
+        : enqueueSnackbar("Added to wishlist", {
+            variant: "success",
+          });
     };
 
     return (
@@ -214,23 +228,21 @@ const BookInformation: FC<IBookPageItem> = observer(
                   />
                 )}
               </Box>
-              <Button
-                sx={{ textTransform: "none" }}
-                variant="outlined"
-                onClick={() => {
-                  bookSate?.wish
-                    ? enqueueSnackbar("Removed from wishlist", {
-                        variant: "success",
-                      })
-                    : enqueueSnackbar("Added to wishlist", {
-                        variant: "success",
-                      });
-                }}
-              >
-                <Typography variant="body1">
-                  {bookSate?.wish ? "Added to wishlist" : "Add to wishlist"}
-                </Typography>
-              </Button>
+              {!bookSate?.check && (
+                <Button
+                  sx={{ textTransform: "none" }}
+                  variant={bookSate?.wish ? "contained" : "outlined"}
+                  onClick={handleBookWish}
+                >
+                  {bookSate?.wish ? (
+                    <BookmarksIcon></BookmarksIcon>
+                  ) : (
+                    <Typography variant="body1">
+                      {bookSate?.wish ? "Added to wishlist" : "Add to wishlist"}
+                    </Typography>
+                  )}
+                </Button>
+              )}
               <Button
                 sx={{ textTransform: "none", borderRadius: "10px" }}
                 variant="text"

@@ -55,6 +55,7 @@ Route::group([
     Route::get('/delete_book_review', [BookController::class, 'deleteBookReview']);
     Route::post('/edit_book_offer', [BookController::class, 'editBookOffer']);
     Route::post('/edit_book_discount', [BookController::class, 'editBookDiscount']);
+    Route::post('/handle_book_wish', [BookController::class, 'handleWishlistBook']);
     Route::get('/delete_book_discount', [BookController::class, 'deleteBookDiscount']);
 });
 

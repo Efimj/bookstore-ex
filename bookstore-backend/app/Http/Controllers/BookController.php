@@ -10,6 +10,7 @@ use App\Models\Offer;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\UserType;
+use App\Models\Wish;
 use Database\Factories\ImageHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
@@ -30,9 +31,10 @@ class BookController extends BaseController
         $authors = json_decode($request->input('authors', []));
 
         if (!empty($query) && empty($authors)) {
-            return Book::where('title', 'LIKE', "%$query%")->skip($startFrom)->take($limit)->get()->map(function ($book) {
-                return $this->getBookInformation($book);
-            })->toArray();
+            return Book::where('title', 'LIKE', "%$query%")
+                ->orWhereRaw('LOWER(title) LIKE ?', ["%" . strtolower($query) . "%"])->skip($startFrom)->take($limit)->get()->map(function ($book) {
+                    return $this->getBookInformation($book);
+                })->toArray();
         }
 
         if (empty($query) && !empty($authors)) {
@@ -50,9 +52,33 @@ class BookController extends BaseController
         } else {
             return Book::whereHas('bookAuthors', function ($query) use ($authors) {
                 $query->whereIn('user_id', $authors);
-            })->where('title', 'LIKE', "%$query%")->skip($startFrom)->take($limit)->get()->map(function ($book) {
-                return $this->getBookInformation($book);
-            })->toArray();
+            })->where('title', 'LIKE', "%$query%")
+                ->orWhereRaw('LOWER(title) LIKE ?', ["%" . strtolower($query) . "%"])->skip($startFrom)->take($limit)->get()->map(function ($book) {
+                    return $this->getBookInformation($book);
+                })->toArray();
+        }
+    }
+
+    public function handleWishlistBook(Request $request)
+    {
+        $user = Auth::user();
+        $user = User::find($user->user_id);
+        $userId = $user->user_id;
+
+        $bookId = $request->input('book_id', -1);
+        $book = Book::find($bookId);
+        $bookId = $book->book_id;
+
+        $wish = Wish::where('book_id', $bookId)->where('user_id', $userId)->first();
+
+        if ($wish !== null) {
+            $wish->delete();
+            return true;
+        } else {
+            return Wish::create([
+                'book_id' => $bookId,
+                'user_id' => $userId,
+            ]);
         }
     }
 
@@ -71,7 +97,6 @@ class BookController extends BaseController
 
         return [$user, $book];
     }
-
 
     public function editBookOffer(Request $request)
     {
