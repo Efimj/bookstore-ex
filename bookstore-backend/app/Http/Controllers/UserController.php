@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Check;
 use App\Models\User;
+use App\Models\Wish;
 use Database\Factories\ImageHandler;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
@@ -55,6 +56,9 @@ class UserController extends Controller
         }
 
         if($checkPrice === -1) return "";
+
+        $wish = Wish::where('book_id', $book_id)->where('user_id', $user->user_id)->first();
+        $wish?->delete();
 
         return Check::create([
             'book_id' => $book_id,
