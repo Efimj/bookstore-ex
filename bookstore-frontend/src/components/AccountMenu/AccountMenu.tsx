@@ -102,7 +102,6 @@ const AccountMenu: FC<IAccountMenu> = observer(({}) => {
             setAuthorization(false);
           }}
           onSignUp={() => {
-            setAuthorization(false);
           }}
         />
       </>

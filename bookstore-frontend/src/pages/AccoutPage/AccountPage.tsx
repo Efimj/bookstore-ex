@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
-import AuthorizationForm from "../../components/AuthorizationForm/AuthorizationForm";
 
 export interface IAccountPage {}
 

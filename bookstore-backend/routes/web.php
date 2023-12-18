@@ -35,7 +35,7 @@ Route::get('/book_discount', [BookController::class, 'bookDiscount']);
 Route::get('/book_evaluations', [BookController::class, 'bookEvaluations']);
 Route::get('/book_reviews', [BookController::class, 'bookReviews']);
 Route::get('/authors_by_email', [BookController::class, 'authorsByEmail']);
-
+Route::post('/registration', [UserController::class, 'registration']);
 
 /**
  * User

@@ -39,6 +39,7 @@ const AuthorizationForm: FC<IAuthorizationForm> = ({
   };
   const handleSignUp = () => {
     onSignUp();
+    setSelectedBtn("authorization");
   };
 
   return (

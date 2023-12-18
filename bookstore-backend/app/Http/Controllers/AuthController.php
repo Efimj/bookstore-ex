@@ -41,12 +41,16 @@ class AuthController extends Controller
     public function me()
     {
         $user = auth()->user();
-        if (!$user) {return response()->json($user);}
+        if (!$user) {
+            return response()->json($user);
+        }
         $user_id = $user->user_id;
         $user = User::find($user_id);
-        if (!$user) {return response()->json($user);}
+        if (!$user) {
+            return response()->json($user);
+        }
         $user['user_type_name'] = $user->userType->name;
-        $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
+        $user['image'] = $user->image !== null ? (new ImageHandler())->getImageFromStore($user->image) : "";
         return response()->json($user);
     }
 

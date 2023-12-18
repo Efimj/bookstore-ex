@@ -4,6 +4,7 @@ import IUser from "../interfaces/IAuthor";
 import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
 import ICheck from "../interfaces/ICheck";
+import { RegistrationFormValues } from "../components/AuthorizationForm/RegistrationFormContent";
 
 export async function getUser(userId: string): Promise<IUser> {
   const response: AxiosResponse<IUser> = await axios.get(
@@ -18,7 +19,6 @@ export async function purchaseBook(bookId: string): Promise<ICheck> {
   );
   return response.data;
 }
-
 
 export async function getUserWishlist(
   userId: string,
@@ -55,5 +55,36 @@ export async function getUserPublish(
 
 export async function getAccount(): Promise<IUser> {
   const response: AxiosResponse<IUser> = await $api.get(api.account);
+  return response.data;
+}
+
+export function createRegistrationFormData(
+  value: RegistrationFormValues
+): FormData {
+  const formData = new FormData();
+  formData.append("firstName", value.firstName);
+  formData.append("lastName", value.lastName);
+  formData.append("isPublisher", JSON.stringify(value.isPublisher));
+  formData.append("password", value.password);
+  formData.append(`email`, value.email);
+  const dateString = value.birthday.toISOString();
+  formData.append("birthday", dateString);
+
+  return formData;
+}
+
+export async function postAccountRegistration(
+  value: RegistrationFormValues
+): Promise<IUser> {
+  const response: AxiosResponse<IUser> = await axios.post(
+    api.registration,
+    createRegistrationFormData(value),
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
   return response.data;
 }

@@ -10,6 +10,7 @@ import {
   InputAdornment,
   InputLabel,
   Button,
+  Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -18,8 +19,10 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
+import { postAccountRegistration } from "../../api/user";
+import { enqueueSnackbar } from "notistack";
 
-interface RegistrationFormValues {
+export interface RegistrationFormValues {
   firstName: string;
   lastName: string;
   birthday: dayjs.Dayjs;
@@ -80,10 +83,23 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [signUpError, setSignUpError] = useState<string>("");
 
-  const handleSignUp = (values: RegistrationFormValues) => {
+  const handleSignUp = async (values: RegistrationFormValues) => {
     setLoading(true);
-    onSignUp();
+    try {
+      await postAccountRegistration(values);
+      onSignUp();
+      setSignUpError("");
+      enqueueSnackbar("Successful registration", {
+        variant: "success",
+      });
+    } catch (error) {
+      enqueueSnackbar("Occurred error", {
+        variant: "error",
+      });
+      setSignUpError("Occurred error. Check your details or try again later");
+    }
     setLoading(false);
   };
 
@@ -263,11 +279,25 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
         sx={{
           display: "flex",
           width: "100%",
-          justifyContent: "flex-end",
+          alignContent: "center",
         }}
       >
+        <Typography
+          variant="body1"
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            pr: "1rem",
+          }}
+          color="error"
+        >
+          {signUpError}
+        </Typography>
         <Button
-          sx={{ borderRadius: ".5rem" }}
+          sx={{ borderRadius: ".5rem", minWidth:'130px' }}
           size="large"
           variant={formik.isValid ? "contained" : "outlined"}
           disabled={loading || !formik.isValid}

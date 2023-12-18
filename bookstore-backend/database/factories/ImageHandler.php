@@ -15,8 +15,9 @@ class ImageHandler
      * @param $path
      * @return string
      */
-    public function getImageFromStore($path): string
+    public function getImageFromStore($path): ?string
     {
+        if($path === null) return null;
         return "data:image/jpg;base64," . base64_encode(Storage::disk('public')->get($path));
     }
 

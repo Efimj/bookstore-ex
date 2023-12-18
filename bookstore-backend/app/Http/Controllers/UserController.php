@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\BookAuthor;
 use App\Models\Check;
 use App\Models\User;
 use App\Models\Wish;
 use Database\Factories\ImageHandler;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,6 +22,62 @@ class UserController extends Controller
         if ($user == null) return null;
         $user['image'] = (new ImageHandler())->getImageFromStore($user->image);
         return $user;
+    }
+
+    public function registration(Request $request)
+    {
+        $request->validate([
+            'firstName' => 'required|string',
+            'lastName' => 'required|string',
+            'birthday' => 'required|date',
+            'isPublisher' => 'required|string',
+            'password' => 'required|string',
+            'email' => 'required|string',
+        ]);
+
+        return User::create([
+            'first_name' => $request->input('firstName'),
+            'last_name' => $request->input('lastName'),
+            'birthday' => Carbon::parse($request->input('birthday'))->toDateTimeString(),
+            'password' => $request->input('password'),
+            'email' => $request->input('email'),
+            'image' => null,
+            'user_type_id' => json_decode($request->input('isPublisher')) ? 2 : 1,
+        ]);
+
+//        $user = Auth::user();
+//
+//        $image = $request->file('image');
+//
+//        $imageName = ImageHandler::makeUniqueFileName($image);
+//        ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
+//
+//        $book = Book::create([
+//            'age_restriction_id' => $request->input('ageRestrictions'),
+//            'title' => $request->input('title'),
+//            'description' => $request->input('description'),
+//            'page_count' => $request->input('pages'),
+//            'image' => $imageName,
+//            'publication_date' => Carbon::parse($request->input('publicationDate'))->toDateTimeString(),
+//        ]);
+//
+//        Check::create([
+//            'book_id' => $book->book_id,
+//            'user_id' => $user->user_id,
+//            'price' => 0,
+//        ]);
+//
+//        $authors = json_decode($request->input('authors'));
+//        $authors[] = $user->user_id;
+//        $uniqueAuthors = array_unique($authors);
+//        foreach ($uniqueAuthors as $authorId) {
+//            BookAuthor::create([
+//                'book_id' => $book->book_id,
+//                'user_id' => $authorId,
+//            ]);
+//        }
+//
+//        return $book->book_id;
     }
 
     public function user(Request $request)
@@ -55,7 +113,7 @@ class UserController extends Controller
             $checkPrice = $offer->price;
         }
 
-        if($checkPrice === -1) return "";
+        if ($checkPrice === -1) return "";
 
         $wish = Wish::where('book_id', $book_id)->where('user_id', $user->user_id)->first();
         $wish?->delete();

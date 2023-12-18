@@ -32,6 +32,7 @@ const api = {
   // my_publish: server + "my_publish",
   account: server + "account",
   purchase_book: server + "purchase_book",
+  registration: server + "registration",
 
   // Auth
   login: server + "auth/login",
