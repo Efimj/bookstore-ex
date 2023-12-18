@@ -17,7 +17,7 @@ import IBookReview from "../../interfaces/IBookReview";
 import { getBookReviews } from "../../api/book";
 import BookReviewCard from "../../components/BookReview/BookReview";
 import { useNavigate } from "react-router-dom";
-import UserBookReview from "../../components/UserBookReview/UserBookReview";
+import UserBookReviewForm from "../../components/UserBookReview/UserBookReviewForm";
 import { observer } from "mobx-react-lite";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
@@ -118,7 +118,7 @@ const BookPageContent: FC<IBookPageItem> = observer(
 
           {bookSate?.check && !bookSate?.author && (
             <Box sx={{ mt: ".5rem" }}>
-              <UserBookReview
+              <UserBookReviewForm
                 book_id={book.book.book_id}
                 review={bookSate?.review}
                 onDelete={updateBookState}

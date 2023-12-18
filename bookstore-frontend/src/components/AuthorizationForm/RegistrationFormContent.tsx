@@ -42,14 +42,20 @@ const defaultFormValues: RegistrationFormValues = {
   email: "",
 };
 
+const minFirstNameLength = 2;
+const maxFirstNameLength = 50;
+const minLastNameLength = 2;
+const maxLastNameLength = 50;
+
+
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
+    .min(minFirstNameLength, "Too Short!")
+    .max(maxFirstNameLength, "Too Long!")
     .required("Required"),
   lastName: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
+    .min(minLastNameLength, "Too Short!")
+    .max(maxLastNameLength, "Too Long!")
     .required("Required"),
   password: Yup.string()
     .required("Password is required")

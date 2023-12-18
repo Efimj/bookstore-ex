@@ -5,6 +5,7 @@ export default interface IUser {
   first_name: string;
   last_name: string;
   age: number;
+  birthday: Date;
   email: string;
   image: string;
   created_at: string;

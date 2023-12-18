@@ -57,6 +57,7 @@ Route::group([
     Route::post('/edit_book_discount', [BookController::class, 'editBookDiscount']);
     Route::post('/handle_book_wish', [BookController::class, 'handleWishlistBook']);
     Route::get('/delete_book_discount', [BookController::class, 'deleteBookDiscount']);
+    Route::post('/update_account_data', [UserController::class, 'updateAccountDate']);
 });
 
 

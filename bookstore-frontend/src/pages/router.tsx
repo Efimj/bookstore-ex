@@ -12,6 +12,7 @@ import PublishBookPage, {
 import userStore from "../store/UserStore";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
+import SettingsPage, { AccountSettingsPageRoute } from "./SettingsPage/SettingsPage";
 
 export const LogInRoute = "LogInRoute";
 
@@ -65,6 +66,15 @@ const router = createBrowserRouter([
         element: (
           <PrivatePage>
             <AccountPage />
+          </PrivatePage>
+        ),
+        errorElement: AuthForm,
+      },
+      {
+        path: AccountSettingsPageRoute,
+        element: (
+          <PrivatePage>
+            <SettingsPage />
           </PrivatePage>
         ),
         errorElement: AuthForm,

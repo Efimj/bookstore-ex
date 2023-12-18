@@ -44,40 +44,35 @@ class UserController extends Controller
             'image' => null,
             'user_type_id' => json_decode($request->input('isPublisher')) ? 2 : 1,
         ]);
+    }
 
-//        $user = Auth::user();
-//
-//        $image = $request->file('image');
-//
-//        $imageName = ImageHandler::makeUniqueFileName($image);
-//        ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
-//
-//        $book = Book::create([
-//            'age_restriction_id' => $request->input('ageRestrictions'),
-//            'title' => $request->input('title'),
-//            'description' => $request->input('description'),
-//            'page_count' => $request->input('pages'),
-//            'image' => $imageName,
-//            'publication_date' => Carbon::parse($request->input('publicationDate'))->toDateTimeString(),
-//        ]);
-//
-//        Check::create([
-//            'book_id' => $book->book_id,
-//            'user_id' => $user->user_id,
-//            'price' => 0,
-//        ]);
-//
-//        $authors = json_decode($request->input('authors'));
-//        $authors[] = $user->user_id;
-//        $uniqueAuthors = array_unique($authors);
-//        foreach ($uniqueAuthors as $authorId) {
-//            BookAuthor::create([
-//                'book_id' => $book->book_id,
-//                'user_id' => $authorId,
-//            ]);
-//        }
-//
-//        return $book->book_id;
+    public function updateAccountDate(Request $request)
+    {
+        $user = Auth::user();
+        if ($user == null) return null;
+
+        $request->validate([
+            'firstName' => 'required|string',
+            'lastName' => 'required|string',
+            'birthday' => 'required|date',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Adjust file type and size as needed
+        ]);
+
+        $image = $request->file('image');
+        $imageName = ImageHandler::makeUniqueFileName($image);
+        ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
+
+        $user = User::find($user->user_id);
+        if ($user === null) abort(404, 'User not found');
+
+        $user->update([
+            'first_name' => $request->input('firstName'),
+            'last_name' => $request->input('lastName'),
+            'birthday' => Carbon::parse($request->input('birthday'))->toDateTimeString(),
+            'image' => $imageName,
+        ]);
+
+        return $user;
     }
 
     public function user(Request $request)

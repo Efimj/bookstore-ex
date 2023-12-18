@@ -268,7 +268,6 @@ class BookController extends BaseController
         $user = Auth::user();
 
         $image = $request->file('image');
-
         $imageName = ImageHandler::makeUniqueFileName($image);
         ImageHandler::saveToDisk($imageName, $image, ImageHandler::PathToFolder);
 

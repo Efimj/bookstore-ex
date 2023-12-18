@@ -24,6 +24,10 @@ import PageWrapper from "../PageWrapper/PageWrapper";
 import IUser from "../../interfaces/IAuthor";
 import { IBookInformation } from "../../interfaces/IBookInformation";
 import { getFileFromBase64 } from "../../utils/utils";
+import CustomTypographyHeader, {
+} from "../CustomFormControls/CustomTypographyHeader";
+import CustomFormControl from "../CustomFormControls/CustomFormControl";
+import CustomTypographySecondaryHeader from "../CustomFormControls/CustomTypographySecondaryHeader";
 
 export interface IBookForm {
   book?: IBookInformation;
@@ -200,7 +204,7 @@ const BookForm: FC<IBookForm> = ({
             and information from{" "}
             <Link href="" underline="hover">
               Help Center
-            </Link>{" "}
+            </Link>
             . Please review the{" "}
             <Link href="" underline="hover">
               program rules
@@ -490,68 +494,6 @@ const BookForm: FC<IBookForm> = ({
       </Box>
       <Box sx={{ mb: "5rem" }}></Box>
     </PageWrapper>
-  );
-};
-
-interface ICustomTypography {
-  children: string;
-}
-
-const CustomTypographyHeader: FC<ICustomTypography> = ({ children }) => {
-  return (
-    <Typography
-      component={"span"}
-      gutterBottom
-      variant="h5"
-      sx={{
-        marginBottom: "0",
-        mt: ".5rem",
-      }}
-      noWrap
-    >
-      {children}
-    </Typography>
-  );
-};
-
-interface ICustomFormControl {
-  children: React.ReactNode;
-}
-
-const CustomFormControl: FC<ICustomFormControl> = ({ children }) => {
-  return (
-    <FormControl
-      defaultValue=""
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
-        gap: { xs: ".5rem", sm: "1.5rem" },
-      }}
-      required
-    >
-      {children}
-    </FormControl>
-  );
-};
-
-const CustomTypographySecondaryHeader: FC<ICustomTypography> = ({
-  children,
-}) => {
-  return (
-    <Typography
-      component={"span"}
-      gutterBottom
-      variant="body1"
-      sx={{
-        width: "220px",
-        marginBottom: "0",
-        mt: { xs: "0rem", sm: ".5rem" },
-      }}
-      color="text.secondary"
-      noWrap
-    >
-      {children}
-    </Typography>
   );
 };
 

@@ -44,7 +44,7 @@ const UserBookReviewFormSchema = Yup.object().shape({
     .max(maxDescription, `Description must be less than ${maxDescription}`),
 });
 
-const UserBookReview: FC<IUserBookReview> = observer(
+const UserBookReviewForm: FC<IUserBookReview> = observer(
   ({ book_id, review = null, onSave, onDelete }) => {
     const user = userStore.user;
 
@@ -274,4 +274,4 @@ const UserBookReview: FC<IUserBookReview> = observer(
   }
 );
 
-export default UserBookReview;
+export default UserBookReviewForm;

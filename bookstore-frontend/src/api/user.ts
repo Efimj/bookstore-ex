@@ -5,6 +5,8 @@ import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
 import ICheck from "../interfaces/ICheck";
 import { RegistrationFormValues } from "../components/AuthorizationForm/RegistrationFormContent";
+import { EditProfileFormValues } from "../pages/SettingsPage/EditProfileForm";
+import dayjs from "dayjs";
 
 export async function getUser(userId: string): Promise<IUser> {
   const response: AxiosResponse<IUser> = await axios.get(
@@ -79,6 +81,36 @@ export async function postAccountRegistration(
   const response: AxiosResponse<IUser> = await axios.post(
     api.registration,
     createRegistrationFormData(value),
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export interface EditProfileData {
+  image: File;
+  firstName: string;
+  lastName: string;
+  birthday: dayjs.Dayjs;
+}
+
+export async function postUpdateAccountData(
+  value: EditProfileData
+): Promise<IUser> {
+  const formData = new FormData();
+  formData.append("firstName", value.firstName);
+  formData.append("lastName", value.lastName);
+  const dateString = value.birthday.toISOString();
+  formData.append("birthday", dateString);
+  formData.append("image", value.image);
+
+  const response: AxiosResponse<IUser> = await $api.post(
+    api.update_account_data,
+    formData,
     {
       headers: {
         "Content-Type": "multipart/form-data",

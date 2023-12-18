@@ -12,7 +12,6 @@ export const NavigateLibraryPageRoute = (page: string): string =>
 
 const LibraryPage: React.FC = observer((props: ILibrary) => {
   if (!userStore.checkAuth()) return;
-
   if (userStore.user === null) throw "unauthorized";
 
   return (

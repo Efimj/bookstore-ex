@@ -10,7 +10,7 @@ import $api from "./axios";
 import { IBookInformation } from "../interfaces/IBookInformation";
 import { BookEditOfferFormValues } from "../components/BookEditMenu/BookEditOfferModal";
 import { BookEditDiscountFormValues } from "../components/BookEditMenu/BookEditDiscountModal";
-import { UserBookReviewFormValues } from "../components/UserBookReview/UserBookReview";
+import { UserBookReviewFormValues } from "../components/UserBookReview/UserBookReviewForm";
 import { IBookCatalogPageSearchParams } from "../pages/BookCatalog/BookCatalog";
 
 export async function getBooks(

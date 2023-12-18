@@ -1,25 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import {
   useLocation,
-  useNavigate,
   useParams,
-  useSearchParams,
 } from "react-router-dom";
-import IBook from "../../interfaces/IBook";
 import {
-  getBookAuthors,
   getBook,
-  getBookOffer,
-  getBookDiscount,
-  getBookEvaluations,
   getBookState,
 } from "../../api/book";
-import IUser from "../../interfaces/IAuthor";
-import IBookOffer from "../../interfaces/IBookOffer";
-import IBookDiscount from "../../interfaces/IBookDiscount";
 import BookInformation from "./BookInformation";
 import BookPageContent from "./BookPageContent";
-import IBookEvaluations from "../../interfaces/IBookEvaluations";
 import PageWrapper from "../../components/PageWrapper/PageWrapper";
 import IBookSate from "../../interfaces/IBookSate";
 import { IBookInformation } from "../../interfaces/IBookInformation";

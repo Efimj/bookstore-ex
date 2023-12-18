@@ -1,4 +1,4 @@
-import { Box, Avatar, Typography } from "@mui/material";
+import { Box, Avatar, Typography, Button } from "@mui/material";
 import { stringAvatar, getFormattedDate } from "../../utils/utils";
 import PageWrapper from "../PageWrapper/PageWrapper";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -6,15 +6,20 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import InsertInvitationOutlinedIcon from "@mui/icons-material/InsertInvitationOutlined";
 import IUser from "../../interfaces/IAuthor";
 import { FC } from "react";
-
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export interface IUserInformation {
-    user:IUser
+  user: IUser;
+  onEditClick?: () => void;
 }
 
-const UserInformation: FC<IUserInformation> = ({ user }) => {
-  return <PageWrapper>
-     <Box
+const UserInformation: FC<IUserInformation> = ({
+  user,
+  onEditClick = null,
+}) => {
+  return (
+    <PageWrapper>
+      <Box
         sx={{
           display: "flex",
           gap: "1rem",
@@ -95,9 +100,20 @@ const UserInformation: FC<IUserInformation> = ({ user }) => {
             <PermIdentityOutlinedIcon></PermIdentityOutlinedIcon>
             {user.user_type_name}
           </Typography>
+          {onEditClick && (
+            <Button
+              variant="outlined"
+              sx={{ mt: ".5rem" }}
+              startIcon={<SettingsIcon></SettingsIcon>}
+              onClick={onEditClick}
+            >
+              Edit profile
+            </Button>
+          )}
         </Box>
       </Box>
-  </PageWrapper>;
-}
+    </PageWrapper>
+  );
+};
 
-export default UserInformation
+export default UserInformation;
