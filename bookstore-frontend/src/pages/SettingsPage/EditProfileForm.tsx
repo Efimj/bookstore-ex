@@ -298,7 +298,7 @@ const EditProfileFormContent: FC<IEditProfileFormContent> = observer(
                   setIsEditing(true);
                 }}
               >
-                Edit review
+                Edit profile
               </Button>
             </Box>
             <Box

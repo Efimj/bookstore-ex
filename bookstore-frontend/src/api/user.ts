@@ -7,6 +7,7 @@ import ICheck from "../interfaces/ICheck";
 import { RegistrationFormValues } from "../components/AuthorizationForm/RegistrationFormContent";
 import { EditProfileFormValues } from "../pages/SettingsPage/EditProfileForm";
 import dayjs from "dayjs";
+import { EditPasswordFormValues } from "../pages/SettingsPage/EditPasswordForm";
 
 export async function getUser(userId: string): Promise<IUser> {
   const response: AxiosResponse<IUser> = await axios.get(
@@ -110,6 +111,26 @@ export async function postUpdateAccountData(
 
   const response: AxiosResponse<IUser> = await $api.post(
     api.update_account_data,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function postUpdateAccountPassword(
+  value: EditPasswordFormValues
+): Promise<IUser> {
+  const formData = new FormData();
+  formData.append("oldPassword", value.oldPassword);
+  formData.append("newPassword", value.newPassword);
+
+  const response: AxiosResponse<IUser> = await $api.post(
+    api.update_account_password,
     formData,
     {
       headers: {

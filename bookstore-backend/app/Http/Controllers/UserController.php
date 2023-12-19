@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -70,6 +71,27 @@ class UserController extends Controller
             'last_name' => $request->input('lastName'),
             'birthday' => Carbon::parse($request->input('birthday'))->toDateTimeString(),
             'image' => $imageName,
+        ]);
+
+        return $user;
+    }
+
+    public function updateAccountPassword(Request $request){
+        $user = Auth::user();
+        if ($user == null) return null;
+
+        $request->validate([
+            'newPassword' => 'required|string',
+            'oldPassword' => 'required|string',
+        ]);
+
+        $user = User::find($user->user_id);
+        if ($user === null) abort(404, 'User not found');
+
+        if (Hash::check($user->password, $request->input('oldPassword'))) abort(403, 'Old password doesn\`t match');
+
+        $user->update([
+            'password' => Hash::make($request->input('newPassword')),
         ]);
 
         return $user;

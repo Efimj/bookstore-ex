@@ -34,6 +34,7 @@ const api = {
   purchase_book: server + "purchase_book",
   registration: server + "registration",
   update_account_data: server + "update_account_data",
+  update_account_password: server + "update_account_password",
 
   // Auth
   login: server + "auth/login",

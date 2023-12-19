@@ -46,7 +46,8 @@ const minFirstNameLength = 2;
 const maxFirstNameLength = 50;
 const minLastNameLength = 2;
 const maxLastNameLength = 50;
-
+const minPasswordLength = 8;
+const maxPasswordLength = 50;
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -59,7 +60,7 @@ const SignupSchema = Yup.object().shape({
     .required("Required"),
   password: Yup.string()
     .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
+    .min(minPasswordLength, "Password must be at least 8 characters")
     .matches(
       /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
       "Password must meet the criteria"
@@ -303,7 +304,7 @@ const RegistrationFormContent: FC<IRegistrationFormContent> = ({
           {signUpError}
         </Typography>
         <Button
-          sx={{ borderRadius: ".5rem", minWidth:'130px' }}
+          sx={{ borderRadius: ".5rem", minWidth: "130px" }}
           size="large"
           variant={formik.isValid ? "contained" : "outlined"}
           disabled={loading || !formik.isValid}
